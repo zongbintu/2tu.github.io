@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Jenkins构建Android、IOS并上传到蒲公英 | Tu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言作为产品级的外包，常常会出现fix一个bug要更新十几甚至几十个产品（打包上传）。作为程序猿看到这种需求时，第一想法就是“是时候找办法偷懒了”。虽然Android以前采用Ant打包构建，现在与时俱进采用Gradle打包所有产品，然后再上传。IOS也可以采用命令行的方式做到。但是为了实现傻瓜式，可视化，同时兼容Android、IOS的方式，采用Jenkins实现很有必要。  
+实现步骤1、下载安">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jenkins构建Android、IOS并上传到蒲公英">
+<meta property="og:url" content="http://2tu.github.io/2015/12/23/JenkinsContinuousImprovement/index.html">
+<meta property="og:site_name" content="Tu">
+<meta property="og:description" content="前言作为产品级的外包，常常会出现fix一个bug要更新十几甚至几十个产品（打包上传）。作为程序猿看到这种需求时，第一想法就是“是时候找办法偷懒了”。虽然Android以前采用Ant打包构建，现在与时俱进采用Gradle打包所有产品，然后再上传。IOS也可以采用命令行的方式做到。但是为了实现傻瓜式，可视化，同时兼容Android、IOS的方式，采用Jenkins实现很有必要。  
+实现步骤1、下载安">
+<meta property="og:image" content="http://2tu.github.io/css/images/20151223_Jenkins_IOS_Sign.webp">
+<meta property="og:image" content="http://2tu.github.io/css/images/20151223_ExecuteShell.webp">
+<meta property="og:updated_time" content="2016-11-11T11:56:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jenkins构建Android、IOS并上传到蒲公英">
+<meta name="twitter:description" content="前言作为产品级的外包，常常会出现fix一个bug要更新十几甚至几十个产品（打包上传）。作为程序猿看到这种需求时，第一想法就是“是时候找办法偷懒了”。虽然Android以前采用Ant打包构建，现在与时俱进采用Gradle打包所有产品，然后再上传。IOS也可以采用命令行的方式做到。但是为了实现傻瓜式，可视化，同时兼容Android、IOS的方式，采用Jenkins实现很有必要。  
+实现步骤1、下载安">
+<meta name="twitter:image" content="http://2tu.github.io/css/images/20151223_Jenkins_IOS_Sign.webp">
+  
+  
+    <link rel="icon" href="/css/images/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?eefc10ec0e8f2bc31ff12e6b6b43e93f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tu</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://2tu.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-JenkinsContinuousImprovement" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/12/23/JenkinsContinuousImprovement/" class="article-date">
+  <time datetime="2015-12-23T08:22:00.000Z" itemprop="datePublished">2015-12-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Jenkins构建Android、IOS并上传到蒲公英
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="前言">前言</h4><p>作为产品级的外包，常常会出现fix一个bug要更新十几甚至几十个产品（打包上传）。作为程序猿看到这种需求时，第一想法就是“是时候找办法偷懒了”。<br>虽然Android以前采用Ant打包构建，现在与时俱进采用Gradle打包所有产品，然后再上传。<br>IOS也可以采用命令行的方式做到。<br>但是为了实现傻瓜式，可视化，同时兼容Android、IOS的方式，采用Jenkins实现很有必要。  </p>
+<h4 id="实现步骤">实现步骤</h4><p>1、下载安装Jenkins<br>2、配置Jenkins安装插件<br>3、创建Job实现构建<br>4、上传至蒲公英<br><a id="more"></a>  </p>
+<h5 id="我的环境">我的环境</h5><p>Mac<br>JDK 1.7<br>Gradle 2.8<br>IOS 8.0<br>Jenkins 1.641   </p>
+<h5 id="一、下载安装Jenkins">一、下载安装Jenkins</h5><p>在<a href="http://jenkins-ci.org/" target="_blank" rel="external">Jenkins</a>下载war包<br>运行java -jar jenkins.war –httpPort=8888，提示”信息: Jenkins is fully up and running”，表示启动成功<br>打开“<a href="http://localhost:8888/”" target="_blank" rel="external">http://localhost:8888/”</a></p>
+<h5 id="二、配置Jenkins安装插件">二、配置Jenkins安装插件</h5><h6 id="1、安装插件">1、安装插件</h6><p>系统管理-》插件管理-》可选插件-》过滤-》输入名称安装<br>Git plugin<br>Multiple SCMs plugin（针对多分支或多Git地址的情况，Git Plugin不能实现）<br>Ftp plugin(FTP上传)<br>Publish Over SSH(SFTP上传)<br>Gradle plugin<br>Xcode plugin  </p>
+<h6 id="2、配置">2、配置</h6><p>1）Gradle相关配置，添加GRADLE<strong><strong>HOME环境变量或<br>系统管理-》系统设置-》Gradle安装，选择Gradle目录<br>2）SFTP相关配置<br>3）ANDROID</strong></strong>HOME环境变量添加，否则要报“SDK location not found”。或者为Android项目添加“local.properties”文件，我们当然选择配置环境变量</p>
+<h6 id="3、创建JOB">3、创建JOB</h6><p>创建JOB的几个问题<br>1）Multiple SCMs时注意选择subdirectory<br>2）Android 包Gradle<br>3)IOS 配置选择Target及Xcode Project File<br>选择Pack application and build .ipa的时候，证书要选择正确。我在打包时出现首先匹配的是*的证书。删除*证书后就出现匹配不到证书的情况。最后解决办法是在Build Settings里面配置Release的证书，如图<br><img src="/css/images/20151223_Jenkins_IOS_Sign.webp" alt="">  </p>
+<h6 id="4、上传至蒲公英">4、上传至蒲公英</h6><p> 执行下列命令上传<br>filen=`find . -name <em>release</em>.apk`;<br>curl -F “file=@$filen” -F “uKey=4602339dac5705c81578cd8580505ab5” -F “_api_key=e3d6725adc24fce33c5210271ef1efed” <a href="http://www.pgyer.com/apiv1/app/upload" target="_blank" rel="external">http://www.pgyer.com/apiv1/app/upload</a><br> <img src="/css/images/20151223_ExecuteShell.webp" alt="">  </p>
+<h4 id="后记">后记</h4><p>上传到蒲公英只作为测试使用。正式分发产品时会更新到自己的网站上，并更新数据库，旧有的包备份等一套应用。目前采用的.net + php。发现并不能通用，后续希望改为shell + php</p>
+<h4 id="参考">参考</h4><p><a href="http://www.itnose.net/detail/6075531.html" target="_blank" rel="external">http://www.itnose.net/detail/6075531.html</a><br><a href="http://blog.csdn.net/guojin08/article/details/39026795" target="_blank" rel="external">http://blog.csdn.net/guojin08/article/details/39026795</a><br><a href="http://www.android100.org/html/201506/22/156680.html" target="_blank" rel="external">http://www.android100.org/html/201506/22/156680.html</a><br><a href="https://wiki.jenkins-ci.org/display/JENKINS/Publish+Over+SSH+Plugin" target="_blank" rel="external">https://wiki.jenkins-ci.org/display/JENKINS/Publish+Over+SSH+Plugin</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://2tu.github.io/2015/12/23/JenkinsContinuousImprovement/" data-id="civdqqxf80003kcjpjs5jnfb1" class="article-share-link">Share</a>
+      
+  <section id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="post-JenkinsContinuousImprovement" data-title="Jenkins构建Android、IOS并上传到蒲公英" data-url="http://2tu.github.io/2015/12/23/JenkinsContinuousImprovement/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'2tu2'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  </section>
+  
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jenkins-android-ios/">Jenkins android ios</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/01/27/o2oAddress/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          O2O收货地址管理——做一个有节操的码畜
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/12/11/ModuleFlavors/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">module自动适应app中的flavors</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JNI-AndroidStudio-Debugger-Native-C/">JNI AndroidStudio Debugger Native C++</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins-android-ios/">Jenkins android ios</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android-storage-applicaton-crash-NullPointException/">android storage applicaton crash NullPointException</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JNI-AndroidStudio-Debugger-Native-C/" style="font-size: 10px;">JNI AndroidStudio Debugger Native C++</a> <a href="/tags/Jenkins-android-ios/" style="font-size: 10px;">Jenkins android ios</a> <a href="/tags/android-storage-applicaton-crash-NullPointException/" style="font-size: 10px;">android storage applicaton crash NullPointException</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/05/14/android-data-store/">android数据共享，Application\Singleton存储数据出错的问题</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/24/welcomeJNI/">使用AndroidStudio开发JNI并开启Native Debugger</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/29/tvApplication/">TV Apps Checklist</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/27/o2oAddress/">O2O收货地址管理——做一个有节操的码畜</a>
+          </li>
+        
+          <li>
+            <a href="/2015/12/23/JenkinsContinuousImprovement/">Jenkins构建Android、IOS并上传到蒲公英</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Tu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

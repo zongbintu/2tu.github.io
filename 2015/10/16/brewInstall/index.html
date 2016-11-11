@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>brew install mac安装失败的问题 | Tu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="问题：brew 安装失败
+思路：将github仓库放到本地，不用ruby下载
+解决办法：
+
+1、下载https://raw.githubusercontent.com/Homebrew/install/master/install文件(使用浏览器打开，另存为也可以)，命名为install  
+2、在github上把Homebrew(https://github.com/Homebrew/home">
+<meta property="og:type" content="article">
+<meta property="og:title" content="brew install mac安装失败的问题">
+<meta property="og:url" content="http://2tu.github.io/2015/10/16/brewInstall/index.html">
+<meta property="og:site_name" content="Tu">
+<meta property="og:description" content="问题：brew 安装失败
+思路：将github仓库放到本地，不用ruby下载
+解决办法：
+
+1、下载https://raw.githubusercontent.com/Homebrew/install/master/install文件(使用浏览器打开，另存为也可以)，命名为install  
+2、在github上把Homebrew(https://github.com/Homebrew/home">
+<meta property="og:updated_time" content="2016-11-11T11:56:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="brew install mac安装失败的问题">
+<meta name="twitter:description" content="问题：brew 安装失败
+思路：将github仓库放到本地，不用ruby下载
+解决办法：
+
+1、下载https://raw.githubusercontent.com/Homebrew/install/master/install文件(使用浏览器打开，另存为也可以)，命名为install  
+2、在github上把Homebrew(https://github.com/Homebrew/home">
+  
+  
+    <link rel="icon" href="/css/images/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?eefc10ec0e8f2bc31ff12e6b6b43e93f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tu</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://2tu.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-brewInstall" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/16/brewInstall/" class="article-date">
+  <time datetime="2015-10-16T09:18:42.000Z" itemprop="datePublished">2015-10-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      brew install mac安装失败的问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>问题：brew 安装失败</li>
+<li>思路：将github仓库放到本地，不用ruby下载</li>
+<li>解决办法：</li>
+</ul>
+<p>1、下载<a href="https://raw.githubusercontent.com/Homebrew/install/master/install" target="_blank" rel="external">https://raw.githubusercontent.com/Homebrew/install/master/install</a>文件(使用浏览器打开，另存为也可以)，命名为install  </p>
+<p>2、在github上把Homebrew(<a href="https://github.com/Homebrew/homebrew" target="_blank" rel="external">https://github.com/Homebrew/homebrew</a>)<br>的库下载下来(下载zip包即可)<br>把下载的zip包放在文件夹”brew”(自己建立)内，<br>同时在 “brew” 文件夹内新建文件夹”brewRemote.git”<br>把步骤1下载下来的install文件也放进”brew”文件夹中<br><a id="more"></a><br>3.下面开始使用 shell，前提，shell先进入到”brew”文件夹内</p>
+<pre><code><span class="label">cd</span> <span class="keyword">brewRemote.git
+</span><span class="label">git</span> init --<span class="keyword">bare </span> 
+<span class="label">cd</span> ../homebrew-master
+<span class="label">git</span> init
+<span class="label">git</span> <span class="keyword">add </span>.
+<span class="label">git</span> commit -m <span class="string">"create project"</span>
+<span class="label">git</span> remote <span class="keyword">add </span>origin  <span class="keyword">brewRemote.git(的绝对路径)
+</span><span class="label">git</span> <span class="keyword">push </span>-u origin master
+</code></pre><p>现在，我们本地就有了Homebrew的git库:brewRomote.git<br>接下来，修改install文件：<br>应该在第7行左右，把</p>
+<pre><code><span class="setting">HOMEBREW_REPO = <span class="value"><span class="string">'https://github.com/Homebrew/homebrew'</span></span></span>
+</code></pre><p>改为：<br>    <code>HOMEBREW_REPO = &#39;/Users/tu/Documents/brew/brewRomote.git&#39;</code>  </p>
+<p>这里就是把Homebrew的github库，替换为本地库。<br>注意：上面的brewRomote.git(/Users/tu/Documents/brew/brewRomote.git)的绝对路径为我的，你要替换为你自己本地的绝对路径<br>，最后继续执行ruby命令(注意：shell当前路径依然为brew)</p>
+<pre><code>rm -rf <span class="regexp">/usr/</span>local<span class="regexp">/Cellar /u</span>sr<span class="regexp">/local/</span>.git &amp;&amp; brew   
+cleanup
+ruby install  
+</code></pre><p>第一行的rm命令，是为了防止之前你安装Homebrew失败而残留的文件，导致这次安装失败<br>ruby install执行之后，安装命令行提示安装，应该会安装成功。<br>安装成功后，执行以下命令：  </p>
+<pre><code><span class="escape">`b</span>rew doctor<span class="escape">` </span>   
+</code></pre><p>这个命令是Homebrew的自我检测命令，看看有没有配置不对的地方。<br>但是我们使用的本地的git库brewRomote.git,所以会检测出这个有问题，我们接下来修改这个问题。<br>找到这个文件 /usr/local/.git/config,<br>由于.git文件是隐藏文件夹，你可以使用命令行来查找  </p>
+<pre><code><span class="built_in">open</span> /usr/<span class="built_in">local</span>/.git   
+</code></pre><p>这样你就能找到config文件了<br>使用编辑器来修改config文件  </p>
+<pre><code>url = <span class="regexp">/Users/baidu</span><span class="regexp">/TestTmp/yanshi</span><span class="regexp">/brewRomote.git改为       
+url = https:/</span><span class="regexp">/github.com/</span><span class="constant">Homebrew</span>/homebrew
+</code></pre><p>保存config文件，大功告成！，再使用brew doctor检查一下，应该就没问题了。</p>
+<p>原文：<a href="http://doc.okbase.net/shede333/archive/122619.html" target="_blank" rel="external">http://doc.okbase.net/shede333/archive/122619.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://2tu.github.io/2015/10/16/brewInstall/" data-id="civdqqxg4000ekcjp9km383kq" class="article-share-link">Share</a>
+      
+  <section id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="post-brewInstall" data-title="brew install mac安装失败的问题" data-url="http://2tu.github.io/2015/10/16/brewInstall/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'2tu2'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  </section>
+  
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/11/16/JitPack/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Gradle 2.4之后使用JitPack发布Github开源库
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/14/DataBinding-setDrawable/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">DataBinding setDrawable 无法显示的问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JNI-AndroidStudio-Debugger-Native-C/">JNI AndroidStudio Debugger Native C++</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins-android-ios/">Jenkins android ios</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android-storage-applicaton-crash-NullPointException/">android storage applicaton crash NullPointException</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JNI-AndroidStudio-Debugger-Native-C/" style="font-size: 10px;">JNI AndroidStudio Debugger Native C++</a> <a href="/tags/Jenkins-android-ios/" style="font-size: 10px;">Jenkins android ios</a> <a href="/tags/android-storage-applicaton-crash-NullPointException/" style="font-size: 10px;">android storage applicaton crash NullPointException</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/05/14/android-data-store/">android数据共享，Application\Singleton存储数据出错的问题</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/24/welcomeJNI/">使用AndroidStudio开发JNI并开启Native Debugger</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/29/tvApplication/">TV Apps Checklist</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/27/o2oAddress/">O2O收货地址管理——做一个有节操的码畜</a>
+          </li>
+        
+          <li>
+            <a href="/2015/12/23/JenkinsContinuousImprovement/">Jenkins构建Android、IOS并上传到蒲公英</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Tu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
