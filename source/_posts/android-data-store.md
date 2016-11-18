@@ -7,7 +7,7 @@ tags: android storage applicaton crash NullPointException
 采用官方提供api机制来解决问题。
 
 ##### 一、问题  
-应用切换到后台返回程序Crash或数据丢失。甚至在小内存手机（小米1s，回收机制被修改）中调用系统相机再回来应用就已经重启了
+应用切换到后台返回程序Crash或数据丢失。甚至在小内存手机中调用系统相机再回来应用就已经重启了
    
 ##### 二、解决办法
 采用Intent及setArgments的方式来传值，采用onSaveInstanceState保存数据以供恢复。
@@ -19,9 +19,9 @@ tags: android storage applicaton crash NullPointException
 
 ##### 三、优化
 ###### 1、减小数据
-保持数据短小轻快不追求粗大（想歪了），这样可以更快启动下一界面及恢复
+保持数据短小轻快，这样可以更快启动下一界面及恢复
 ###### 2、本地缓存
-如果实在粗大不能保持精练，则采用Singleton加本地缓存（若对象不存在则从本地读取）。这样可以保持快速启动界面，然后再加载数据。  
+如果数据量确实大不能保持精练，则采用Singleton加本地缓存（若对象不存在则从本地读取）。这样可以保证快速启动界面，然后再加载数据。  
 本地缓存视数据大小及结构选择存储方式。可以简单粗暴的采用[Preference](https://github.com/2tu/fit)、ObjectFile，或者数据库、LruCache等.
 
 ##### 四、诱因及说明【没有耐心直接略过，真心废话】
@@ -71,7 +71,7 @@ v的获取方式有两个地方，一个是在方法a中传入，另外一个为
   }
 ```
 
-具体解决办法见上文。但是对于View的状态其实Android自动作了处理，这里因为是Webview才出现这个问题，那要么解决呢？看下面（别想歪了）
+具体解决办法见上文。但是对于View的状态其实Android自动作了处理，这里因为是Webview才出现这个问题，那要么解决呢？
 
 ```
   @Override protected void onSaveInstanceState(Bundle paramBundle) {
