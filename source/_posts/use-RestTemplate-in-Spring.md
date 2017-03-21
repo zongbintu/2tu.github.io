@@ -10,8 +10,9 @@ Spring中提供RestTemplate方便访问Web服务，不再需要使用HttpClient�
 restTemplate.getForObject("https://api.github.com/users/{userName}", String.class, "2tu");  
 Map<String, String> uriVariables = Collections.singletonMap("userName", "2tu"); 
 restTemplate.getForObject("https://api.github.com/users/{userName}", String.class, uriVariables);
-```
+```  
 
+<font color=red>注：SpringBoot默认采用jackson</font>
 
 参考：  
 [Consuming a RESTful Web Service](https://spring.io/guides/gs/consuming-rest/)  
