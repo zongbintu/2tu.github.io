@@ -51,8 +51,9 @@ fe80::188c:24ff:fe49:8e54%dummy0
         for (Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
             inetAddresses.hasMoreElements(); ) {
           InetAddress inetAddress = inetAddresses.nextElement();
+          //过滤Link-local address
           if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
-            return inetAddress.getHostAddress().toString();
+            return inetAddress.getHostAddress();
           }
         }
       }
@@ -131,7 +132,7 @@ dummy0、lo、p2p0、rev_rmnet0、rev_rmnet1、rev_rmnet2、rev_rmnet3、rmnet0�
 
 ##### 特别鸣谢
 大牛老张，前公司上司，全栈。最近搞了一个有意思的产品[图交](http://wkok.me/)  
-硬件玩家莽哥
+硬件玩家，网络牛人莽哥
 
 ##### 参考：  
 [IPv6](http://baike.baidu.com/link?url=iCSUzfkaTpmskK6k2ybPoCy6-dr28dzlAXY1ED8nszM6n-vs3lRgSEhUactfzgMuyIQrmcCNGUUx9bwdReOMFK)    
