@@ -2,11 +2,17 @@ title: Android正确获取IP及MAC
 date: 2017-04-06 20:06:52
 tags: ipv4 dummy0 ipv6 mac wlan0 NetworkInterface WifiInfo 02:00:00:00:00:00
 ---
-最近出了个bug，公司CMC报用户终端信息格式不正确。  
-其中有MAC地址，  
+每个产品都会统计用户终端信息。稍不注意就会经我们的手造成公司得到的数据错误，造成分析甚至战略错误。（假装是程序猿缔造了世界）  
+   
 设备：Oppo R9s、vivo X9  
-系统：Android  
+系统：Android 6.0.2  
 网络：4G  
+错误IP和MAC分别为  
+<font color=red>
+fe80::188c:24ff:fe49:8e54%dummy0  
+02:00:00:00:00:00
+</font>
+
 错误代码：  
 ```
   public static String getLocalIpAddress() {
@@ -25,22 +31,19 @@ tags: ipv4 dummy0 ipv6 mac wlan0 NetworkInterface WifiInfo 02:00:00:00:00:00
         }
       }
     } catch (SocketException e) {
-      Log.e("WifiPreference IpAddres", e.toString());
     }
     return null;
   }
 ```
-获取结果，格式为
-<table><tr><td bgcolor=yellow>
-fe80::188c:24ff:fe49:8e54%dummy0
-</td></tr></table>
-然后根据百度搜索得出，直接将“%dummy0%2"去掉，前面即为ipv6地址。当时未及细想信以为真，改了直接上线。最近回想惊觉造出了一堆错误数据。  
-<!--more-->
-##### 链路地址、回送地址(Link-local address、Loopback address) 
-之前的代码中我们已经屏蔽了Loopback address。fe80::188c:24ff:fe49:8e54的确为IPv6，但是前缀为fe80::/64都是链路本地地址，不是我们真正想要的ip。IPv6几种地址类型、概念，详细见[IPv6](http://baike.baidu.com/link?url=iCSUzfkaTpmskK6k2ybPoCy6-dr28dzlAXY1ED8nszM6n-vs3lRgSEhUactfzgMuyIQrmcCNGUUx9bwdReOMFK)  
 
-##### 获取IP正确方式  
-从上面分析得知Link-local address和Loopback address，改造代码
+然后根据搜索结果认为，直接将“%dummy0%2"去掉结果即为ipv6地址。不管你信不信反正当时我是信了，后来脑海里有一个声音时不时告诉我这不对，世界不是这样的。（程序猿后遗症）  
+<!--more-->
+
+#### 链路地址、回送地址(Link-local address、Loopback address) 
+上面的代码中我们屏蔽了Loopback address。并且获得的fe80::188c:24ff:fe49:8e54确为IPv6，但是前缀为fe80::/64都是链路本地地址，不是我们真正想要的ip。IPv6几种地址类型、概念，详细见[IPv6](http://baike.baidu.com/link?url=iCSUzfkaTpmskK6k2ybPoCy6-dr28dzlAXY1ED8nszM6n-vs3lRgSEhUactfzgMuyIQrmcCNGUUx9bwdReOMFK)  
+
+#### 解锁获取IP正确姿势  
+经过上面度娘普及姿势得知Link-local address、Loopback address不是我们想要的IP，于是干掉它们，改造后代码如下（仅需要注意注释后面那一句）
 ```
   public static String getLocalIpAddress() {
     try {
@@ -51,14 +54,13 @@ fe80::188c:24ff:fe49:8e54%dummy0
         for (Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
             inetAddresses.hasMoreElements(); ) {
           InetAddress inetAddress = inetAddresses.nextElement();
-          //过滤Link-local address
+          //过滤Loopback address, Link-local address
           if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
             return inetAddress.getHostAddress();
           }
         }
       }
     } catch (SocketException e) {
-      Log.e("WifiPreference IpAddres", e.toString());
     }
     return null;
   }
@@ -77,9 +79,10 @@ OPPO R9s Android 6.0.1运行结果：
 <td>100.58.248.64</td>
 </tr>
 </table>
-##### 扩展-获取6.0后的MAC地址  
-dummy0、lo、p2p0、rev_rmnet0、rev_rmnet1、rev_rmnet2、rev_rmnet3、rmnet0、rmnet1、rmnet2、rmnet3、rmnet_smux0、sit0、wlan0我们发现有很多这样的名称，我的理解是除了wlan0是像我们电脑一样的真实无线的网卡以外，别的全是虚拟网卡用作内部通信用。说到网卡就想到获取mac地址。  
-在6.0之后，Android 移除了对设备本地硬件标识符的编程访问权。WifiInfo.getMacAddress() 方法和 BluetoothAdapter.getAddress() 方法现在会返回常量值 02:00:00:00:00:00。有了上面使用Java api获取IP地址的经验，获取mac地址是否也可以在这里使用。上代码
+
+#### 扩展-解锁6.0后获取正确MAC姿势  
+dummy0、lo、p2p0、rev_rmnet0、rev_rmnet1、rev_rmnet2、rev_rmnet3、rmnet0、rmnet1、rmnet2、rmnet3、rmnet_smux0、sit0、wlan0等等，我们发现有很多这样的名称。我的理解是除了wlan0是与电脑一样的真实无线网卡外，其它全是虚拟网卡，用于内部通信。  
+在6.0之后，Android 移除了对设备本地硬件标识符的编程访问权。使用WifiInfo.getMacAddress() 、BluetoothAdapter.getAddress() 返回值为常量02:00:00:00:00:00。有了上面通过Java api获取IP地址的经验，获取mac地址是否也可以在这里使用。上代码
 ```
   public static String getMac() {
     try {
@@ -127,14 +130,14 @@ OPPO R9s Android 6.0.1运行结果：
 </tr>
 </table>
 
-这里面涉及到挺多网络知识，现在还是比较懵逼。  
+这里面涉及到挺多网络知识，现在还是比较懵逼  
 dummy0、lo、p2p0、rev_rmnet0、rev_rmnet1、rev_rmnet2、rev_rmnet3、rmnet0、rmnet1、rmnet2、rmnet3、rmnet_smux0、sit0到底咋回事儿？
 
-##### 特别鸣谢
-大牛老张，前公司上司，全栈。最近搞了一个有意思的产品[图交](http://wkok.me/)  
+#### 特别鸣谢
+大牛老张，前公司上司，全栈。最近搞了一个有些性感的产品[图交](http://wkok.me/)  
 硬件玩家，网络牛人莽哥
 
-##### 参考：  
+#### 参考：  
 [IPv6](http://baike.baidu.com/link?url=iCSUzfkaTpmskK6k2ybPoCy6-dr28dzlAXY1ED8nszM6n-vs3lRgSEhUactfzgMuyIQrmcCNGUUx9bwdReOMFK)    
 [InetAddress API](https://developer.android.google.cn/reference/java/net/InetAddress.html)  
 [硬件标识符访问权](https://developer.android.google.cn/about/versions/marshmallow/android-6.0-changes.html?hl=zh-cn#behavior-hardware-id)
