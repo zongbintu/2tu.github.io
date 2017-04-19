@@ -66,19 +66,11 @@ fe80::188c:24ff:fe49:8e54%dummy0
   }
 ```
 OPPO R9s Android 6.0.1运行结果：  
-<table><tr>
-<th>类型</th>
-<th>ip</th>
-</tr>
-<tr>
-<td>wifi</td>
-<td>172.27.35.3</td>
-</tr>
-<tr>
-<td>流量</td>
-<td>100.58.248.64</td>
-</tr>
-</table>
+
+类型 | IP
+-------- | ---
+wifi | 172.27.35.3
+流量 | 100.58.248.64
 
 #### 扩展-解锁6.0后获取正确MAC姿势  
 dummy0、lo、p2p0、rev_rmnet0、rev_rmnet1、rev_rmnet2、rev_rmnet3、rmnet0、rmnet1、rmnet2、rmnet3、rmnet_smux0、sit0、wlan0等等，我们发现有很多这样的名称。我的理解是除了wlan0是与电脑一样的真实无线网卡外，其它全是虚拟网卡，用于内部通信。  
@@ -113,22 +105,11 @@ dummy0、lo、p2p0、rev_rmnet0、rev_rmnet1、rev_rmnet2、rev_rmnet3、rmnet0�
   }
 ```
 OPPO R9s Android 6.0.1运行结果：  
-<table><tr>
-<th>代码类型</th>
-<th>MAC</th>
-<th>权限</th>
-</tr>
-<tr>
-<td>WifiInfo</td>
-<td>02:00:00:00:00:00</td>
-<td>android.permission.ACCESS_WIFI_STATE</td>
-</tr>
-<tr>
-<td>NetworkInterface</td>
-<td>B8:37:65:2D:23:ED</td>
-<td>android.permission.INTERNET</td>
-</tr>
-</table>
+
+代码类型 | MAC | 权限
+------ | ----- | ---
+WifiInfo | 02:00:00:00:00:00 | android.permission.ACCESS_WIFI_STATE
+NetworkInterface | B8:37:65:2D:23:ED | android.permission.INTERNET
 
 这里面涉及到挺多网络知识，现在还是比较懵逼  
 dummy0、lo、p2p0、rev_rmnet0、rev_rmnet1、rev_rmnet2、rev_rmnet3、rmnet0、rmnet1、rmnet2、rmnet3、rmnet_smux0、sit0到底咋回事儿？
