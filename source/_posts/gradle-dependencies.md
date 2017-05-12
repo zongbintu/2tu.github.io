@@ -1,4 +1,4 @@
-title: gradle查看解决依赖问题 - 记录Butterknife8.5.1
+title: gradle查看解决依赖问题-记录Butterknife8.5.1
 date: 2017-05-11 17:47:32
 tags: transformClassesWithJarMerging duplicate entry TransformException gradle dependencies Butterknife
 ---
@@ -110,6 +110,9 @@ How fix?
 ```
 可以看到其中有依赖support-compat25.1.0    
 - [exclude的其它用法](https://docs.gradle.org/current/userguide/dependency_management.html)  
+
+####  关注我的公众号  
+![风控小妹的Three](/css/images/qrcode.jpg)
 
 
 #### 参考：
