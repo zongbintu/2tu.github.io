@@ -11,11 +11,9 @@ language: zh-Hans
 timezone: Asia/Shanghai
 #avatar: /favicon.png
 
-baidu_analytics: eefc10ec0e8f2bc31ff12e6b6b43e93f
-
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://2tu.github.io
+url: http://gank.bid
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
