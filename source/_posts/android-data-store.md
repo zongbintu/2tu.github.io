@@ -96,3 +96,6 @@ v的获取方式有两个地方，一个是在方法a中传入，另外一个为
 ###### 采用官方推荐方式开发
 
 
+
+##### 相关导读  
+[Activity调用外部为WebView设值不成功问题解决](/2017/12/15/WebView-RestoreInstance-onActivityForResult-not-work/)

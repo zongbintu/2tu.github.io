@@ -17,7 +17,7 @@ root/build.gradle添加
 ```
 buildscript {   
   dependencies {  
-      classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5' // Add this line
+      classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0' // Add this line
 ```
 <!--more--> 
 ###### 2) Add the following lines to your library/build.gradle:
