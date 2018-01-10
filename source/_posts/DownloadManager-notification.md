@@ -1,6 +1,6 @@
 title: DownloadManager not work
 date: 2015-11-25 11:25:09
-tags:
+tags: [Android,DownloadManager]
 ---
 问题：有用户反映点击版本升级后无响应(采用的DownloadManager)
 思路：“应用程序管理”->“下载管理器”->“启用”，再点击“升级”，一切OK。但是不完美，所以我们需要检查是否启用，未启用则引导设置。    

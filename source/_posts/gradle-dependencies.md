@@ -1,6 +1,6 @@
 title: gradle查看解决依赖问题-记录Butterknife8.5.1
 date: 2017-05-11 17:47:32
-tags: transformClassesWithJarMerging duplicate entry TransformException gradle dependencies Butterknife
+tags: [Android,transformClassesWithJarMerging,duplicate entry,TransformException,Gradle,dependencies,Butterknife]
 ---
 相信每个人都遇到过重复引用库、冲突的问题。如support-v4、appcompat-v7、NineOldAndroids很容易被多次引用。  
 前同事在临上线前打包遇到merg出错（内心飘过一万头草泥马）  

@@ -1,9 +1,10 @@
 title: WebView兼容问题之can not support WebGL
 date: 2017-12-18 16:42:06
-tags: WebGL WebView 兼容问题 experimental-webgl WEBGL_debug_renderer_info WebView v36 chrome
+tags: [Android,WebGL,WebView,兼容问题,experimental-webgl,WEBGL_debug_renderer_info,WebView,v36,chrome]
 ---
 [合作方页面](https://youjie.kongapi.com/?channel=xiangduoduoylpyj&utm_source=daikuan&utm_medium=xiangduoduoylpyj#/loan-in-index)能在浏览器中打开，不能在我们的WebView中打开，运营打上门来。  
 作为一个有态度的码农当然是要怒回去的。于是调试看了对方h5报错如下：
+<!--more-->
 
 ```
 VM122:158 NativeBridge Ready  

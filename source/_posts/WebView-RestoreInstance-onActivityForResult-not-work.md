@@ -1,6 +1,6 @@
 title: Activity调用外部为WebView设值不成功问题解决
 date: 2017-12-15 19:41:34
-tags: RestoreInstance WebView Activity onActivityForResult onPageFinished
+tags: [Android,RestoreInstance,WebView,Activity,onActivityForResult,onPageFinished]
 ---
 简单的Android保存恢复数据，有很多app没有做到。如之前提到的知名APP[掘金v3.1.1](https://juejin.im/)，以及朋友公司的[书香云集v5.40.1](http://www.sxyj.net/)，基本每去一家公司都会要为公司产品检查修改此类问题。本以为自己是这方面的老司机，没想到最近同事反馈上来又有此类问题发生，而这次的问题却是与我有关。  
 16年9月开始负责重构马上金融2.0，其中一项重要功能是hybrid资料表单以适应风控频繁变化的需求。采用jsbridge动态写入js解决js与native相互调用的安全性，此次按下不表。<font color="red">**问题发生在表单中js调用android访问联系人，获取联系人数据调用js设置时不成功**</font>  

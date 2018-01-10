@@ -1,6 +1,6 @@
 title: 如何主动PUSH SDK更新给开发者
 date: 2017-12-01 10:19:47
-tags: 如何主动PUSH SDK更新给开发者 SDK 主动push github api fit最新版本
+tags: [Java,如何主动PUSH,SDK更新给开发者,SDK,主动push,github api,fit]
 ---
 
 之前苹果禁用jspatch时，涉及到的SDK全部需要更新。此时开发者得全面排查所使用SDK是否需要更新。怎么查？一个一个去SDK官网查看是否有更新解决方案。啰嗦，实现上就是想维护Github上面可怜的Star，所以想利用Github的开放api更新了SDK给他们发个邮件  

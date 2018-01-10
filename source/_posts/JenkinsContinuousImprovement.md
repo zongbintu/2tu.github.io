@@ -1,6 +1,6 @@
 title: Jenkins构建Android、IOS并上传到蒲公英
 date: 2015-12-23 16:22:00
-tags: Jenkins android ios
+tags: [Android,Jenkins,iOS]
 ---
 #### 前言  
 作为产品级的外包，常常会出现fix一个bug要更新十几甚至几十个产品（打包上传）。作为程序猿看到这种需求时，第一想法就是“是时候找办法偷懒了”。  

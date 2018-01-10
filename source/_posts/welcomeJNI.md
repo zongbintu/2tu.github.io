@@ -1,6 +1,6 @@
 title: 使用AndroidStudio开发JNI并开启Native Debugger
 date: 2016-03-24 22:09:37
-tags: JNI AndroidStudio Debugger Native C++
+tags: [Android,JNI,AndroidStudio,Debugger,Native,C++]
 ---
 不使用eclipse开发JNI，使用谷歌亲儿子AndroidStudio，并开启Native Debugger  
 ### 一、创建JNI工程
