@@ -4,7 +4,7 @@
 
 # Site
 title: Tu
-subtitle: 写Java的Android程序猿
+subtitle: 写Java EE的Android程序猿
 description:
 author: Tu
 language: zh-Hans
@@ -13,7 +13,7 @@ timezone: Asia/Shanghai
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://issued.site
+url: https://2tu.github.io
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
