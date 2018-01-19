@@ -58,5 +58,5 @@ Date and Time Patterns
 [Date Formatters by iOS](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/DataFormatting/Articles/dfDateFormatting10_4.html#//apple_ref/doc/uid/TP40002369-SW1)  
 
 ###### 转载请标明出处： 
-###### http://2tu.ghithub.io/2018/01/03/date-formate-YYYY-in-java/ 
+###### http://2tu.github.io/2018/01/03/date-formate-YYYY-in-java/ 
 ###### 本文出自Tu's blog
