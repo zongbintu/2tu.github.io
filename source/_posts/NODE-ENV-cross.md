@@ -1,6 +1,7 @@
 title: NODE_ENV跨平台设置  
-date: 2018-01-18 22:13:30
-tags: [Node,NODE_ENV,cross-env,spawn]
+date: 2018-01-18 22:13:30  
+categories: 其它  
+tags: [NODE_ENV,cross-env,spawn]
 ---
 ##### set NODE_ENV问题
 最近接手系统中采用React作为管理端，其中有这样一句

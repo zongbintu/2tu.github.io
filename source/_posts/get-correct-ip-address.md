@@ -1,6 +1,7 @@
 title: Android正确获取IP及MAC
-date: 2017-04-06 20:06:52
-tags: [Android,ipv4,dummy0,ipv6,mac,wlan0,NetworkInterface,WifiInfo,02:00:00:00:00:00]
+date: 2017-04-06 20:06:52  
+categories: Android  
+tags: [ipv4,dummy0,ipv6,mac,wlan0,NetworkInterface,WifiInfo,02:00:00:00:00:00]
 ---
 每个产品都会统计用户终端信息。稍不注意就会经我们的手造成公司得到的数据错误，造成分析甚至战略错误。（假装是程序猿缔造了世界）  
    

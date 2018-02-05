@@ -1,5 +1,6 @@
 title: TV Apps Checklist
-date: 2016-02-29 17:00:12
+date: 2016-02-29 17:00:12  
+categories: Android  
 tags: Android TV
 ---
 最近开发一款定制运行于Letv的 TV应用（流云TV），主要用于数据报表展示及小部份交互。本文主要参考于电视猫、VST两款应用，适配小米电视及乐视。

@@ -1,6 +1,7 @@
 title: use RestTemplate in Spring
-date: 2017-03-13 15:48:08
-tags: [Java,RestTemplate,Spring,HttpClient]
+date: 2017-03-13 15:48:08  
+categories: Java  
+tags: [RestTemplate,Spring,HttpClient]
 ---
 Spring中提供RestTemplate方便访问Web服务，不再需要使用HttpClient、HttpComponents等
 ### 差异

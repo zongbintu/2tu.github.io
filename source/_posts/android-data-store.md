@@ -1,6 +1,7 @@
 title: android数据共享，Application\Singleton存储数据出错的问题
-date: 2016-05-14 21:17:48
-tags: [Android,storage,applicaton,crash,NullPointException]
+date: 2016-05-14 21:17:48  
+categories: Android  
+tags: [storage,applicaton,crash,NullPointException]
 ---
 两天终于完成了某模块的数据共享问题的改造。此次问题就是传说中万恶的Application及Sigleton存数据的问题。   
 曾经有大拿老张疑惑说Android怎么可能没有一个安全的临时存储数据的地方。接下来我们看一下在本次应用中实际发生的问题。并查看解决[知名app掘金v3.1.1](http://gold.xitu.io/app)出现的这个问题  

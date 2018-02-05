@@ -1,6 +1,7 @@
 title: 日期格式化 YYYY日期错位  
-date: 2018-01-03 13:58:38
-tags: [Java,iOS,DateFormat,YYYY,yyyy]
+date: 2018-01-03 13:58:38  
+categories: Java  
+tags: [iOS,DateFormat,YYYY,yyyy]
 ---
 #### 起因  
 支付系统通知账务还款结果时，对请求时间使用“YYYYMMddHHmmss”格式化，20171231变为了20181231致使数据不匹配。  

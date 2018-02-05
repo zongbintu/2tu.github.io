@@ -1,6 +1,7 @@
 title: DataBinding setDrawable 无法显示的问题
-date: 2015-10-14 09:44:13
-tags: [Android,DataBinding]
+date: 2015-10-14 09:44:13  
+categories: Android  
+tags: [DataBinding]
 ---
 
 

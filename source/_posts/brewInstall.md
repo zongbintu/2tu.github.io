@@ -1,5 +1,6 @@
 title: brew install mac安装失败的问题  
-date: 2015-10-16 17:18:42
+date: 2015-10-16 17:18:42  
+categories: 其它  
 tags: [brew,install,Could not resolve host: github.com]
 ---
 * 问题：brew 安装失败

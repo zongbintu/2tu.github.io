@@ -1,6 +1,7 @@
 title: 301重定向导致不能正常访问
-date: 2017-12-07 23:04:55
-tags: [Java,301,302,Http Status Code]
+date: 2017-12-07 23:04:55  
+categories: Java  
+tags: [301,302,Http Status Code]
 ---
 事件通报中称由于挂维护跳转301后，恢复服务，app WebView访问缓存仍然停留在公司官方网页，无法正确访问。  
 参考[Http Status Code Definitions](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)  

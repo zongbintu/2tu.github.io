@@ -1,6 +1,7 @@
 title: Manifest中找不到versionCode?  
-date: 2018-01-09 13:49:39
-tags: [Android,versionCode,manifest,APKParser,AXMLPrinter2]
+date: 2018-01-09 13:49:39  
+categories: Android  
+tags: [versionCode,manifest,APKParser,AXMLPrinter2]
 ---
 
 #### 起因  

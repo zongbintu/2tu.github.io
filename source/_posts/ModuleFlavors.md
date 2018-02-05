@@ -1,6 +1,7 @@
 title: module自动适应app中的flavors 
-date: 2015-12-11 23:43:19
-tags: [Android,module,flavor]
+date: 2015-12-11 23:43:19  
+categories: Android  
+tags: [module,flavor]
 ---
 * **需求**  
 

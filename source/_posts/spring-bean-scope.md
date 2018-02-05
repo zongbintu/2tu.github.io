@@ -1,6 +1,7 @@
 title: Spring中Bean的作用域与StepScope关系、疑问  
 date: 2018-01-12 22:39:39  
-tags: [Java,Spring,SpringBatch,Bean,scope,Qualifier,StepScope]
+categories: Java  
+tags: [Spring,SpringBatch,Bean,scope,Qualifier,StepScope]
 ---
 Spring Bean有5个作用域，但是最近有需求在多个地方获取同一个Bean，只修改其中一个参数。那么Bean只在一个地方注入，修改属性就好，名字能一样吗？一系列问题  
 这个StepScope是什么鬼，5个默认的Scope能满足需求吗？  

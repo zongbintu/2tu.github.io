@@ -1,6 +1,7 @@
 title: 使用Java、Excel数据分析如何有效投资房产  
-date: 2018-01-27 21:47:06
-tags: [Java,Excel,数据分析,Java数据分析房价]
+date: 2018-01-27 21:47:06  
+categories: 数据  
+tags: [Excel,数据分析,Java数据分析房价]
 ---
 
 #### 写在前面的话 
