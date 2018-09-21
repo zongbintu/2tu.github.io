@@ -6,14 +6,14 @@ grammar_mindmap: true
 ---
 
 
-[toc!?direction=lr]
-
 最初接手”刷脸支付“项目时就有一个疑问，为什么这个项目的用户体系与公司已有的用户体系是隔离的？
 
 #### 共有用户体系好处
 1. 有庞大用户基数
 2. 宣传导流用户转换更容易
 3. 降低新产品推广难度
+
+<!--more-->  
 
 #### 与公司用户体系共同点
 
@@ -33,5 +33,5 @@ grammar_mindmap: true
 
 
 ###### 转载请标明出处： 
-###### http://2tu.github.io/
+###### http://2tu.github.io/2018/09/20/product-think-facepay-user/
 ###### 本文出自Tu's blog
