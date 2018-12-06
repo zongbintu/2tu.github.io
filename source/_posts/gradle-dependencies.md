@@ -4,10 +4,15 @@ categories: 其它
 tags: [transformClassesWithJarMerging,duplicate entry,TransformException,Gradle,dependencies,Butterknife]
 ---
 相信每个人都遇到过重复引用库、冲突的问题。如support-v4、appcompat-v7、NineOldAndroids很容易被多次引用。  
-前同事在临上线前打包遇到merg出错（内心飘过一万头草泥马）  
+前同事在临上线前打包遇到merg出错
 ![TransformException](/css/images/20170512_duplicate.jpeg)  
 How fix?
 <!--more-->  
+最近发现一个更快查看依赖问题方法  
+#### 第一种快捷查看依赖问题命令  
+- gradle -q app:dependencies
+
+#### 第二种各module逐步查看  
 一个一个module检查过去没有，这时候就有可能是第三方库引用了，可是第三方库那么多，How do?头疼，先换个姿势找到哪两个jar导致重复。通过打开文件发现DisplayManagerCompat类属于哪两个jar包    
 ![Open class](/css/images/20170512_multi.jpeg)  
 ![jar](/css/images/20170512_multi_class.jpeg)  
@@ -15,16 +20,40 @@ How fix?
 - gradle projects
 先查看有哪些项目  
 ![projects](/css/images/20170512_projects.jpeg)   
-- gradle dependencies  
+- gradle project:dependencies  
+其中project指上面projects获得的project，如IMKit  gradle IMKit:dependencies
 ![dependencies](/css/images/20170512_dependencies.jpeg)  
 从图中可以看到是butterknife8.5.1依赖了compat25.1.0。  
-- 添加exclude  
+
+#### 解决办法
+
+##### 添加exclude法  
  修改compile添加exclude后解决
  ```
    compile ("com.jakewharton:butterknife:8.5.1") {
         exclude group : 'com.android.support'
     }
  ```
+
+##### Grovvy脚本修改版本号方法  
+在其存在冲突的module中的build.gradle文件中加入下面代码，原理就是通过遍历所有依赖，并修改指定库的版本号
+
+其中
+requested.group == 'com.android.support' com.android.support表示要修改的依赖库
+
+details.useVersion '27.1.1'	27.1.1表示要修改的版本号
+```
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '27.1.1'
+            }
+        }
+    }
+}
+```
 
 #### 扩展  
 - 强制指定低版本force  
