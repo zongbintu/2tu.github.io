@@ -16,7 +16,10 @@ template<typename T1, typename T2, ...> 返回类型 函数名(参数列表){
 template<typename T1, typename T2, ...> class 类名{
     ...
 };
-```  
+```
+
+<!-- more -->
+  
 由此可见，无论函数模板、类模板都支持多类型。如：
 ```
 template<typename T1,typename T2> class MultipleTypename{
