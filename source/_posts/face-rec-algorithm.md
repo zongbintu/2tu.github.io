@@ -21,6 +21,9 @@ categories: 其它
 以上
 
 
-###### 转载请标明出处： 
-###### http://2tu.github.io/
-###### 本文出自Tu's blog
+推荐  
+[支付宝怎么敢采用后4位手机号人脸支付](http://blog.520wa.com/2019/04/26/assert-facepay-dragonfly-by-4/)
+
+---  END  ---
+分享程序员所看、所想、所悟、所望  
+[程序猜想](/css/images/qrcode4assert1024.jpg)
