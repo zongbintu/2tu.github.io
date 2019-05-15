@@ -1,7 +1,7 @@
-title: how-to-request-other-permissions
-tags: []
+title: 设置，你所不知道的权限
+tags: [权限]
 date: 2019-05-09 16:56:33
-categories:
+categories: Android
 ---
 我们知道Android中权限分为 [normal](https://developer.android.google.cn/guide/topics/permissions/overview#normal_permissions), [dangerous](https://developer.android.google.cn/guide/topics/permissions/overview#dangerous_permissions)，其实官方介绍中还有[signature](https://developer.android.google.cn/guide/topics/permissions/overview#signature_permissions) and [special](https://developer.android.google.cn/guide/topics/permissions/overview#special_permissions)   
 
@@ -12,6 +12,8 @@ categories:
 签名权限则是相同签名的应用可以使用。
 
 特殊权限，与正常、危险权限不同，特别敏感。[SYSTEM_ALERT_WINDOW](https://developer.android.google.cn/reference/android/Manifest.permission.html#SYSTEM_ALERT_WINDOW)、[WRITE_SETTINGS](https://developer.android.google.cn/reference/android/Manifest.permission.html#WRITE_SETTINGS)
+
+<!--more-->
 
 以上需要的权限都在权限列表内，声明，检查即可。
 
