@@ -6,6 +6,6 @@ tags: []
 
 
 
----  END  ---
-分享程序员所看、所想、所悟、所望  
-![程序猜想](/css/images/qrcode4assert1024.jpg)
+###### 转载请标明出处： 
+###### http://blog.520wa.com/
+###### 本文出自Tu's blog
