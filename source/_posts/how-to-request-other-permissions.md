@@ -44,7 +44,5 @@ Settings.ACTION_APP_NOTIFICATION_SETTINGS
 ![image](/css/images/back_op.jpg)
 
 
-
----  END  ---
-分享程序员所看、所想、所悟、所望  
-![程序猜想](/css/images/qrcode4assert1024.jpg)
+###### 转载请标明出处： 
+###### 本文出自Tu's blog
