@@ -118,7 +118,3 @@ String addWaterMarker(String watermark) {
 [【Android】webview javascript 注入方法](https://www.cnblogs.com/rayray/p/3680500.html)  
 [Javascript 网页水印(非图片水印)实现代码](https://m.jb51.net/article/22279.htm)  
 [html如何添加水印？](https://segmentfault.com/q/1010000011817297) 
-
-###### 转载请标明出处： 
-###### http://blog.520wa.com/
-###### 本文出自Tu's blog
