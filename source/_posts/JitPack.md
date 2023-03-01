@@ -1,6 +1,6 @@
 title: Gradle 2.4之后使用JitPack发布Github开源库
 date: 2015-11-16 21:35:16  
-categories: 其它  
+categories: Other
 tags: [Gradle,JitPack]
 ---
 之前采用过jcenter发布，各种步骤非常麻烦。在“掘金”上看到一篇文章可采用JitPack一键发布，照着抄遇到了一点坑。待此记录。  

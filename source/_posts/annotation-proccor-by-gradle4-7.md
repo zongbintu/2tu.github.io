@@ -28,8 +28,3 @@ apply plugin: 'custom.plugin'
  [annotation processor 为啥没有被调用?](https://www.cnblogs.com/mengshu-lbq/p/11713397.html)
  [Annotation processor @autoservice](https://stackoverflow.com/questions/44530648/annotation-processor-autoservice)
 [Butter Knife](https://github.com/JakeWharton/butterknife#butter-knife)
-
-
-###### 转载请标明出处： 
-###### http://blog.520wa.com/
-###### 本文出自Tu's blog

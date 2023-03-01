@@ -1,7 +1,7 @@
 title: 浏览器打开图片链接时直接显示或下载到底怎么回事  
 tags: [阿里云显示图片,图片链接,下载图片,浏览器显示图片,OSS, Content-Disposition: attachment;,image/jpeg,Content-Type]
 date: 2020-07-17 23:49:36
-categories: 前端
+categories: Web
 ---
 
 最近瞎JB搞了一通，各个项目都是喊组装上就交付，难以有时间学习总结，简直违反程序员的基本原则。很多时候已经忘记踩了哪些坑，如何解决的了。 
@@ -102,8 +102,3 @@ put.setMetadata(metadata);
 ```
 
 -----
-
-
-###### 转载请标明出处： 
-###### http://blog.520wa.com/
-###### 本文出自Tu's blog

@@ -1,6 +1,6 @@
 title: 统计学第二篇，极差、中程数  
 date: 2018-02-09 14:58:19  
-categories: 统计学 
+categories: Data
 tags: [极差,中程数]
 ---
 #### 概念
@@ -15,8 +15,3 @@ tags: [极差,中程数]
 | -------- | ----- | ---- | ---- |
 | 极差(range)     | 10-1  | 9 | 最大减去最小 |
 | 中程数(midrange)        | (10-1)/2  | 4.5 | 最大减最小，再求算术平均数 |
-
-
-###### 转载请标明出处： 
-###### http://2tu.github.io/2018/02/09/statistics-learn2-range-mid-range/ 
-###### 本文出自Tu's blog

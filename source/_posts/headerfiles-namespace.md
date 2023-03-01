@@ -1,7 +1,7 @@
 title: 头文件和命名空间是否必须同时引用？    
 tags: [头文件,命名空间]  
 date: 2019-01-11 17:27:48   
-categories: C++  
+categories: Other
 ---
 c++中开始的两行一般为
 ```
@@ -74,7 +74,3 @@ V6.50:0009 */
 
 ### 参考
 [[C++]头文件(Header Files)和命名空间(Namespace)](https://blog.csdn.net/libing_zeng/article/details/81032978)
-
-###### 转载请标明出处： 
-###### http://2tu.github.io/
-###### 本文出自Tu's blog

@@ -94,7 +94,3 @@ export default {
 #### 参考  
  [Mock.js](http://mockjs.com)  
  [Mock](https://github.com/nuysoft/Mock)
-
-###### 转载请标明出处： 
-###### http://blog.520wa.com/
-###### 本文出自Tu's blog

@@ -1,6 +1,6 @@
 title: Jenkins构建Android、IOS并上传到蒲公英
 date: 2015-12-23 16:22:00  
-categories: 其它  
+categories: Other 
 tags: [Jenkins,iOS]
 ---
 #### 前言  

@@ -1,6 +1,6 @@
 title: 产品共享用户的疑问
 date: 2018-09-20 17:40:02
-categories: 其它 
+categories: Other
 tags: [人脸支付,引流]
 grammar_mindmap: true
 ---
@@ -28,10 +28,3 @@ grammar_mindmap: true
 #### 其他
 
 微信、支付宝等都在做人脸支付，已有用户基数和用户习惯上可能不及他们。但是还有许多其它可做的，我们只需要把每一个问题做到极致。
-
-
-
-
-###### 转载请标明出处： 
-###### http://2tu.github.io/2018/09/20/product-think-facepay-user/
-###### 本文出自Tu's blog

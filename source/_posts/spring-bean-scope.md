@@ -22,8 +22,4 @@ Spring Bean有5个作用域，但是最近有需求在多个地方获取同一�
 
 #### 参考   
 [Spring中Bean的作用域、生命周期](https://www.cnblogs.com/zhanglei93/p/6231882.html)  
-[Spring中Bean的五个作用域](http://blog.csdn.net/u011468990/article/details/49995865)  
-
-###### 转载请标明出处： 
-###### http://2tu.github.io/2018/01/12/spring-bean-scope/ 
-###### 本文出自Tu's blog
+[Spring中Bean的五个作用域](http://blog.csdn.net/u011468990/article/details/49995865)

@@ -1,7 +1,7 @@
 title: NDK Samples学习 [6-1] - camera之basic
 tags: [ndk camera]
 date: 2019-03-05 17:40:44
-categories: NDK Samples
+categories: Android
 ---
 
 [camera-basic](https://github.com/googlesamples/android-ndk/tree/master/camera/basic/)
@@ -428,7 +428,3 @@ camera_listeners.cpp camera manager相关Listener
 
 ##### 参考  
 [NatvieActivity事件](http://tieba.baidu.com/p/2650541001?traceid=)
-
-###### 转载请标明出处： 
-###### http://2tu.github.io/
-###### 本文出自Tu's blog

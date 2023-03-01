@@ -1,6 +1,6 @@
 title: 如何主动PUSH SDK更新给开发者
 date: 2017-12-01 10:19:47  
-categories: 其它  
+categories: Other  
 tags: [如何主动PUSH,SDK更新给开发者,SDK,主动push,github api,fit]
 ---
 

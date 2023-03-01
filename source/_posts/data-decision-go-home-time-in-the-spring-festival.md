@@ -1,6 +1,6 @@
 title: 基于数据决策春节怎样回家最不堵车  
 date: 2018-01-29 13:45:01  
-categories: 数据  
+categories: Data  
 tags: [数据决策,春运交通情况]
 ---
 ###### 互联网从业者的优势在于会查看利用网络上公开数据  
@@ -23,7 +23,3 @@ tags: [数据决策,春运交通情况]
 最后实时关注2月5日的高德预测  
 最最后表示一切决定听老婆的
 </font>
-
-###### 转载请标明出处： 
-###### http://2tu.github.io/2018/01/29/data-decision-go-home-time-in-the-spring-festival/ 
-###### 本文出自Tu's blog

@@ -1,7 +1,7 @@
 layout: fang
 title: cq.qq.com
 date: 2015-10-06 17:56:34  
-categories: 其它  
+categories: Other  
 tags:
 ---
 <h1>国庆长假第三天：阴雨不断 影响出游</h1>

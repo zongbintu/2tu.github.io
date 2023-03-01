@@ -42,7 +42,3 @@ Settings.ACTION_APP_NOTIFICATION_SETTINGS
 下面的后台运行则只能通过引导用户设置，而没有检测API
 
 ![image](/css/images/back_op.jpg)
-
-
-###### 转载请标明出处： 
-###### 本文出自Tu's blog

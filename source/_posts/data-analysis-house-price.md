@@ -1,6 +1,6 @@
 title: 使用Java、Excel数据分析如何有效投资房产  
 date: 2018-01-27 21:47:06  
-categories: 数据  
+categories: Data 
 tags: [Excel,数据分析,Java数据分析房价]
 ---
 
@@ -228,7 +228,3 @@ public String writeExcel(String fileName, List<House> houses) {
 
 ####  源码
 Github:[house](https://github.com/2tu/house)
-
-###### 转载请标明出处： 
-###### http://2tu.github.io/2018/01/27/data-analysis-house-price/ 
-###### 本文出自Tu's blog

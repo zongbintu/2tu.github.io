@@ -148,7 +148,3 @@ new GsonBuilder()
 经过以上步骤后就解决了枚举序列化和反序列化问题  
 gson.fromJson时遇到枚举Type类型会调用TypeSerializer中的serialize方法  
 gson.toJson时遇到要解析枚举Type类型时会调用TypeSerializer中的deserialize方法
-
-###### 转载请标明出处： 
-###### http://blog.520wa.com/
-###### 本文出自Tu's blog

@@ -57,7 +57,3 @@ Date and Time Patterns
 #### 参考  
 [SimpleDateFormat by Java](https://docs.oracle.com/javase/9/docs/api/java/text/SimpleDateFormat.html)   
 [Date Formatters by iOS](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/DataFormatting/Articles/dfDateFormatting10_4.html#//apple_ref/doc/uid/TP40002369-SW1)  
-
-###### 转载请标明出处： 
-###### http://2tu.github.io/2018/01/03/date-formate-YYYY-in-java/ 
-###### 本文出自Tu's blog

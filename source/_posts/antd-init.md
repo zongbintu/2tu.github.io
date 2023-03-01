@@ -1,7 +1,7 @@
 title: 使用antd-init创建第一个可以运行的ant design
 tags: [antd-init,create-umi]
 date: 2019-09-12 14:28:30
-categories: 前端
+categories: Web
 ---
 1、安装npm  
 
@@ -64,4 +64,4 @@ Visit https://github.com/umijs/create-umi/ to learn more.
 
 
 ---  END  ---
-分享程序员所看、所想、所悟、所望  
+分享程序员所看、所想、所悟、所望

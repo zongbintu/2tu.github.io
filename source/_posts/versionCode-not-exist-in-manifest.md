@@ -96,7 +96,3 @@ Manifest中仍然有版本信息，规则不变。由于AXMLPrinter2解析库问
 [AXMLPrinter2](https://code.google.com/archive/p/android4me/downloads)  
 [APKParser](https://code.google.com/archive/p/xml-apk-parser/)  
 [Android Studio 3.0 Canary 2: attribute 'android:versionCode' not found](https://stackoverflow.com/questions/44225780/android-studio-3-0-canary-2-attribute-androidversioncode-not-found)
-
-###### 转载请标明出处： 
-###### http://2tu.github.io/2018/01/09/versionCode-not-exist-in-manifest/ 
-###### 本文出自Tu's blog

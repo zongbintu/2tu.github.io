@@ -1,7 +1,7 @@
 title: 刷脸支付-人脸比对效率
 tags: [人脸比对效率,脸部特征计算]
 date: 2018-12-06 19:48:23
-categories: 其它
+categories: Other
 ---
 支付宝、微信刷脸支付时都要求先输入手机号，再刷人脸支付。马上刷脸付输入手机后4位，再刷脸认证支付。  
 都刷脸了，为啥还要输入手机号，不如掏出手机扫一扫。极其不理想  
@@ -22,8 +22,7 @@ categories: 其它
 
 
 推荐  
-[支付宝怎么敢采用后4位手机号人脸支付](http://blog.520wa.com/2019/04/26/assert-facepay-dragonfly-by-4/)
+[支付宝怎么敢采用后4位手机号人脸支付](/2019/04/23/assert-facepay-dragonfly-by-4/)
 
 ---  END  ---
-分享程序员所看、所想、所悟、所望  
-[程序猜想](/css/images/qrcode4assert1024.jpg)
+分享程序员所看、所想、所悟、所望

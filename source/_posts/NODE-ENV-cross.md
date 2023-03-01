@@ -1,6 +1,6 @@
 title: NODE_ENV跨平台设置  
 date: 2018-01-18 22:13:30  
-categories: 其它  
+categories: Web  
 tags: [NODE_ENV,cross-env,spawn]
 ---
 ##### set NODE_ENV问题
@@ -42,8 +42,4 @@ cross-env-shell
 \"\"包裹中的内容都可以有效取到cross-env-shell设置的环境变量，这里面的原理在于Node本身的跨平台机制[spawn](https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options)
 
 #### 参考   
-[cross-env 不起作用怎么办？](https://segmentfault.com/q/1010000009324489)  
-
-###### 转载请标明出处： 
-###### http://2tu.github.io/2018/01/18/NODE-ENV-cross/ 
-###### 本文出自Tu's blog
+[cross-env 不起作用怎么办？](https://segmentfault.com/q/1010000009324489)

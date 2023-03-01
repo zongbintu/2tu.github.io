@@ -1,6 +1,6 @@
 title: O2O收货地址管理——做一个有节操的码畜  
 date: 2016-01-27 16:19:25  
-categories: 其它  
+categories: Other  
 tags: [用户体验]
 ---
 #### 前言  
