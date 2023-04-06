@@ -1,0 +1,33 @@
+name: Build and Deploy Website
+
+on:
+  push:
+    branches:
+      - source
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Use Node.js 12.14.0
+      uses: actions/setup-node@v2
+      with:
+        node-version: 12.14.0
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Build website
+      run: |
+        hexo g
+        
+    - name: Publish to master branch
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        deploy_key: ${{secrets.DEPLOY_KEY}}
+        publish_dir: ./public
+        publish_branch: master
