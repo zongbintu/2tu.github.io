@@ -29,11 +29,11 @@ jobs:
         hexo g
         
     - name: GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v2.2.0
-        with:
-          # Git branch where site will be deployed
-          target_branch: master
-          # Create incremental commit instead of doing push force
-          keep_history: true
-          # Build directory to deploy
-          build_dir: public
+      uses: crazy-max/ghaction-github-pages@v2.2.0
+      with:
+        # Git branch where site will be deployed
+        target_branch: master
+        # Create incremental commit instead of doing push force
+        keep_history: true
+        # Build directory to deploy
+        build_dir: public
