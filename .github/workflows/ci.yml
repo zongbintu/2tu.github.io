@@ -28,12 +28,9 @@ jobs:
       run: |
         hexo g
         
-    - name: GitHub Pages
-      uses: crazy-max/ghaction-github-pages@v2.2.0
+    - name: Publish to master branch
+      uses: peaceiris/actions-gh-pages@v3
       with:
-        # Git branch where site will be deployed
-        target_branch: master
-        # Create incremental commit instead of doing push force
-        keep_history: true
-        # Build directory to deploy
-        build_dir: public
+        deploy_key: ${{secrets.DEPLOY_KEY}}
+        publish_dir: ./public
+        publish_branch: master
