@@ -1,5 +1,5 @@
 title: Facebook广告中使用Deferred Deep Link
-tags: [Defeered Deep Link]
+tags: [Deferred Deep Link]
 date: 2023-04-06 22:57:42
 categories: Android
 ---
@@ -11,7 +11,7 @@ categories: Android
 2. 用户未安装A，点击Facebook广告链接，打开Google play store，下载安装，并在Google play store中点击打开，正常打开A并跳转至推广页面
 3. 用户未安装A，点击Facebook广告链接，打开Google play store，下载安装，回到桌面点击A，正常打开A并跳转至推广页面
 实现1，只需要实现Meta中的[Deep Link](https://developers.facebook.com/docs/app-ads/deep-linking)
-实现2、3则需要在实现Deep Link的基础外加上Defeered Deep Link
+实现2、3则需要在实现Deep Link的基础外加上Deferred Deep Link
 <!-- more -->
 ![Prerequisites](DeferredDeepLinkRequired.png)
 **注意**

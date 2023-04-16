@@ -144,9 +144,35 @@ categories: Java
     private static int ctlOf(int rs, int wc) { return rs | wc; }
 ```
 
+#### 线程池数量选择
+- IO密集型（I/O bound）
+程序处理时，CPU需要等待时间比CPU运算时间更多。
+线程数量：（线程等待时间+CPU运算时间）* CPU核数 / CPU处理时间
+- CPU密集型（CPU-bound）
+也叫计算密集型，大部分时间用来计算、逻辑判断等CPU动作的程序。任务不太需要访问I/O，或使用线程等方式减少了IO等待时间。
+线程数量：CPU个数或+1 +2
+
+##### nginx IO密集型
+nginx处理文件缓冲时有几种方式
+- sendfile
+处理小文件时使用
+ - 减少数据拷贝，提高发送效率
+ - socket通过dma直接访问文件数据
+- directio
+处理大文件时使用
+ - directio以512字节为边界对齐block进行发送
+ - 未对齐的block以阻塞方式读取发送
+- aio
+ - airead
+ - 线程池异步读取较大文件，以提高io效率
+
+##### redis CPU密集型
 
 
-遗留
-IO密集型、CPU密集型如何设置？
+io-threads = 4
+非阻塞IO
+多路复用
 
-
+IO线程作用于
+![Redis IO](RedisIO.jpg)
+这就要看其中read、send中的线程等待时间多，还是decode、encode使用CPU运算时间多。由于我们使用非阻塞IO，无需等待，所以decode、encode时CPU运算时间多，最后得出结论Redis是 CPU密集型
