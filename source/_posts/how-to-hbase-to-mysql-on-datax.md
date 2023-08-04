@@ -1,9 +1,12 @@
 title: 怎样使用DataX将HBase数据导入到MySQL
 categories: Development
-tags: [DataX]
-
+tags: []
 date: 2023-08-04 18:03:44
 ---
+
+
+
+
 
 有需求使用DataX将HBase表中数据迁移到MySQL中，有的表在Phoenix中定义，使用hbase20xsqlreader读取。有的没有在Phoenix中定义，数据是动态插入，列是不固定的。
 
