@@ -1,6 +1,6 @@
 title: 如何启动Phoenix Query Server
-categories: Development
-tags: []
+categories: Data
+tags: [Phoenix Query Server 6.0.0]
 date: 2023-08-03 21:57:55
 ---
 
