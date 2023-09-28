@@ -1,7 +1,7 @@
 title: C++重载默认参数函数问题？    
 tags: [重载默认参数函数]  
 date: 2019-01-18 15:15:27   
-categories: Other
+categories: C/C++
 ---
 函数重载以参数类型和参数个数不同区分。如:  
 ```
@@ -19,7 +19,7 @@ int add(int m1, int m2, int m3, int m4 = 0);
 int add(char m1, char m2);
 ```
 看着也无大问题，但是编译却会报错  
-![](/css/images/20190118_overload_argument.png)  
+![](overload_argument.png)  
 原因在于C++中有了默认参数后4个int参数的方法相当于  
 ```
 int add(int m1, int m2, int m3, int m4 = 0);

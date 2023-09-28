@@ -1,7 +1,7 @@
 title: C++构造函数设计原理
 tags: [构造函数]
 date: 2019-02-14 14:52:13
-categories: Other
+categories: C/C++
 ---
 构造函数，我们通常看到的如下  
 ```

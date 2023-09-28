@@ -1,7 +1,7 @@
 title: C++模板多类型形参  
 tags: [模板,多形参]
 date: 2019-01-23 16:44:14
-categories: Other
+categories: C/C++
 ---
 C++模板与Java泛型有共通之处，为了参数化代码。所以也疑惑C++中的类模板是否与Java泛型相同只能指定一个类型？  
 C++模板格式  

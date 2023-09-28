@@ -1,7 +1,7 @@
 title: 头文件和命名空间是否必须同时引用？    
 tags: [头文件,命名空间]  
 date: 2019-01-11 17:27:48   
-categories: Other
+categories: C/C++
 ---
 c++中开始的两行一般为
 ```
