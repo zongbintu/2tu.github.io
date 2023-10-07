@@ -1,5 +1,5 @@
 title: 使用antd-init创建第一个可以运行的ant design
-tags: [antd-init,create-umi]
+tags: [antd]
 date: 2019-09-12 14:28:30
 categories: Web
 ---

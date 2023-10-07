@@ -1,5 +1,5 @@
 title: 浏览器打开图片链接时直接显示或下载到底怎么回事  
-tags: [阿里云显示图片,图片链接,下载图片,浏览器显示图片,OSS, Content-Disposition: attachment;,image/jpeg,Content-Type]
+tags: [OSS]
 date: 2020-07-17 23:49:36
 categories: Web
 ---

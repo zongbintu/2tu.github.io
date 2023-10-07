@@ -1,5 +1,5 @@
 title: Gson序列化、反序列化枚举
-tags: [Gson序列化枚举,Gson serialization/deserialization enum,Gson反序列化枚举,JsonDeserializer,JsonSerializer,registerTypeAdapter]
+tags: [Gson]
 date: 2020-01-08 22:16:28
 categories: Java
 ---

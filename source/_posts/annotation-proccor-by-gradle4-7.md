@@ -1,5 +1,5 @@
 title: annotationProcessor 引用后编译时不生效问题 
-tags: [annotationProcessor,AutoService,Gradle]
+tags: [Gradle]
 date: 2020-04-04 22:16:28
 categories: Android
 ---

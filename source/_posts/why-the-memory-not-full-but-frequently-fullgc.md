@@ -1,14 +1,11 @@
 title: 内存没满但是频繁fullgc，是不是ReservedCodeCacheSize的锅
 categories: Java
-tags: []
+tags: [fullgc]
 date: 2023-09-03 10:38:35
 ---
 
 
-
-
-
-#####业务中的现象表现
+##### 业务中的现象表现
 
 运行一段时间后，频繁fullgc，2s10几次fullgc，无法对外提供服务
 

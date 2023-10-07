@@ -8,7 +8,7 @@ tags:
 
 <a target="_blank" accesskey="5" href="http://cq.qq.com/news/" title="更多大渝网新闻中心相关内容列表">大渝网新闻中心</a> <a target="_blank" href="http://www.cqcb.com/">重庆晨网</a>  吴国富2015-10-04 07:20
 ---
-![](/css/images/20151003.webp)
+![](fang.webp)
 <br/>
 今年流行头上长花。重庆晨网记者 吴国富 摄
 

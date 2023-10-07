@@ -1,7 +1,7 @@
 title: brew install mac安装失败的问题  
 date: 2015-10-16 17:18:42  
 categories: Other 
-tags: [brew,install,Could not resolve host: github.com]
+tags: [brew]
 ---
 * 问题：brew 安装失败
 * 思路：将github仓库放到本地，不用ruby下载
