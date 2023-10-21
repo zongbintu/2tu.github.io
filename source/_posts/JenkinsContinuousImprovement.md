@@ -49,13 +49,13 @@ Xcode plugin
 2）Android 包Gradle
 3)IOS 配置选择Target及Xcode Project File  
 选择Pack application and build .ipa的时候，证书要选择正确。我在打包时出现首先匹配的是\*的证书。删除\*证书后就出现匹配不到证书的情况。最后解决办法是在Build Settings里面配置Release的证书，如图  
-![](/css/images/20151223_Jenkins_IOS_Sign.webp)  
+![](Jenkins_IOS_Sign.webp)  
  
 ###### 4、上传至蒲公英  
  执行下列命令上传  
 filen=\`find . -name *release*.apk\`;  
 curl -F "file=@$filen" -F "uKey=4602339dac5705c81578cd8580505ab5" -F "_api_key=e3d6725adc24fce33c5210271ef1efed" http://www.pgyer.com/apiv1/app/upload
- ![](/css/images/20151223_ExecuteShell.webp)  
+ ![](ExecuteShell.webp)  
    
 #### 后记  
 上传到蒲公英只作为测试使用。正式分发产品时会更新到自己的网站上，并更新数据库，旧有的包备份等一套应用。目前采用的.net + php。发现并不能通用，后续希望改为shell + php

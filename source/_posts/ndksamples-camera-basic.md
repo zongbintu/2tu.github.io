@@ -1,5 +1,5 @@
 title: NDK Samples学习 [6-1] - camera之basic
-tags: [ndk camera]
+tags: [NDK]
 date: 2019-03-05 17:40:44
 categories: Android
 ---

@@ -1,5 +1,5 @@
 title: 刷脸支付-人脸比对效率
-tags: [人脸比对效率,脸部特征计算]
+tags: [人脸支付]
 date: 2018-12-06 19:48:23
 categories: Other
 ---

@@ -1,11 +1,11 @@
 title: gradle查看解决依赖问题-记录Butterknife8.5.1
 date: 2017-05-11 17:47:32  
 categories: Other  
-tags: [transformClassesWithJarMerging,duplicate entry,TransformException,Gradle,dependencies,Butterknife]
+tags: [Gradle]
 ---
 相信每个人都遇到过重复引用库、冲突的问题。如support-v4、appcompat-v7、NineOldAndroids很容易被多次引用。  
 前同事在临上线前打包遇到merg出错
-![TransformException](/css/images/20170512_duplicate.jpeg)  
+![TransformException](duplicate.jpeg)  
 How fix?
 <!--more-->  
 最近发现一个更快查看依赖问题方法  
@@ -14,15 +14,15 @@ How fix?
 
 #### 第二种各module逐步查看  
 一个一个module检查过去没有，这时候就有可能是第三方库引用了，可是第三方库那么多，How do?头疼，先换个姿势找到哪两个jar导致重复。通过打开文件发现DisplayManagerCompat类属于哪两个jar包    
-![Open class](/css/images/20170512_multi.jpeg)  
-![jar](/css/images/20170512_multi_class.jpeg)  
+![Open class](multi.jpeg)  
+![jar](multi_class.jpeg)  
 可以确定出问题的jar为support-compat-25.1.0和support-v4-22.2.0，我们自己有依赖compat、v4 22.2.0，现在要找出冲突的compat25.1是哪个库添加的（前戏太长，我们要直奔主题）。使用maven时可以查看依赖关系，没理由要取代maven的gradle不支持。  
 - gradle projects
 先查看有哪些项目  
-![projects](/css/images/20170512_projects.jpeg)   
+![projects](projects.jpeg)   
 - gradle project:dependencies  
 其中project指上面projects获得的project，如IMKit  gradle IMKit:dependencies
-![dependencies](/css/images/20170512_dependencies.jpeg)  
+![dependencies](dependencies.jpeg)  
 从图中可以看到是butterknife8.5.1依赖了compat25.1.0。  
 
 #### 解决办法

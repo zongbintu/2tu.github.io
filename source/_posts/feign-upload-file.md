@@ -1,5 +1,5 @@
 title: 使用FeignClient上传文件  
-tags: [FeignClient,feign-form,FormEncoder]  
+tags: [FeignClient]  
 date: 2019-11-22 21:05:17  
 categories: Java
 ---

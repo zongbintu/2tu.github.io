@@ -19,7 +19,7 @@ categories: Android
 
 前几天gayhub群友贴了一张图问这个通知权限在哪里设置的
 
-![image](/css/images/notification_enable.jpg)
+![image](notification_enable.jpg)
 
 WHAT，什么意思？如果拒绝用户就收不到应用的推送了吗？
 
@@ -41,4 +41,4 @@ Settings.ACTION_APP_NOTIFICATION_SETTINGS
 
 下面的后台运行则只能通过引导用户设置，而没有检测API
 
-![image](/css/images/back_op.jpg)
+![image](back_op.jpg)

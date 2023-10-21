@@ -1,7 +1,7 @@
 title: 一个万能算法压缩所有图片？  
 date: 2017-06-06 17:17:36  
 categories: Android  
-tags: [How compress,TingPNG,libjpeg,libjpeg-turbo,Huffman,Arithmetic,jpeg]
+tags: [libjpeg-turbo]
 ---
 图片越来越多，相素越来越高，导致越来越大的图片必然绕不开压缩。  
 作为基础功能的图片压缩，本身问题却很多。如：  

@@ -31,7 +31,7 @@ group='com.github.YourUsername'
 ##### 二、获取JitPack中依赖地址  
 打开https://jitpack.io/  
 输入Github地址  
-![](/css/images/20151106_JitPack_lookup.webp)  
+![](JitPack_lookup.webp)  
 点击“Look up”  
 点击“Get it”  
 查看Log
