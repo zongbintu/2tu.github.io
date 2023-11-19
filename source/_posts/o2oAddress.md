@@ -29,9 +29,9 @@ O2O的收货地址与传统电商不同，前者自动带入地区属性，所�
 与之前问题相同，但是我们可以改成与传统B2C一样由用户直接选择填写，不调用地图。  
 问题：这样我们商家端的导航功能就不好用了。而且要由用户手动来填写太麻烦  
 解决办法：展示附近推荐地址或搜索推荐地址，由用户选择  
-![](/css/images/20160127_o2oAddressAdd.webp)
-![](/css/images/20160127_o2oAddressMap.webp)
-![](/css/images/20160127_o2oAddressSearch.webp)  
+![](o2oAddressAdd.webp)
+![](o2oAddressMap.webp)
+![](o2oAddressSearch.webp)  
    
 ###### 2、显示推荐地址“新干线大厦”  
    问题：客户说，地址不够全面（重庆市渝中区两路口新干线大厦），商家不懂路不懂送。  

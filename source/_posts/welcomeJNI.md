@@ -16,7 +16,7 @@ tags: [JNI,AndroidStudio,Debugger,Native,C++]
 
 <!--more-->
 
-![](/css/images/20160324_welcomeJNI01.webp)
+![](welcomeJNI01.webp)
 创建后实际的jni目录为app/src/main/jni，与java同级  
 打开Terminal,执行javah -d ../jni/ -jni com.tu.jnilog.clog.CLog命令生成头文件至jni目录  
 #### 4、实现头文件  
@@ -59,7 +59,7 @@ abiFilters "armeabi", "armeabi-v7a", "x86"//如果不添加，测试发现是全
 否则会报Error: Build type isn's JNI debuggable
 #### 2、Edit Configurations  
  Run->Edit Configurations->开启Hybrid调试
- ![](/css/images/20160324_welcomeJNI02.webp)
+ ![](welcomeJNI02.webp)
  
 打上断点，选择创建的Native运行即可
 

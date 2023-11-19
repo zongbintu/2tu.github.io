@@ -1,5 +1,5 @@
 title: Android中添加背景水印，含WebView  
-tags: [水印,watermark,WebView水印,网页水印]  
+tags: [水印]  
 date: 2020-04-19 10:59:46
 categories: Android
 ---
@@ -7,10 +7,10 @@ categories: Android
 绝密资料，必须加上水印背景以免外传，在Android中如何实现呢？分为普通背景水印和加载网页中添加水印。当然网页本身可以直接加，WebView加载下来直接就有了，这种方案我们不讨论，只讨论在WebView中追加。  
 先上效果图：  
 普通背景水印 
-![普通背景水印](/css/images/watermark_bg.jpeg)  
+![普通背景水印](bg.jpeg)  
 网页水印  
 <!--more-->
-![网页水印](/css/images/watermark_webview.jpeg)
+![网页水印](webview.jpeg)
 
 ####  普通背景水印
 创建一个水印Bitmap，为rootView设置背景。so easy,直接上代码 

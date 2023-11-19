@@ -61,7 +61,7 @@ MainActivity  implements RestoreActivityResultCallback
 ```
 
 Activity WebView restore流程  
-![Activity WebView restore](/css/images/20171219_activity_webview_restore.jpeg)  
+![Activity WebView restore](activity_webview_restore.jpeg)  
 由于onActivityResult执行webView.loadUrl之前WebView并未restore完成，所以js执行不会生效  
 
 ##### 解决办法  
@@ -69,7 +69,7 @@ Activity WebView restore流程
 2、WebViewClient.onPageFinished时回调WebView，由WebView将缓存的Activity Result回调至Activity中，并清空缓存Result数据  
 3、Activity判断是否需要对WebView操作  
 具体流程如下：  
-![webview-restore](/css/images/20171219_activity_webview_restore_fixed.jpeg)   
+![webview-restore](activity_webview_restore_fixed.jpeg)   
 
 **源码，请参见[webview-restore](https://github.com/2tu/webview-restore)**
 
