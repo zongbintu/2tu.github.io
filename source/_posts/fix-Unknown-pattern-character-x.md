@@ -94,8 +94,3 @@ static final String PATTERN_CHARS = "GyMdkHmsSEDFwWahKzZLc";
 static final String  patternChars = "GyMdkHmsSEDFwWahKzZYuXLcbB";
 
 源码里可以看到导致问题原因，但是为何Android 22中的java代码与Java 7中不一致呢？
-
-
-
----  END  ---
-分享程序员所看、所想、所悟、所望
