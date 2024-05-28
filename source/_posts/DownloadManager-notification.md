@@ -8,7 +8,7 @@ tags: [DownloadManager]
 ![](DownloadMangerEnable.webp)  
 解决办法：    
 <!--more-->    
-直接引用封装好的[UpgradeLibrary,点我](https://github.com/2tu/upgrade)
+直接引用封装好的[UpgradeLibrary,点我](https://github.com/zongbintu/upgrade)
 
 代码片断  
 判断是否启用，未启用则弹出框让用户选择开启
