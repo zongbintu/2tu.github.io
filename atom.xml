@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>程序猜想</title>
+  
+  <subtitle>瞎写的程序员</subtitle>
+  <link href="https://2tu.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://2tu.github.io/"/>
+  <updated>2024-06-28T13:28:09.931Z</updated>
+  <id>https://2tu.github.io/</id>
+  
+  <author>
+    <name>2Tu</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MySQL MGR是什么？</title>
+    <link href="https://2tu.github.io/2024/05/29/what-is-group-replication-in-mysql/"/>
+    <id>https://2tu.github.io/2024/05/29/what-is-group-replication-in-mysql/</id>
+    <published>2024-05-29T12:57:05.000Z</published>
+    <updated>2024-06-28T13:28:09.931Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h4><ul><li>MGR：MySQL Group Replication，即MySQL组复制</li><li>RPO：Recovery Point Objective恢复点目标</li><li>RTO：Recovery Time Objective恢复时间目标</li></ul><h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>公司核心应用A为公司核心应用，对数据库RPO、RTO都有较高要求。一次数据库主库磁盘expender背板坏了，影响磁盘IO通道，数据库层面出现大面积超时和错误。由于机器未完全坏掉，数据库可以连接，SQL可以执行，导致主从未能自动切换，手动切换时准备脚本，校验数据同步等问题耗时过长，导致公司业务出现重大损失。(原有方案为MHA高可用，半同步复制)<br>由此改为MGR集群技术方案，以期降低主从切换时效，降低损失。</p><h4 id="MGR"><a href="#MGR" class="headerlink" title="MGR"></a>MGR</h4><p>MGR高可用方案中的RPO、RTO<br>RPO：架构模型保障了数据一致性，无需人为干预和检测<br>RTO：因其本身RPO的自动保障，无数据差异，准备耗时短，</p><p>MGR具备以下几个特点：</p><p>基于shared-nothing模式，所有节点都有一份完整数据，发生故障时可以直接切换。<br>MGR提供了数据一致性保障，默认是最终一致性，可根据业务特征需要自行调整一致性级别。<br>支持在线添加、删除节点，节点管理更方便。<br>支持故障自动检测及自动切换，发生故障时能自动切换到新的主节点，再配合MySQL Router中间件，应用层无需干预或调整。<br>支持单节点、多节点写入两种模式，可根据架构或业务需要选择哪种方案，不过强烈建议选用单主模式。</p><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a href="https://dev.mysql.com/doc/refman/8.4/en/group-replication.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.4/en/group-replication.html</a></p><p><a href="https://greatsql.cn/blog-10-9.html" target="_blank" rel="noopener">https://greatsql.cn/blog-10-9.html</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h4 id=&quot;术语&quot;&gt;&lt;a href=&quot;#术语&quot; class=&quot;headerlink&quot; title=&quot;术语&quot;&gt;&lt;/a&gt;术语&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;MGR：MySQL Group Replication，即MySQL组复制&lt;/li&gt;
+&lt;li&gt;RPO：Recovery Poin</summary>
+      
+    
+    
+    
+    <category term="Data" scheme="https://2tu.github.io/categories/Data/"/>
+    
+    
+    <category term="MGR" scheme="https://2tu.github.io/tags/MGR/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何预估MySQL表空间占用大小</title>
+    <link href="https://2tu.github.io/2024/05/29/how-to-estimate-size-of-table-in-mysql/"/>
+    <id>https://2tu.github.io/2024/05/29/how-to-estimate-size-of-table-in-mysql/</id>
+    <published>2024-05-29T12:37:39.000Z</published>
+    <updated>2024-06-28T13:28:09.915Z</updated>
+    
+    <content type="html"><![CDATA[<p>我们经常需要知道表空间大小，在修改表结构的时候需要知道表空间大小以预估影响时间；在设计表的时候需要预估表的数据量，预估磁盘空间等。</p><h4 id="查看已存在的表空间大小"><a href="#查看已存在的表空间大小" class="headerlink" title="查看已存在的表空间大小"></a>查看已存在的表空间大小</h4><p>MySQL中information_schema有记录<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">concat</span>(<span class="keyword">round</span>(<span class="keyword">sum</span>((data_length+index_length)/<span class="number">1024</span>/<span class="number">1024</span>),<span class="number">2</span>),<span class="string">'MB'</span> <span class="keyword">as</span> <span class="keyword">data</span></span><br><span class="line"><span class="keyword">FROM</span> information_schema.tables</span><br><span class="line"><span class="keyword">WHERE</span> table_schema=<span class="string">'mydb'</span> <span class="keyword">and</span> table_name=<span class="string">'mytable'</span>;</span><br></pre></td></tr></table></figure></p><h4 id="新建表空间大小测算"><a href="#新建表空间大小测算" class="headerlink" title="新建表空间大小测算"></a>新建表空间大小测算</h4><p>从上面可以看到表空间大小由数据大小+索引大小两部分组成<br>下面通过一个例子来实际测算一下<br>DDL<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc City;</span><br><span class="line">+<span class="comment">-------------+----------+------+-----+---------+----------------+</span></span><br><span class="line">| Field       | Type     | Null | Key | Default | Extra          |</span><br><span class="line">+<span class="comment">-------------+----------+------+-----+---------+----------------+</span></span><br><span class="line">| ID          | int(11)  | NO   | PRI | NULL    | auto_increment |</span><br><span class="line">| Name        | char(35) | NO   |     |         |                |</span><br><span class="line">| CountryCode | char(3)  | NO   | MUL |         |                |</span><br><span class="line">| District    | char(20) | NO   |     |         |                |</span><br><span class="line">| Population  | int(11)  | NO   |     | 0       |                |</span><br><span class="line">+<span class="comment">-------------+----------+------+-----+---------+----------------+</span></span><br></pre></td></tr></table></figure></p><ul><li><p>数据大小测算<br>根据表结构中字段大小来测算<br>66 bytes per row of data（4+35+3+20+4）</p></li><li><p>索引大小测算<br>4 bytes per row for the primary key<br>7 bytes per row for country code index</p><ul><li>3 bytes for the country</li><li>4 bytes for Clustered Key attached to the country code</li></ul></li></ul><p>这不考虑BTREE或表空间碎片的内务管理<br>对于一百万行，这将是77000000字节（73.43 MB）</p><p>参考<br><a href="https://dba.stackexchange.com/questions/46069/how-to-estimate-predict-data-size-and-index-size-of-a-table-in-mysql" target="_blank" rel="noopener">How to estimate/predict data size and index size of a table in MySQL</a></p><p>更详细的还需要看<a href="https://dev.mysql.com/blog-archive/innodb-tablespace-space-management/" target="_blank" rel="noopener">InnoDB : Tablespace Space Management</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;我们经常需要知道表空间大小，在修改表结构的时候需要知道表空间大小以预估影响时间；在设计表的时候需要预估表的数据量，预估磁盘空间等。&lt;/p&gt;
+&lt;h4 id=&quot;查看已存在的表空间大小&quot;&gt;&lt;a href=&quot;#查看已存在的表空间大小&quot; class=&quot;headerlink&quot; titl</summary>
+      
+    
+    
+    
+    <category term="Data" scheme="https://2tu.github.io/categories/Data/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>自定义ShardingSphere的JSON加解密器</title>
+    <link href="https://2tu.github.io/2024/05/28/shardingsphere-encrypt-json/"/>
+    <id>https://2tu.github.io/2024/05/28/shardingsphere-encrypt-json/</id>
+    <published>2024-05-28T13:32:54.000Z</published>
+    <updated>2024-06-28T13:28:09.919Z</updated>
+    
+    <content type="html"><![CDATA[<p>基于数据安全的目的，需要对敏感数据进行加密存储。其中有整个字段是敏感内容的数据，也有部分灵活内容存储为JSON，JSON中的部分path为敏感内容。<br>针对这部分内容，需要对JSON指定path加解密，以避免对整个JSON加解密造成存储空间、应用缓存资源浪费。</p><h4 id="ShardingSphere整体架构"><a href="#ShardingSphere整体架构" class="headerlink" title="ShardingSphere整体架构"></a>ShardingSphere整体架构</h4><p><img src="/2024/05/28/shardingsphere-encrypt-json/architecture.png" alt></p><h4 id="加密规则"><a href="#加密规则" class="headerlink" title="加密规则"></a>加密规则</h4><p>加密配置主要分为四部分：数据源配置，加密算法配置，加密表配置以及查询属性配置，其详情如下图所示：<br><img src="/2024/05/28/shardingsphere-encrypt-json/rule.png" alt><br>JSON加解密器实现在加密配置-&gt;用户自定义处</p><h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><h5 id="加密器类型配置"><a href="#加密器类型配置" class="headerlink" title="加密器类型配置"></a>加密器类型配置</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  shardingsphere:</span><br><span class="line">    rules:</span><br><span class="line">      encrypt:</span><br><span class="line">      encryptors:</span><br><span class="line">          json_encryptor:</span><br><span class="line">            type: json</span><br></pre></td></tr></table></figure><h5 id="加密字段配置"><a href="#加密字段配置" class="headerlink" title="加密字段配置"></a>加密字段配置</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  shardingsphere:</span><br><span class="line">    rules:</span><br><span class="line">      encrypt:</span><br><span class="line">      tables:</span><br><span class="line">          t_user:</span><br><span class="line">            columns:</span><br><span class="line">              info:</span><br><span class="line">                plainColumn: info</span><br><span class="line">                cipherColumn: info_cipher</span><br><span class="line">                encryptorName: json_encryptor</span><br></pre></td></tr></table></figure><h5 id="JSON-path加密配置"><a href="#JSON-path加密配置" class="headerlink" title="JSON path加密配置"></a>JSON path加密配置</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  shardingsphere:</span><br><span class="line">    rules:</span><br><span class="line">      encrypt:</span><br><span class="line">      encryptors:</span><br><span class="line">          json_encryptor:</span><br><span class="line">            props:</span><br><span class="line">              column0_path: bankCard <span class="comment">&lt;!-- &#123;唯一名字&#125;_path=需要加密的json路径   --&gt;</span></span><br><span class="line">              column0_path_encryptor: bankCard <span class="comment">&lt;!-- &#123;唯一名字&#125;_path_encryptor=加密类型 --&gt;</span></span><br></pre></td></tr></table></figure><h4 id="自定义加密"><a href="#自定义加密" class="headerlink" title="自定义加密"></a>自定义加密</h4><p>接下来就是自定义ShardingSphere加密部分<br>可以查看ShardingSphere官网，<a href="https://shardingsphere.apache.org/document/1.3.0/cn/reference/encrypt/#encryptalgorithm" target="_blank" rel="noopener">EncryptAlgorithm</a><br>继承EncryptAlgorithm</p><ul><li>重写getType为json（加密器类型配置处使用）</li><li>重写setProps（JSON path加密配置会从此处拿到）</li><li>重写encrypt、decrypt，在遇到加密字段配置中的SQL时，触发改写SQL，可以根据props中配置的json path自定义加密。</li></ul><p>实现SPI<br>在代码的resources路径下创建META-INF\services\org.apache.shardingsphere.spi.encrypt.ShardingEncryptor<br>文件内容为自定义加密类的全路径，如：com.company.shardingsphere.encrypt.JSONEncryptor</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;基于数据安全的目的，需要对敏感数据进行加密存储。其中有整个字段是敏感内容的数据，也有部分灵活内容存储为JSON，JSON中的部分path为敏感内容。&lt;br&gt;针对这部分内容，需要对JSON指定path加解密，以避免对整个JSON加解密造成存储空间、应用缓存资源浪费。&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="Data" scheme="https://2tu.github.io/categories/Data/"/>
+    
+    
+    <category term="ShardingSphere" scheme="https://2tu.github.io/tags/ShardingSphere/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL中的float、double的精度是如何丢失的？</title>
+    <link href="https://2tu.github.io/2024/05/14/problems-with-float-in-mysql/"/>
+    <id>https://2tu.github.io/2024/05/14/problems-with-float-in-mysql/</id>
+    <published>2024-05-14T06:04:31.000Z</published>
+    <updated>2024-06-28T13:28:09.919Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>朋友在设计表的时候很疑惑小数的时候到底该用Float、Double还是Decimal，什么情况下使用？<br>我们总听说Float、Double会丢失精度，如果是金钱则使用Decimal。但是在业务场景里面，我们期望的是程序是可靠的，所有数据都是准确的。那是不是意味着所有的字段都要用Decimal,那Float、Double还有什么用？<br>所以我们需要理解到精度到底是怎么丢失的，什么情况下丢失，什么情况下不丢失？才能得出Float、Double在怎样情况下是可靠的，才能在需要使用的时候判断出该使用什么数据类型。</p><h3 id="Float为什么会丢失？"><a href="#Float为什么会丢失？" class="headerlink" title="Float为什么会丢失？"></a>Float为什么会丢失？</h3><p>Float、Double存储的是近似值。为什么是近似值，先看看各数据类型空间占用情况</p><table><thead><tr><th>类型名称</th><th>说明</th><th>存储需求</th></tr></thead><tbody><tr><td>Float</td><td>单精度浮点数</td><td>4字节</td></tr><tr><td>Double</td><td>双精度浮点数</td><td>8字节</td></tr><tr><td>Decimal</td><td>压缩的“严格”定点数</td><td>Decimal(M,D)，如果M&gt;D，为M+2否则为D+2字节</td></tr></tbody></table><p>存储Float、Double时采用将数据转换为二进制进行存储。<br>存储格式为<br><img src="/2024/05/14/problems-with-float-in-mysql/storage-format.png" alt></p><p>比如8.25用二进制表示可表示为1000.01，转成指数的形式1.00001*2^3,在计算机中<br><img src="/2024/05/14/problems-with-float-in-mysql/binary-format.png" alt></p><p>这其中小数的二进制计算方式与整数不同，需要使用小数部分<em>2取整数，直到为0<br>例如0.32的二进制计算方式如下<br>0.32</em>2 = 0.64 0<br>0.64<em>2 = 1.28 1<br>0.28</em>2 = 0.56 0<br>0.56<em>2 = 1.12 1<br>0.12</em>2 = 0.24 0<br>0.24<em>2 = 0.48 0<br>0.48</em>2 = 0.96 0<br>0.96<em>2 = 1.92 1<br>0.92</em>2 = 1.84 1<br>0.84<em>2 = 1.68 1<br>0.68</em>2 = 1.36 1<br>0.36*2 = 0.72 0<br>…</p><p>对于这样整除不尽或者超过32位的情况，就一定会丢失精度，或者四舍五入后得到的近似值<br>针对float情况，至少我们可以得出结论：<br>1.如果一个float型数据转成二进制后的第32位之后都是0，那么数据是准的<br>2.如果一个float型数据转成二进制后的第32位之后不全为0，则数据就会存在误差</p><h4 id="重新说明float-M-D-两个参数的意义"><a href="#重新说明float-M-D-两个参数的意义" class="headerlink" title="重新说明float(M, D)两个参数的意义"></a>重新说明float(M, D)两个参数的意义</h4><p>这两个参数表示一共能存M位，其中小数点后占D位。比如float(3,1)表示一共3位，其中小数点后1位数字。这里会有两个误区</p><p>数据的精度总是能精确到D位，也就是数据的不精确一定出现在小数点后<br>数据存储的时候只能存储到D位小数</p><ul><li><p>第一个误区，如果对于float4字节的存储空间连整数的存储不下的时候，连整数都有误差的，更何况小数，所以存储空间大小决定存储精度，和D值无关。来看这样一个例子</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table f2 (f1 float(15,2));</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line">mysql&gt; insert into f2 values (123456789.39);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line">mysql&gt; select * from f2;</span><br><span class="line">+<span class="comment">--------------+</span></span><br><span class="line">| f1           |</span><br><span class="line">+<span class="comment">--------------+</span></span><br><span class="line">| 123456792.00 |</span><br><span class="line">+<span class="comment">--------------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure><p>最后你会发现，连整数都不准了，小数被完全抹去了。</p></li><li><p>第二个误区，对于存储而言，是和D无关的一个参数。因为浮点型数据最终都要被转成二进制进行存储。并且对于float，这个二进制只能有32位0和1的组合。看下面的例子：</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from f;</span><br><span class="line">+<span class="comment">-----------+</span></span><br><span class="line">| f1        |</span><br><span class="line">+<span class="comment">-----------+</span></span><br><span class="line">| 131072.31 |</span><br><span class="line">+<span class="comment">-----------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line">mysql&gt; <span class="keyword">alter</span> <span class="keyword">table</span> f <span class="keyword">modify</span> f1 <span class="built_in">float</span>(<span class="number">10</span>,<span class="number">4</span>);</span><br><span class="line">Query OK, 0 rows affected (0.02 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line">mysql&gt; select * from f;</span><br><span class="line">+<span class="comment">-------------+</span></span><br><span class="line">| f1          |</span><br><span class="line">+<span class="comment">-------------+</span></span><br><span class="line">| 131072.3125 |</span><br><span class="line">+<span class="comment">-------------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure><p>可以看到，修改一下显示宽度D，这个时候可以看到MySQL真正存储的数字是131072.3125</p></li></ul><h4 id="怎么样才能存储一个准确的数据"><a href="#怎么样才能存储一个准确的数据" class="headerlink" title="怎么样才能存储一个准确的数据"></a>怎么样才能存储一个准确的数据</h4><p>如果采用float或者double类型的话，数据有时候完全准确的，有时候是不准确的，怎么才能存储一个准确的数字，完全看你需要存什么样的数据，假如存储一个8.25这样的数字，那永远都是准确的。但是如果存储0.9这样的数字，则永远存不准确。</p><p>所以如果一个实数在MySQL中存储准确的话，会出现以下三种情况</p><ul><li>数据真的准确，数据能在有限的存储空间里完全存储起来</li><li>数据存储被截断，但是通过四舍五入依然能够将数据显示准确</li><li>数据存储被截断，通过四舍五入不能将数字正确显示</li></ul><h4 id="关于decimal类型"><a href="#关于decimal类型" class="headerlink" title="关于decimal类型"></a>关于decimal类型</h4><p>通过前面的分析，了解了float和double类型的区别和误差来源。但是decimal类型是MySQL官方唯一指定能精确存储的类型，也是DBA强烈推荐和金钱相关的类型都要存储为decimal类型，如果猜想decimal类型的存储格式的话，那么一下两种可以保持数据的准确性</p><ul><li>继续扩大存储空间，比double更大一个级别，比如128位甚至更多</li><li>通过字符串化或者其他的方式特殊存储起来</li></ul><p>这两种方式都能实现decimal精确存储，但是由于MySQL指定decimal类型最大长度为65.在我们能测试的范围内，decimal并没有出现误差。</p><h4 id="如何选择float，double，decimal"><a href="#如何选择float，double，decimal" class="headerlink" title="如何选择float，double，decimal"></a>如何选择float，double，decimal</h4><p>结论总是放在最后，根据上面的分析：可以得出以下结论</p><ol><li><p>如果你要表示的浮点型数据转成二进制之后能被32位float存储，或者可以容忍截断，则使用float，这个范围大概为要精确保存6位数字左右的浮点型数据 比如10分制的店铺积分可以用float存储，小商品零售价格(1000块之内)</p></li><li><p>如果你要表示的浮点型数据转成二进制之后能被64位double存储，或者可以容忍截断，这个范围大致要精确到保存13位数字左右的浮点型数据 比如汽车价格,几千万的工程造价</p></li><li><p>相比double，已经满足我们大部分浮点型数据的存储精度要求，如果还要精益求精，则使用decimal定点型存储 比如一些科学数据，精度要求很高的金钱</p></li></ol><h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><p>理论上的东西永远比不上实践，应用场景大于一切理论。选择float或者double或者decimal有时候也要看场景，比如我们可以用double存储一个小商铺的季度营业额（几千万），单独用double存储的时候没有问题，当多个季度，多个年份算总3年内的营业额是，就会出现问题，再也算不出一个准确的答案。所以，如果考虑情况没那么有把握的情况下，推荐使用decimal，最后，也可以通过其他手段避开这些问题，比如存储商品价格可以使用 乘以100的形式存储，展示价格的时候再除以100</p><p><a href="https://dev.mysql.com/doc/refman/8.0/en/problems-with-float.html" target="_blank" rel="noopener">B.3.4.8 Problems with Floating-Point Values</a><br><a href="https://cloud.tencent.com/developer/article/1866266" target="_blank" rel="noopener">谈谈MySQL如何选择float, double, decimal</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;朋友在设计表的时候很疑惑小数的时候到底该用Float、Double还是Decimal，什么情况下使用？&lt;br&gt;我们总听说Float、Doub</summary>
+      
+    
+    
+    
+    <category term="Data" scheme="https://2tu.github.io/categories/Data/"/>
+    
+    
+    <category term="MySQL" scheme="https://2tu.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>手机资费套餐</title>
+    <link href="https://2tu.github.io/2024/05/10/mobile-tariff-package/"/>
+    <id>https://2tu.github.io/2024/05/10/mobile-tariff-package/</id>
+    <published>2024-05-10T02:10:46.000Z</published>
+    <updated>2024-06-28T13:28:09.919Z</updated>
+    
+    <content type="html"><![CDATA[<p>想找一个全网最低的资费套餐，网上也有0月租的，但是没有验证。<br>从<a href="https://yhssglxt.miit.gov.cn/web/enterpriseInformation" target="_blank" rel="noopener">工信部</a>查询出44个运营商官网拿到资费信息筛选出6元及以下的套餐如下</p><table><thead><tr><th style="text-align:left">运营商</th><th style="text-align:left">月租/资费</th><th style="text-align:left">套餐名称</th><th style="text-align:left">套餐详情</th><th style="text-align:left">套餐URL</th></tr></thead><tbody><tr><td style="text-align:left">阿里通信</td><td style="text-align:left">6</td><td style="text-align:left">亲心6元套餐</td><td style="text-align:left">60分钟国内语音<br>国内接听免费<br>国内语音0.15元/分钟<br>国内流量2元/日/随心用<br>当日有效<br>国内短信0.1元/条<br>赠送来电显示</td><td style="text-align:left"><a href="https://aliqin.aliyuncs.com/#/prod" target="_blank" rel="noopener">https://aliqin.aliyuncs.com/#/prod</a></td></tr><tr><td style="text-align:left">日日顺通信</td><td style="text-align:left">5</td><td style="text-align:left">顺意套餐</td><td style="text-align:left">①、国内语音拨打资费：0.15元/分钟；<br>②、国内流量：0.2元/M；<br>③、国内点到点短信：0.1元/条；<br>④、来电显示5元/月；</td><td style="text-align:left"><a href="https://rrstel.com/businessHall/localpage/zifeizone.jsp" target="_blank" rel="noopener">https://rrstel.com/businessHall/localpage/zifeizone.jsp</a></td></tr><tr><td style="text-align:left">丰信移动</td><td style="text-align:left">6</td><td style="text-align:left">丰信6元A卡</td><td style="text-align:left">1.月租6元/月，赠送来电显示，赠送60分钟国内语音<br>2.国内语音：0.15元/分钟<br>3.国内流量：1元包500M/日<br>4.国内短/彩信：0.1元/条。</td><td style="text-align:left"><a href="http://www.phtion.com/account/index" target="_blank" rel="noopener">http://www.phtion.com/account/index</a></td></tr><tr><td style="text-align:left">蓝猫移动</td><td style="text-align:left">3.9</td><td style="text-align:left">蓝猫标准流量卡</td><td style="text-align:left"></td><td style="text-align:left"><a href="https://www.lanmaomobile.com/?list_8/232.html" target="_blank" rel="noopener">https://www.lanmaomobile.com/?list_8/232.html</a></td></tr><tr><td style="text-align:left">朗玛移动</td><td style="text-align:left">6</td><td style="text-align:left">小象阳光卡6元</td><td style="text-align:left">语音：0分钟<br>流量：0GB<br>流量：0.1元/1M<br>短信：0.1元/条<br>语音：0.15元/分钟</td><td style="text-align:left"><a href="https://www.langma.cn/langma-jx" target="_blank" rel="noopener">https://www.langma.cn/langma-jx</a></td></tr><tr><td style="text-align:left">天音移动</td><td style="text-align:left">6</td><td style="text-align:left">天音卡-联通版</td><td style="text-align:left">打电话0.15元/分钟<br>上网流量0.2元/M<br>短信0.1元/条<br>彩信0.3元/条<br>来电显示月租5元</td><td style="text-align:left"><a href="https://rrstel.com/businessHall/localpage/zifeizone.jsp" target="_blank" rel="noopener">https://rrstel.com/businessHall/localpage/zifeizone.jsp</a></td></tr><tr><td style="text-align:left">普泰移动</td><td style="text-align:left">6</td><td style="text-align:left">普泰惠享卡</td><td style="text-align:left"></td><td style="text-align:left"><a href="https://rrstel.com/businessHall/localpage/zifeizone.jsp" target="_blank" rel="noopener">https://rrstel.com/businessHall/localpage/zifeizone.jsp</a></td></tr><tr><td style="text-align:left">苏宁互联</td><td style="text-align:left">5</td><td style="text-align:left">至简套餐</td><td style="text-align:left"></td><td style="text-align:left"><a href="https://rrstel.com/businessHall/localpage/zifeizone.jsp" target="_blank" rel="noopener">https://rrstel.com/businessHall/localpage/zifeizone.jsp</a></td></tr><tr><td style="text-align:left">电信</td><td style="text-align:left">5</td><td style="text-align:left">无忧卡</td><td style="text-align:left">适用范围：全部公众用户<br>有效期限：2025年11月30日<br>销售渠道：线下及线上渠道<br>可售范围：全国可售，但受各省销售安排所限<br>合约要求：不限制</td><td style="text-align:left"><a href="https://www.189.cn/cq/zfzq/#tList_4" target="_blank" rel="noopener">https://www.189.cn/cq/zfzq/#tList_4</a></td></tr></tbody></table>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;想找一个全网最低的资费套餐，网上也有0月租的，但是没有验证。&lt;br&gt;从&lt;a href=&quot;https://yhssglxt.miit.gov.cn/web/enterpriseInformation&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;工信部&lt;/a</summary>
+      
+    
+    
+    
+    <category term="Other" scheme="https://2tu.github.io/categories/Other/"/>
+    
+    
+    <category term="资费套餐" scheme="https://2tu.github.io/tags/%E8%B5%84%E8%B4%B9%E5%A5%97%E9%A4%90/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SPI机制</title>
+    <link href="https://2tu.github.io/2024/04/08/what-is-spi/"/>
+    <id>https://2tu.github.io/2024/04/08/what-is-spi/</id>
+    <published>2024-04-08T12:38:27.000Z</published>
+    <updated>2024-06-28T13:28:09.931Z</updated>
+    
+    <content type="html"><![CDATA[<p>SPI（Service Provider Interface），是JDK内置的一种 服务提供发现机制，可以用来启用框架扩展和替换组件，主要是被框架的开发人员使用，比如java.sql.Driver接口，其他不同厂商可以针对同一接口做出不同的实现，MySQL和PostgreSQL都有不同的实现提供给用户，而Java的SPI机制可以为某个接口寻找服务实现。Java中SPI机制主要思想是将装配的控制权移到程序之外，在模块化设计中这个机制尤其重要，其核心思想就是 <strong>解耦</strong>。<br>SPI整体机制图如下：<br><img src="/2024/04/08/what-is-spi/spi.jpg" alt="SPI"></p><p>服务提供方提供了接口实现后，需要在classpath下的META-INF/services/目录下创建以服务接口命名的文件，文件内容为接口的实现类名。<br>其他程序使用服务时，会通过查找这个jar的META-INF/services/中文件，获取实现类名，进行加载实例化，该服务就可以使用了。JDK中查找服务实现的类为java.util.ServiceLoader。</p><h4 id="应用-JDBC"><a href="#应用-JDBC" class="headerlink" title="应用-JDBC"></a>应用-JDBC</h4><h5 id="JDBC接口定义"><a href="#JDBC接口定义" class="headerlink" title="JDBC接口定义"></a>JDBC接口定义</h5><p>在java中定义了接口java.sql.Driver，并没有实现，具体实现由不通厂商实现。</p><h5 id="MySQL实现"><a href="#MySQL实现" class="headerlink" title="MySQL实现"></a>MySQL实现</h5><p>MySQL的jar包（mysql-connector-java-8.0.30.jar）中，META-INF/services目录下有文件名java.sql.Driver的内容为com.mysql.cj.jdbc.Driver<br><img src="/2024/04/08/what-is-spi/spi-services.png" alt="SPI META-INF/services"></p><h5 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Connection conn = DriverManager.getConnection(url,username,password);</span><br></pre></td></tr></table></figure><h5 id="SPI如何实现"><a href="#SPI如何实现" class="headerlink" title="SPI如何实现"></a>SPI如何实现</h5><p>在使用的时候并没有指定使用哪个Driver来连接，那如何使用上MySQL的驱动的呢？这就是我们SPI在起作用。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.sql;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DriverManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        loadInitialDrivers();</span><br><span class="line">        println(<span class="string">"JDBC DriverManager initialized"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loadInitialDrivers</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String drivers;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            drivers = AccessController.doPrivileged(<span class="keyword">new</span> PrivilegedAction&lt;String&gt;() &#123;</span><br><span class="line">                <span class="function"><span class="keyword">public</span> String <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    <span class="keyword">return</span> System.getProperty(<span class="string">"jdbc.drivers"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123;</span><br><span class="line">            drivers = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">       </span><br><span class="line">        AccessController.doPrivileged(<span class="keyword">new</span> PrivilegedAction&lt;Void&gt;() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> Void <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">                ServiceLoader&lt;Driver&gt; loadedDrivers = ServiceLoader.load(Driver<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">                Iterator&lt;Driver&gt; driversIterator = loadedDrivers.iterator();</span><br><span class="line"></span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    <span class="keyword">while</span>(driversIterator.hasNext()) &#123;</span><br><span class="line">                        driversIterator.next();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span>(Throwable t) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        println(<span class="string">"DriverManager.initialize: jdbc.drivers = "</span> + drivers);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (drivers == <span class="keyword">null</span> || drivers.equals(<span class="string">""</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        String[] driversList = drivers.split(<span class="string">":"</span>);</span><br><span class="line">        println(<span class="string">"number of Drivers:"</span> + driversList.length);</span><br><span class="line">        <span class="keyword">for</span> (String aDriver : driversList) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                println(<span class="string">"DriverManager.Initialize: loading "</span> + aDriver);</span><br><span class="line">                Class.forName(aDriver, <span class="keyword">true</span>,</span><br><span class="line">                        ClassLoader.getSystemClassLoader());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception ex) &#123;</span><br><span class="line">                println(<span class="string">"DriverManager.Initialize: load failed: "</span> + ex);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>其中<br>ServiceLoader<Driver> loadedDrivers = ServiceLoader.load(Driver.class);<br>Iterator<Driver> driversIterator = loadedDrivers.iterator();<br>负责查找classpath下及jar包中META-INF/services目录下java.sql.Driver文件中的内容获取具体实现。</Driver></Driver></p><h3 id="SPI机制的缺陷"><a href="#SPI机制的缺陷" class="headerlink" title="SPI机制的缺陷"></a>SPI机制的缺陷</h3><p>通过上面的解析，可以发现，我们使用SPI机制的缺陷：</p><ul><li>不能按需加载，需要遍历所有的实现，并实例化，然后在循环中才能找到我们需要的实现。如果不想用某些实现类，或者某些类实例化很耗时，它也被载入并实例化了，这就造成了浪费。</li><li>获取某个实现类的方式不够灵活，只能通过 Iterator 形式获取，不能根据某个参数来获取对应的实现类。</li><li>多个并发多线程使用 ServiceLoader 类的实例是不安全的.</li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;SPI（Service Provider Interface），是JDK内置的一种 服务提供发现机制，可以用来启用框架扩展和替换组件，主要是被框架的开发人员使用，比如java.sql.Driver接口，其他不同厂商可以针对同一接口做出不同的实现，MySQL和PostgreS</summary>
+      
+    
+    
+    
+    <category term="Java" scheme="https://2tu.github.io/categories/Java/"/>
+    
+    
+    <category term="SPI" scheme="https://2tu.github.io/tags/SPI/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何生成requirements.txt</title>
+    <link href="https://2tu.github.io/2024/03/27/how-to-gen-requirements-with-python/"/>
+    <id>https://2tu.github.io/2024/03/27/how-to-gen-requirements-with-python/</id>
+    <published>2024-03-27T11:32:46.000Z</published>
+    <updated>2024-06-28T13:28:09.915Z</updated>
+    
+    <content type="html"><![CDATA[<p>写了一个简单的python项目，希望生成一个requirements.txt文件方便在Github或其他地方运行安装依赖。<br>作为新手我首先是一个一个从import里面去找到写到文件中的，结果发现居然会报错。<br>后面找到一个工具pipreqs可以自动识别出项目中用到的所有依赖生成requirements.txt文件</p><h3 id="How"><a href="#How" class="headerlink" title="How"></a>How</h3><h4 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">install</span> pipreqs</span><br></pre></td></tr></table></figure><h4 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ pipreqs /home/<span class="keyword">project</span>/location</span><br><span class="line">Successfully saved requirements <span class="keyword">file</span> in /home/<span class="keyword">project</span>/location/requirements.txt</span><br></pre></td></tr></table></figure><p>生成requirements.txt内容如<br><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wheel==<span class="number">0.23</span><span class="number">.0</span></span><br><span class="line">Yarg==<span class="number">0.1</span><span class="number">.9</span></span><br><span class="line">docopt==<span class="number">0.6</span><span class="number">.2</span></span><br></pre></td></tr></table></figure></p><p>更详细的参数用法参照<a href="https://github.com/bndr/pipreqs?tab=readme-ov-file#usage" target="_blank" rel="noopener">pipreqs Usage</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;写了一个简单的python项目，希望生成一个requirements.txt文件方便在Github或其他地方运行安装依赖。&lt;br&gt;作为新手我首先是一个一个从import里面去找到写到文件中的，结果发现居然会报错。&lt;br&gt;后面找到一个工具pipreqs可以自动识别出项目中用到</summary>
+      
+    
+    
+    
+    <category term="Other" scheme="https://2tu.github.io/categories/Other/"/>
+    
+    
+    <category term="python" scheme="https://2tu.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java类文件在JVM运行的生命周期</title>
+    <link href="https://2tu.github.io/2024/02/27/the-class-file-lifecycle-of-jvm/"/>
+    <id>https://2tu.github.io/2024/02/27/the-class-file-lifecycle-of-jvm/</id>
+    <published>2024-02-27T11:30:08.000Z</published>
+    <updated>2024-06-28T13:28:09.919Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="java-Class文件结构"><a href="#java-Class文件结构" class="headerlink" title="java Class文件结构"></a>java Class文件结构</h4><p>Java .class 文件是 Java 编程语言的关键组件，遵循精确且定义的结构。 这种结构不仅对于 Java 虚拟机 (JVM) 正确加载和执行字节码至关重要，而且还提供了有关编译后的 Java 代码的大量信息。 下面，我们深入研究类文件结构的基本元素，详细说明每个组件及其在整体架构中的重要性。</p><h5 id="class文件格式"><a href="#class文件格式" class="headerlink" title="class文件格式"></a>class文件格式</h5><p>类文件由单个 ClassFile 结构组成。 该结构由 JVM 规范定义并遵循特定格式，其中包括以下主要部分：</p><ul><li>Magic Number魔数：固定值 (0xCAFEBABE)。 此唯一标识符验证该文件是否是 JVM 可读的有效类文件。</li><li>Version Information版本号：major_version、minor_version，java版本号</li><li>Constant Pool常量池</li><li>Access Flags访问标识</li><li>This Class, Super Class,and Interfaces类索引、父类索引与接口索引集合</li><li>Fields字段集合</li><li>Methods方法表集合</li><li>Attributes属性表集合</li></ul><p>以上信息如何查看？<br><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javap [options] classes...</span><br></pre></td></tr></table></figure></p><p>JVM需要使用上述信息来正确加载、验证和执行</p><p>其是常量池，它是一个集中的字典，经常被类文件中的其他部分引用，突出了它在整个架构中的重要性。</p><h4 id="Class文件在JVM中的生命周期"><a href="#Class文件在JVM中的生命周期" class="headerlink" title="Class文件在JVM中的生命周期"></a>Class文件在JVM中的生命周期</h4><p><img src="/2024/02/27/the-class-file-lifecycle-of-jvm/class-file-lifecycle-in-jvm.png" alt="The Class file Lifecycle of a Java Application"></p><h5 id="1-Loading加载"><a href="#1-Loading加载" class="headerlink" title="1. Loading加载"></a>1. Loading加载</h5><p>类加载过程执行以下三个功能：<br>从clas文件创建二进制数据流<br>根据内部数据结构解析二进制数据<br>创建 java.lang.Class 的实例<br>完成此操作后，类实例就可以进行链接了。</p><h5 id="2-Linking链接"><a href="#2-Linking链接" class="headerlink" title="2. Linking链接"></a>2. Linking链接</h5><h6 id="2-1-Verification验证"><a href="#2-1-Verification验证" class="headerlink" title="2.1 Verification验证"></a>2.1 Verification验证</h6><p>此步骤可确保安全性和完整性。JVM验证class文件的正确性，文件格式验证、语法是否有效、是否符合Java语言规范。</p><h6 id="2-2-Preparation准备"><a href="#2-2-Preparation准备" class="headerlink" title="2.2 Preparation准备"></a>2.2 Preparation准备</h6><p>在准备过程中，JVM 会为类静态变量分配内存，并将其初始化为默认值。</p><h6 id="2-3-Resolution解析"><a href="#2-3-Resolution解析" class="headerlink" title="2.3 Resolution解析"></a>2.3 Resolution解析</h6><p>解析阶段包括将类文件中的符号引用解析为直接引用。这就是 JVM 常量池发挥关键作用的地方。主要针对类或接口、字段、类方法、方法类型等。</p><h5 id="3-Initializes初始化"><a href="#3-Initializes初始化" class="headerlink" title="3. Initializes初始化"></a>3. Initializes初始化</h5><p>执行静态块： 这一阶段涉及执行静态初始化程序和静态块。JVM 会初始化静态字段，并按照它们在类文件中出现的顺序执行任何静态初始化块。<br>设置最终值： 为类的最终变量分配值，这些值在类的生命周期内不可更改。</p><h5 id="4-Usage使用"><a href="#4-Usage使用" class="headerlink" title="4. Usage使用"></a>4. Usage使用</h5><p>实例化： JVM 根据应用程序的需要创建类的实例。<br>执行： 根据运行程序的要求调用和执行方法，访问字段。JVM 会将字节码解释或即时编译为机器代码以便执行。</p><h5 id="5-Unloading卸载"><a href="#5-Unloading卸载" class="headerlink" title="5. Unloading卸载"></a>5. Unloading卸载</h5><p>垃圾回收： 当一个类不再需要，也没有对其实例的实时引用时，它就可以被卸载。JVM 的垃圾回收器会回收分配给类的内存。</p><p><a href="https://medium.com/@AlexanderObregon/the-anatomy-of-a-java-virtual-machine-class-file-e3773d23f3e3" target="_blank" rel="noopener">The Anatomy of a Java Virtual Machine Class File</a><br><a href="https://www.cesarsotovalero.net/blog/how-the-jvm-executes-java-code.html" target="_blank" rel="noopener">The Execution Lifecycle of a Java Application</a><br><a href="https://docs.oracle.com/en/java/javase/11/tools/javap.html" target="_blank" rel="noopener">javap</a><br><a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html" target="_blank" rel="noopener">Chapter 4. The class File Format</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h4 id=&quot;java-Class文件结构&quot;&gt;&lt;a href=&quot;#java-Class文件结构&quot; class=&quot;headerlink&quot; title=&quot;java Class文件结构&quot;&gt;&lt;/a&gt;java Class文件结构&lt;/h4&gt;&lt;p&gt;Java .class 文件是 Java 编</summary>
+      
+    
+    
+    
+    <category term="Java" scheme="https://2tu.github.io/categories/Java/"/>
+    
+    
+    <category term="Interview" scheme="https://2tu.github.io/tags/Interview/"/>
+    
+    <category term="JVM" scheme="https://2tu.github.io/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Makefile如何使用</title>
+    <link href="https://2tu.github.io/2024/02/06/What-is-Makefile/"/>
+    <id>https://2tu.github.io/2024/02/06/What-is-Makefile/</id>
+    <published>2024-02-06T11:54:21.000Z</published>
+    <updated>2024-06-28T13:28:09.883Z</updated>
+    
+    <content type="html"><![CDATA[<p>工程化编译项目时，Java用Maven\Gradle，前端用npm，C/C++用Make<br>使用Make命令编译C/C++时，是通过Make工具实现。推荐使用<a href="https://www.mingw-w64.org/downloads/#w64devkit" target="_blank" rel="noopener">w64devkit</a><br>w64devkit支持Linux命令</p><ul><li>根据更改的源文件，自动确定需要更新哪些文件。它还自动确定更新文件的正确顺序，以防一个非源文件依赖于另一个非来源文件。<br>因此，如果您更改一些源文件，然后运行Make，则不需要重新编译所有程序。它只更新那些直接或间接依赖于您更改的源文件的非源文件。<br>如何确定依赖的呢，来源与我们在Makefile中指定的dependencies</li><li>Make不限于任何特定的语言。所有能在命令行运行的编程语言都能处理（Java\Golang\Python…）。另外基于文件的改变然后更新另外的文件也可以。</li></ul><p>Makefile中的一条规则告诉Make如何执行一系列命令，以便从源文件构建目标文件。它还指定了目标文件的依赖项列表。此列表应包括用作规则中命令输入的所有文件（无论是源文件还是其他目标文件）。</p><figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">target:   dependencies ...</span><br><span class="line">          commands</span><br><span class="line">          ...</span><br></pre></td></tr></table></figure><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">hello</span>: <span class="selector-tag">hello</span><span class="selector-class">.o</span></span><br><span class="line"><span class="selector-tag">g</span>++ <span class="selector-tag">-o</span> <span class="selector-tag">hello</span> <span class="selector-tag">hello</span><span class="selector-class">.o</span></span><br><span class="line"><span class="selector-tag">hello</span><span class="selector-class">.o</span>: <span class="selector-tag">hello</span><span class="selector-class">.cpp</span></span><br><span class="line"><span class="selector-tag">g</span>++ <span class="selector-tag">-c</span> <span class="selector-tag">hello</span><span class="selector-class">.cpp</span></span><br></pre></td></tr></table></figure><h4 id="更新机制"><a href="#更新机制" class="headerlink" title="更新机制"></a>更新机制</h4><p>运行Make时，可以指定要更新的特定目标；否则，Make会更新makefile中列出的第一个目标。当然，必须首先更新生成这些目标所需的任何其他目标文件作为输入。<br>Make使用makefile来确定哪些目标文件应该更新，然后确定哪些文件实际上需要更新。如果目标文件比其所有依赖项都新，那么它已经是最新的，不需要重新生成。其他目标文件确实需要更新，但顺序正确：每个目标文件都必须重新生成，然后才能用于重新生成其他目标。</p><h4 id="Makefile文件命名"><a href="#Makefile文件命名" class="headerlink" title="Makefile文件命名"></a>Makefile文件命名</h4><p>Make自动查找makefile文件，顺序为GNUmakefile&gt;makefile&gt;Makefile<br>GUNmakefile:不建议使用，只能支持GUN make<br>makefile:所有版本都能识别<br>Makefile:推荐，最常用</p><p>运行make时没有找到上述文件会报错，但可以手动指定文件名<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">make</span> -<span class="keyword">f</span> <span class="symbol">&lt;filename&gt;</span></span><br><span class="line"><span class="keyword">make</span> --<span class="keyword">file</span>=<span class="symbol">&lt;filename&gt;</span></span><br></pre></td></tr></table></figure></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;工程化编译项目时，Java用Maven&#92;Gradle，前端用npm，C/C++用Make&lt;br&gt;使用Make命令编译C/C++时，是通过Make工具实现。推荐使用&lt;a href=&quot;https://www.mingw-w64.org/downloads/#w64devkit&quot;</summary>
+      
+    
+    
+    
+    <category term="C/C++" scheme="https://2tu.github.io/categories/C-C/"/>
+    
+    
+    <category term="Makefile" scheme="https://2tu.github.io/tags/Makefile/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>香港卡全攻略</title>
+    <link href="https://2tu.github.io/2023/11/19/bankcard-hongkong/"/>
+    <id>https://2tu.github.io/2023/11/19/bankcard-hongkong/</id>
+    <published>2023-11-19T04:55:15.000Z</published>
+    <updated>2024-06-28T13:28:09.887Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="为什么要办香港卡？"><a href="#为什么要办香港卡？" class="headerlink" title="为什么要办香港卡？"></a>为什么要办香港卡？</h3><p>保险？参与港美股？参与加密货币？OpenAI付费？公司股票不转回？对于我来说，听着牛逼想要但又不是必须的理由。最后决定办理是因为觉得港股券商入金有奖励，家人可以顺便去玩一圈。</p><h3 id="选择哪个银行？"><a href="#选择哪个银行？" class="headerlink" title="选择哪个银行？"></a>选择哪个银行？</h3><p>有那么多银行，我们可以办哪些，哪些又比较好呢？<br>从发币行角度考虑</p><ul><li>香港上海汇丰银行</li><li>渣打银行（香港）</li><li>中国银行（香港）<br>三家银行都是在全球开展业务。从网上的信息来看汇丰和中国银行很好办，渣打不太好办。<br>另外虚拟银行众安银行、天星银行、蚂蚁银行等，没有考虑和办理就不列了。</li></ul><table><thead><tr><th></th><th>香港上海汇丰银行</th><th>中国银行</th></tr></thead><tbody><tr><td>总部</td><td>伦敦</td><td>中国</td></tr><tr><td>办理难度</td><td>容易</td><td>容易</td></tr><tr><td>转汇费用</td><td>据说同名内地香港互转不要手续费</td><td>同名内地香港互转不要手续费</td></tr></tbody></table><p>听说汇丰和中国银行从内地卡转入香港卡不要手续费。我办了汇丰之后就飘了不想再办就出去玩了。回来内地后去汇丰银行办理内地卡，没想到她直接告诉我只接待Premier客户，有存款要求不然有管理费。</p><h3 id="怎么办理？"><a href="#怎么办理？" class="headerlink" title="怎么办理？"></a>怎么办理？</h3><p>两种方式</p><ul><li><p>直接到营业网点线下排队办理</p><p>  如果人多去晚了可能无法办理，或者预约的人数多也可能被拒绝</p></li><li><p>网上预约，再到网点办理</p><p>  网上预约后无需再早去现场排队拿号，直接告诉接待人员，然后就给你安排了</p></li></ul><a id="more"></a><h4 id="怎么预约"><a href="#怎么预约" class="headerlink" title="怎么预约"></a>怎么预约</h4><h5 id="汇丰银行"><a href="#汇丰银行" class="headerlink" title="汇丰银行"></a>汇丰银行</h5><p>多久开始提前预约？<br>公众号上写提前2个工作日，预约后，会有香港电话打过来问你是哪天要去，去哪个分行，她登记后会将信息转至分行<br>分行的人会再次打电话给你，确认上门时间</p><ol><li>关注微信公众号汇丰香港，微信号：hsbc-hongkong</li><li><p>预约开户<br>点击“预约开户”按钮<br><img src="/2023/11/19/bankcard-hongkong/hsbc-app-open1.jpg" alt="预约开户"><br>进入页面后，填写相关信息<br><img src="/2023/11/19/bankcard-hongkong/hsbc-app-open-form.jpg" alt="预约会面"><br>联络电话，填写你内地的，要改成+86<br>产品及服务，选择汇丰ONE<br>选择会面日期，香港银行周一到周五营业时间为上午9点到下午4点，周六营业时间为上午9点到下午1点，我是周六去的<br>选择会面地区，我选择的网红网点<strong>葵芳分行</strong>，新界-》葵涌及荃湾</p></li><li><p>银行登记<br>提交完后，第二天晚上17:59银行电话我<br>询问我具体办理日期和时间<br>确认我们选择的区域的分行，或者你也可以讲自己想要的分行<br>告知开户时需要提供的资料<br>分行同事会再电话告知需要提供的资料</p></li><li><p>分行电话<br>隔天18：:01分行电话，<br>告知几点<br>带上身份证、港澳通行证、过关小票</p></li></ol><h5 id="中国银行"><a href="#中国银行" class="headerlink" title="中国银行"></a>中国银行</h5><p>可以提前7个工作日预约，不能约当天，工作日包含周六<br>中国银行预约时，公众号里面只能选择还能预约的分行，不会打电话给你确认，所以公众号预约成什么地方就是什么地方</p><ol><li>关注微信公众号中银香港微服务，微信号：BOCHK_Banking</li><li>预约开户<br>点击”银行服务”-》“我要预约”按钮<br><img src="/2023/11/19/bankcard-hongkong/boc-app-open1.jpg" alt="预约开户"><br>进入页面后，点击“预约开户”<br><img src="/2023/11/19/bankcard-hongkong/boc-app-form1.jpg" alt="预约开户"><br><img src="/2023/11/19/bankcard-hongkong/boc-app-form2.jpg" alt="预约开户"><br><img src="/2023/11/19/bankcard-hongkong/boc-app-form3.jpg" alt="预约开户"></li></ol><h4 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h4><p>总结一下要带哪些资料</p><ul><li>身份证</li><li>港澳通行证（有效期不低于3个月）</li><li>过关小票</li><li>地址证明（不一定需要，看客户经理）</li><li>收入来源（不一定需要，看客户经理）</li><li>存款（不一定需要，看客户经理）<br>我在葵芳分行只要了身份证、港澳通行证、过关小票</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;为什么要办香港卡？&quot;&gt;&lt;a href=&quot;#为什么要办香港卡？&quot; class=&quot;headerlink&quot; title=&quot;为什么要办香港卡？&quot;&gt;&lt;/a&gt;为什么要办香港卡？&lt;/h3&gt;&lt;p&gt;保险？参与港美股？参与加密货币？OpenAI付费？公司股票不转回？对于我来说，听着牛逼想要但又不是必须的理由。最后决定办理是因为觉得港股券商入金有奖励，家人可以顺便去玩一圈。&lt;/p&gt;
+&lt;h3 id=&quot;选择哪个银行？&quot;&gt;&lt;a href=&quot;#选择哪个银行？&quot; class=&quot;headerlink&quot; title=&quot;选择哪个银行？&quot;&gt;&lt;/a&gt;选择哪个银行？&lt;/h3&gt;&lt;p&gt;有那么多银行，我们可以办哪些，哪些又比较好呢？&lt;br&gt;从发币行角度考虑&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;香港上海汇丰银行&lt;/li&gt;
+&lt;li&gt;渣打银行（香港）&lt;/li&gt;
+&lt;li&gt;中国银行（香港）&lt;br&gt;三家银行都是在全球开展业务。从网上的信息来看汇丰和中国银行很好办，渣打不太好办。&lt;br&gt;另外虚拟银行众安银行、天星银行、蚂蚁银行等，没有考虑和办理就不列了。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;香港上海汇丰银行&lt;/th&gt;
+&lt;th&gt;中国银行&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;总部&lt;/td&gt;
+&lt;td&gt;伦敦&lt;/td&gt;
+&lt;td&gt;中国&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;办理难度&lt;/td&gt;
+&lt;td&gt;容易&lt;/td&gt;
+&lt;td&gt;容易&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;转汇费用&lt;/td&gt;
+&lt;td&gt;据说同名内地香港互转不要手续费&lt;/td&gt;
+&lt;td&gt;同名内地香港互转不要手续费&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;听说汇丰和中国银行从内地卡转入香港卡不要手续费。我办了汇丰之后就飘了不想再办就出去玩了。回来内地后去汇丰银行办理内地卡，没想到她直接告诉我只接待Premier客户，有存款要求不然有管理费。&lt;/p&gt;
+&lt;h3 id=&quot;怎么办理？&quot;&gt;&lt;a href=&quot;#怎么办理？&quot; class=&quot;headerlink&quot; title=&quot;怎么办理？&quot;&gt;&lt;/a&gt;怎么办理？&lt;/h3&gt;&lt;p&gt;两种方式&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;直接到营业网点线下排队办理&lt;/p&gt;
+&lt;p&gt;  如果人多去晚了可能无法办理，或者预约的人数多也可能被拒绝&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;网上预约，再到网点办理&lt;/p&gt;
+&lt;p&gt;  网上预约后无需再早去现场排队拿号，直接告诉接待人员，然后就给你安排了&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    <category term="Other" scheme="https://2tu.github.io/categories/Other/"/>
+    
+    
+    <category term="香港卡" scheme="https://2tu.github.io/tags/%E9%A6%99%E6%B8%AF%E5%8D%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C++编译器有哪些</title>
+    <link href="https://2tu.github.io/2023/10/21/cpp-compiler/"/>
+    <id>https://2tu.github.io/2023/10/21/cpp-compiler/</id>
+    <published>2023-10-21T01:57:53.000Z</published>
+    <updated>2024-06-28T13:28:09.903Z</updated>
+    
+    <content type="html"><![CDATA[<p>没想到C++环境搭建都这么麻烦，编译器有很多种。</p><ul><li><a href="https://code.visualstudio.com/docs/cpp/config-msvc" target="_blank" rel="noopener">MSVC</a></li><li><a href="https://github.com/skeeto/w64devkit" target="_blank" rel="noopener">w64devkit</a></li><li>Clang</li></ul><p>没有研究是觉得有些复杂。</p><p>在编译时会将我们include，#define等合并成一个文件。那如何看到这个编译的中间文件呢？<br>在Visual Studio中设置<br><img src="/2023/10/21/cpp-compiler/preprocess-to-a-file.png" alt="Preprocess to a File"></p><p>代码<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Hello World!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cin</span>.<span class="built_in">get</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>Ctrl + F7编译后，可以从Debug目录下看到FileName.i文件中已经包含了include的 iostream代码</p><p><strong>注意：Visual Studio和Visual Studio Code是不同的工具</strong></p><p>下一个看看C++如何建立link，为什么C++中不像java一样需要导入包，就可以link，然后引用呢？如果有两个同名的函数，那link的时候会报错吗？</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;没想到C++环境搭建都这么麻烦，编译器有很多种。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://code.visualstudio.com/docs/cpp/config-msvc&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MSVC&lt;/a</summary>
+      
+    
+    
+    
+    <category term="C/C++" scheme="https://2tu.github.io/categories/C-C/"/>
+    
+    
+    <category term="Compiler" scheme="https://2tu.github.io/tags/Compiler/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>netlink</title>
+    <link href="https://2tu.github.io/2023/10/07/netlink/"/>
+    <id>https://2tu.github.io/2023/10/07/netlink/</id>
+    <published>2023-10-07T10:07:29.000Z</published>
+    <updated>2024-06-28T13:28:09.919Z</updated>
+    
+    <content type="html"><![CDATA[<p>什么是Netlink通信机制</p><p>Netlink是linux提供的用于内核和用户态进程之间的通信方式。</p><p>但是注意虽然Netlink主要用于用户空间和内核空间的通信，但是也能用于用户空间的两个进程通信。只是进程间通信有其他很多方式，一般不用Netlink。除非需要用到Netlink的广播特性时。</p><p>那么Netlink有什么优势呢？</p><p>一般来说用户空间和内核空间的通信方式有三种：/proc、ioctl、Netlink。而前两种都是单向的，但是Netlink可以实现双工通信。</p><p>Netlink协议基于BSD socket和AF_NETLINK地址簇(address family)，使用32位的端口号寻址(以前称作PID)，每个Netlink协议(或称作总线，man手册中则称之为netlink family)，通常与一个或一组内核服务/组件相关联，如NETLINK_ROUTE用于获取和设置路由与链路信息、NETLINK_KOBJECT_UEVENT用于内核向用户空间的udev进程发送通知等。</p><p>netlink具有以下特点：</p><ul><li>支持全双工、异步通信(当然同步也支持)</li><li>用户空间可使用标准的BSD socket接口(但netlink并没有屏蔽掉协议包的构造与解析过程，推荐使用libnl等第三方库)</li><li>在内核空间使用专用的内核API接口</li><li>支持多播(因此支持“总线”式通信，可实现消息订阅)</li><li>在内核端可用于进程上下文与中断上下文</li></ul><p>没有Linux和C的基础是真看不懂这是啥玩意儿…</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;什么是Netlink通信机制&lt;/p&gt;
+&lt;p&gt;Netlink是linux提供的用于内核和用户态进程之间的通信方式。&lt;/p&gt;
+&lt;p&gt;但是注意虽然Netlink主要用于用户空间和内核空间的通信，但是也能用于用户空间的两个进程通信。只是进程间通信有其他很多方式，一般不用Netlin</summary>
+      
+    
+    
+    
+    <category term="Other" scheme="https://2tu.github.io/categories/Other/"/>
+    
+    
+    <category term="Linux" scheme="https://2tu.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>什么是Redis keyspace notification</title>
+    <link href="https://2tu.github.io/2023/10/06/keyspace-notifications/"/>
+    <id>https://2tu.github.io/2023/10/06/keyspace-notifications/</id>
+    <published>2023-10-06T11:44:22.000Z</published>
+    <updated>2024-06-28T13:28:09.919Z</updated>
+    
+    <content type="html"><![CDATA[<p>Redis消息架构两种中的一种keyspace notification、  <a href="https://redis.io/docs/interact/pubsub/" target="_blank" rel="noopener">Pub/Sub</a></p><p>实时监控Rdis 键值改变。</p><p>Keyspace通知允许client订阅Pub/Sub channels，以便接收影响Redis数据的事件。</p><h4 id="功能概览"><a href="#功能概览" class="headerlink" title="功能概览"></a>功能概览</h4><p>键空间通知使得客户端可以通过订阅频道或模式， 来接收那些以某种方式改动了 Redis 数据集的事件。</p><p>以下是一些键空间通知发送的事件的例子：</p><ul><li>所有修改键的命令。</li><li>所有接收到 LPUSH 命令的键。</li><li>0 号数据库中所有已过期的键。</li></ul><p>事件通过 Redis 的订阅与发布功能（pub/sub）来进行分发， 因此所有支持订阅与发布功能的客户端都可以在无须做任何修改的情况下， 直接使用键空间通知功能。</p><p>因为 Redis 目前的订阅与发布功能采取的是发送即忘（fire and forget）策略， 所以如果你的程序需要可靠事件通知（reliable notification of events）， 那么目前的键空间通知可能并不适合你： 当订阅事件的客户端断线时， 它会丢失所有在断线期间分发给它的事件。</p><p>未来将会支持更可靠的事件分发， 这种支持可能会通过让订阅与发布功能本身变得更可靠来实现， 也可能会在 Lua 脚本中对消息（message）的订阅与发布进行监听， 从而实现类似将事件推入到列表这样的操作。</p><a id="more"></a><h4 id="事件的类型"><a href="#事件的类型" class="headerlink" title="事件的类型"></a>事件的类型</h4><p>对于每个修改数据库的操作，键空间通知都会发送两种不同类型的事件。</p><p>比如说，对 0 号数据库的键 mykey 执行 DEL 命令时， 系统将分发两条消息， 相当于执行以下两个 PUBLISH 命令：</p><p>PUBLISH __keyspace@0__:mykey del<br>PUBLISH __keyevent@0__:del mykey</p><p>订阅第一个频道 __keyspace@0__:mykey 可以接收 0 号数据库中所有修改键 mykey 的事件， 而订阅第二个频道 __keyevent@0__:del 则可以接收 0 号数据库中所有执行 del 命令的键。</p><p>以 keyspace 为前缀的频道被称为键空间通知（key-space notification）， 而以 keyevent 为前缀的频道则被称为键事件通知（key-event notification）。</p><p>当 del mykey 命令执行时：</p><p>键空间频道的订阅者将接收到被执行的事件的名字，在这个例子中，就是 del 。<br>键事件频道的订阅者将接收到被执行事件的键的名字，在这个例子中，就是 mykey 。</p><h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>因为开启键空间通知功能需要消耗一些 CPU ， 所以在默认配置下， 该功能处于关闭状态。</p><p>可以通过修改 redis.conf 文件， 或者直接使用 CONFIG SET 命令来开启或关闭键空间通知功能：</p><p>当 notify-keyspace-events 选项的参数为空字符串时，功能关闭。<br>另一方面，当参数不是空字符串时，功能开启。<br>notify-keyspace-events 的参数可以是以下字符的任意组合， 它指定了服务器该发送哪些类型的通知：</p><table><thead><tr><th>字符</th><th>发送的通知</th></tr></thead><tbody><tr><td>K</td><td>键空间通知，所有通知以 __keyspace@&lt;db&gt;__ 为前缀</td></tr><tr><td>E</td><td>键事件通知，所有通知以 __keyevent@&lt;db&gt;__ 为前缀</td></tr><tr><td>g</td><td>DEL 、 EXPIRE 、 RENAME 等类型无关的通用命令的通知</td></tr><tr><td>$</td><td>字符串命令的通知</td></tr><tr><td>l</td><td>列表命令的通知</td></tr><tr><td>s</td><td>集合命令的通知</td></tr><tr><td>h</td><td>哈希命令的通知</td></tr><tr><td>z</td><td>有序集合命令的通知</td></tr><tr><td>x</td><td>过期事件：每当有过期键被删除时发送</td></tr><tr><td>e</td><td>驱逐(evict)事件：每当有键因为 maxmemory 政策而被删除时发送</td></tr><tr><td>A</td><td>参数 g$lshzxe 的别名</td></tr></tbody></table><p>输入的参数中至少要有一个 K 或者 E ， 否则的话， 不管其余的参数是什么， 都不会有任何通知被分发。</p><p>举个例子， 如果只想订阅键空间中和列表相关的通知， 那么参数就应该设为 Kl ， 诸如此类。</p><p>将参数设为字符串 “AKE” 表示发送所有类型的通知。</p><h4 id="命令产生的通知"><a href="#命令产生的通知" class="headerlink" title="命令产生的通知"></a>命令产生的通知</h4><p>以下列表记录了不同命令所产生的不同通知：</p><ul><li>DEL 命令为每个被删除的键产生一个 del 通知。</li><li>RENAME 产生两个通知：为来源键（source key）产生一个 rename_from 通知，并为目标键（destination key）产生一个 rename_to 通知。</li><li>EXPIRE 和 EXPIREAT 在键被正确设置过期时间时产生一个 expire 通知。当 EXPIREAT 设置的时间已经过期，或者 - EXPIRE 传入的时间为负数值时，键被删除，并产生一个 del 通知。</li><li>SORT 在命令带有 STORE 参数时产生一个 sortstore 事件。如果 STORE 指示的用于保存排序结果的键已经存在，那么程序还会发送一个 del 事件。</li><li>SET 以及它的所有变种（SETEX 、 SETNX 和 GETSET）都产生 set 通知。其中 SETEX 还会产生 expire 通知。</li><li>MSET 为每个键产生一个 set 通知。</li><li>SETRANGE 产生一个 setrange 通知。</li><li>INCR 、 DECR 、 INCRBY 和 DECRBY 都产生 incrby 通知。</li><li>INCRBYFLOAT 产生 incrbyfloat 通知。</li><li>APPEND 产生 append 通知。</li><li>LPUSH 和 LPUSHX 都产生单个 lpush 通知，即使有多个输入元素时，也是如此。</li><li>RPUSH 和 RPUSHX 都产生单个 rpush 通知，即使有多个输入元素时，也是如此。</li><li>RPOP 产生 rpop 通知。如果被弹出的元素是列表的最后一个元素，那么还会产生一个 del 通知。</li><li>LPOP 产生 lpop 通知。如果被弹出的元素是列表的最后一个元素，那么还会产生一个 del 通知。</li><li>LINSERT 产生一个 linsert 通知。</li><li>LSET 产生一个 lset 通知。</li><li>LTRIM 产生一个 ltrim 通知。如果 LTRIM 执行之后，列表键被清空，那么还会产生一个 del 通知。</li><li>RPOPLPUSH 和 BRPOPLPUSH 产生一个 rpop 通知，以及一个 lpush 通知。两个命令都会保证 rpop 的通知在 lpush 的通知之前分发。如果从键弹出元素之后，被弹出的列表键被清空，那么还会产生一个 del 通知。</li><li>HSET 、 HSETNX 和 HMSET 都只产生一个 hset 通知。</li><li>HINCRBY 产生一个 hincrby 通知。</li><li>HINCRBYFLOAT 产生一个 hincrbyfloat 通知。</li><li>HDEL 产生一个 hdel 通知。如果执行 HDEL 之后，哈希键被清空，那么还会产生一个 del 通知。</li><li>SADD 产生一个 sadd 通知，即使有多个输入元素时，也是如此。</li><li>SREM 产生一个 srem 通知，如果执行 SREM 之后，集合键被清空，那么还会产生一个 del 通知。</li><li>SMOVE 为来源键（source key）产生一个 srem 通知，并为目标键（destination key）产生一个 sadd 事件。</li><li>SPOP 产生一个 spop 事件。如果执行 SPOP 之后，集合键被清空，那么还会产生一个 del 通知。</li><li>SINTERSTORE 、 SUNIONSTORE 和 SDIFFSTORE 分别产生 sinterstore 、 sunionostore 和 sdiffstore 三种通知。如果用于保存结果的键已经存在，那么还会产生一个 del 通知。</li><li>ZINCRBY 产生一个 zincr 通知。（译注：非对称，请注意。）</li><li>ZADD 产生一个 zadd 通知，即使有多个输入元素时，也是如此。</li><li>ZREM 产生一个 zrem 通知，即使有多个输入元素时，也是如此。如果执行 ZREM 之后，有序集合键被清空，那么还会产生一个 del 通知。</li><li>ZREMRANGEBYSCORE 产生一个 zrembyscore 通知。（译注：非对称，请注意。）如果用于保存结果的键已经存在，那么还会产生一个 del 通知。</li><li>ZREMRANGEBYRANK 产生一个 zrembyrank 通知。（译注：非对称，请注意。）如果用于保存结果的键已经存在，那么还会产生一个 del 通知。</li><li>ZINTERSTORE 和 ZUNIONSTORE 分别产生 zinterstore 和 zunionstore 两种通知。如果用于保存结果的键已经存在，那么还会产生一个 del 通知。</li><li>每当一个键因为过期而被删除时，产生一个 expired 通知。</li><li>每当一个键因为 maxmemory 政策而被删除以回收内存时，产生一个 evicted 通知。</li></ul><p><strong>Note</strong></p><p>所有命令都只在键真的被改动了之后，才会产生通知。</p><p>比如说，当 SREM 试图删除不存在于集合的元素时，删除操作会执行失败，因为没有真正的改动键，所以这一操作不会发送通知。</p><p>如果对命令所产生的通知有疑问， 最好还是使用以下命令， 自己来验证一下：</p><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ redis-cli<span class="built_in"> config </span><span class="builtin-name">set</span> notify-keyspace-events KEA</span><br><span class="line">$ redis-cli --csv psubscribe <span class="string">'__key*__:*'</span></span><br><span class="line">Reading messages<span class="built_in">..</span>. (press Ctrl-C <span class="keyword">to</span> quit)</span><br><span class="line"><span class="string">"psubscribe"</span>,<span class="string">"__key*__:*"</span>,1</span><br></pre></td></tr></table></figure><p>然后， 只要在其他终端里用 Redis 客户端发送命令， 就可以看到产生的通知了：</p><figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"pmessage"</span>,<span class="string">"__key*__:*"</span>,<span class="string">"__keyspace@0__:foo"</span>,<span class="string">"set"</span></span><br><span class="line"><span class="string">"pmessage"</span>,<span class="string">"__key*__:*"</span>,<span class="string">"__keyevent@0__:set"</span>,<span class="string">"foo"</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure><h4 id="过期通知的发送时间"><a href="#过期通知的发送时间" class="headerlink" title="过期通知的发送时间"></a>过期通知的发送时间</h4><p>Redis 使用以下两种方式删除过期的键：</p><ul><li>当一个键被访问时，程序会对这个键进行检查，如果键已经过期，那么该键将被删除。</li><li>底层系统会在后台渐进地查找并删除那些过期的键，从而处理那些已经过期、但是不会被访问到的键。</li></ul><p>当过期键被以上两个程序的任意一个发现、 并且将键从数据库中删除时， Redis 会产生一个 expired 通知。</p><p>Redis 并不保证生存时间（TTL）变为 0 的键会立即被删除： 如果程序没有访问这个过期键， 或者带有生存时间的键非常多的话， 那么在键的生存时间变为 0 ， 直到键真正被删除这中间， 可能会有一段比较显著的时间间隔。</p><p>因此， Redis 产生 expired 通知的时间为过期键被删除的时候， 而不是键的生存时间变为 0 的时候。</p><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a href="http://shouce.jb51.net/redis-chinese-doc/doc/1.html" target="_blank" rel="noopener">键空间通知（keyspace notification）)</a><br><a href="https://redis.io/docs/manual/keyspace-notifications/" target="_blank" rel="noopener">Redis keyspace notifications</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;Redis消息架构两种中的一种keyspace notification、  &lt;a href=&quot;https://redis.io/docs/interact/pubsub/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Pub/Sub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;实时监控Rdis 键值改变。&lt;/p&gt;
+&lt;p&gt;Keyspace通知允许client订阅Pub/Sub channels，以便接收影响Redis数据的事件。&lt;/p&gt;
+&lt;h4 id=&quot;功能概览&quot;&gt;&lt;a href=&quot;#功能概览&quot; class=&quot;headerlink&quot; title=&quot;功能概览&quot;&gt;&lt;/a&gt;功能概览&lt;/h4&gt;&lt;p&gt;键空间通知使得客户端可以通过订阅频道或模式， 来接收那些以某种方式改动了 Redis 数据集的事件。&lt;/p&gt;
+&lt;p&gt;以下是一些键空间通知发送的事件的例子：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;所有修改键的命令。&lt;/li&gt;
+&lt;li&gt;所有接收到 LPUSH 命令的键。&lt;/li&gt;
+&lt;li&gt;0 号数据库中所有已过期的键。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;事件通过 Redis 的订阅与发布功能（pub/sub）来进行分发， 因此所有支持订阅与发布功能的客户端都可以在无须做任何修改的情况下， 直接使用键空间通知功能。&lt;/p&gt;
+&lt;p&gt;因为 Redis 目前的订阅与发布功能采取的是发送即忘（fire and forget）策略， 所以如果你的程序需要可靠事件通知（reliable notification of events）， 那么目前的键空间通知可能并不适合你： 当订阅事件的客户端断线时， 它会丢失所有在断线期间分发给它的事件。&lt;/p&gt;
+&lt;p&gt;未来将会支持更可靠的事件分发， 这种支持可能会通过让订阅与发布功能本身变得更可靠来实现， 也可能会在 Lua 脚本中对消息（message）的订阅与发布进行监听， 从而实现类似将事件推入到列表这样的操作。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Data" scheme="https://2tu.github.io/categories/Data/"/>
+    
+    
+    <category term="Redis" scheme="https://2tu.github.io/tags/Redis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C/C++参数中的_In_和_Out_代表什么</title>
+    <link href="https://2tu.github.io/2023/09/28/what-is-In-Out-on-cpp/"/>
+    <id>https://2tu.github.io/2023/09/28/what-is-In-Out-on-cpp/</id>
+    <published>2023-09-28T13:21:14.000Z</published>
+    <updated>2024-06-28T13:28:09.931Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近看方法参数中的疑惑</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">sai_status_t</span> <span class="title">sai_api_query</span><span class="params">(_In_ <span class="keyword">sai_api_t</span> sai_api_id, _Out_ <span class="keyword">void</span>** api_method_table)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>_In_和_Out_是用于标记参数的传递方式的注解。它们并不是C\C++语言的关键字，而是一种约定俗成的注释方式，用于提示函数的调用者和阅读者关于参数的特性。</p><p>_In_表示该参数是输入参数，即函数内部会读取参数的值，但不会修改它。通过这个标记，我们可以清楚地知道该参数在函数内部只被用于读取数据。</p><p>_Out_表示该参数是输出参数，即函数内部会修改参数的值，并将修改后的结果返回给调用者。通过这个标记，我们可以清楚地知道该参数在函数内部会被修改，我们在调用函数时需要确认传入的参数具备存储修改后结果的能力。</p><a id="more"></a><p>总结起来，_In_和_Out_这两个标记主要用于提供参数的传递方式的额外信息，帮助理解函数的行为和外部变量的使用。</p><p>上面的**又是什么意思呢？</p><p>&amp;&amp; 和 &amp; 是 C++ 中的运算符，<strong> 和 * 是 C++ 中的指针。&amp;&amp; 和 &amp; 表示引用和取地址，</strong> 和 * 表示指针的指针和指针。</p><p><strong>&amp;&amp; 和 &amp; 的区别</strong></p><table><thead><tr><th style="text-align:left">特性</th><th style="text-align:left">&amp;&amp;</th><th style="text-align:left">&amp;</th></tr></thead><tbody><tr><td style="text-align:left">定义</td><td style="text-align:left">引用</td><td style="text-align:left">取地址</td></tr><tr><td style="text-align:left">用途</td><td style="text-align:left">指向变量</td><td style="text-align:left">获取变量的地址</td></tr><tr><td style="text-align:left">实现</td><td style="text-align:left">可以用来避免值传递造成的副本开销</td><td style="text-align:left">可以用来访问变量的值</td></tr></tbody></table><p><strong>*<em> 和 </em> 的区别</strong></p><table><thead><tr><th style="text-align:left">特性</th><th style="text-align:left">**</th><th style="text-align:left">*</th></tr></thead><tbody><tr><td style="text-align:left">定义</td><td style="text-align:left">指针的指针</td><td style="text-align:left">指针</td></tr><tr><td style="text-align:left">用途</td><td style="text-align:left">存储另一个指针的地址</td><td style="text-align:left">存储变量的地址</td></tr><tr><td style="text-align:left">实现</td><td style="text-align:left">可以用来实现链表、树等数据结构</td><td style="text-align:left">可以用来访问变量的值</td></tr></tbody></table><p><strong>示例</strong></p><p>C++</p><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &amp;&amp; 和 &amp;</span></span><br><span class="line"><span class="built_in">int</span> x = <span class="number">10</span>;</span><br><span class="line"><span class="built_in">int</span> &amp;y = x;</span><br><span class="line"><span class="built_in">int</span> *p = &amp;x;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ** 和 *</span></span><br><span class="line"><span class="built_in">int</span> *p1 = new <span class="built_in">int</span>(<span class="number">10</span>);</span><br><span class="line"><span class="built_in">int</span> **pp = &amp;p1;</span><br></pre></td></tr></table></figure><p>请谨慎使用代码。<a href="https://bard.google.com/faq#coding" target="_blank" rel="noopener">了解详情</a></p><p>content_copy</p><p>在这种情况下，<code>y</code> 是一个引用，它指向变量 <code>x</code>。<code>p</code> 是一个指针，它指向变量 <code>x</code> 的地址。<code>p1</code> 是一个指针，它指向一个整数。<code>pp</code> 是一个指针，它指向一个指针，该指针指向一个整数。</p><p><strong>结论</strong></p><p>&amp;&amp; 和 &amp; 表示引用和取地址，*<em> 和 </em> 表示指针的指针和指针。</p><p><strong>总结</strong></p><p>*<em> 和 </em> 在 C 和 C++ 中的区别在于：</p><ul><li>** 在 C 中表示指针的指针，在 C++ 中表示指针。</li><li>** 在 C 中可以用来存储另一个指针的地址，在 C++ 中可以用来存储变量的地址。</li></ul><p>因此，&amp;&amp; 和 &amp; 在 C 和 C++ 中都是可用的，意思也完全相同。*<em> 和 </em> 在 C 中也可以使用，但意思与 C++ 中的意思有所不同。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;最近看方法参数中的疑惑&lt;/p&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;sai_status_t&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;sai_api_query&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(_In_ &lt;span class=&quot;keyword&quot;&gt;sai_api_t&lt;/span&gt; sai_api_id, _Out_ &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;** api_method_table)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;_In_和_Out_是用于标记参数的传递方式的注解。它们并不是C&#92;C++语言的关键字，而是一种约定俗成的注释方式，用于提示函数的调用者和阅读者关于参数的特性。&lt;/p&gt;
+&lt;p&gt;_In_表示该参数是输入参数，即函数内部会读取参数的值，但不会修改它。通过这个标记，我们可以清楚地知道该参数在函数内部只被用于读取数据。&lt;/p&gt;
+&lt;p&gt;_Out_表示该参数是输出参数，即函数内部会修改参数的值，并将修改后的结果返回给调用者。通过这个标记，我们可以清楚地知道该参数在函数内部会被修改，我们在调用函数时需要确认传入的参数具备存储修改后结果的能力。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="C/C++" scheme="https://2tu.github.io/categories/C-C/"/>
+    
+    
+    <category term="_In_" scheme="https://2tu.github.io/tags/In/"/>
+    
+    <category term="_Out_" scheme="https://2tu.github.io/tags/Out/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL数据类型字段占用空间</title>
+    <link href="https://2tu.github.io/2023/09/03/mysql-storage-requirements/"/>
+    <id>https://2tu.github.io/2023/09/03/mysql-storage-requirements/</id>
+    <published>2023-09-03T03:41:25.000Z</published>
+    <updated>2024-06-28T13:28:09.919Z</updated>
+    
+    <content type="html"><![CDATA[<p>经常看到这种建表sql</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`table1`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`status`</span> <span class="built_in">int</span>(<span class="number">2</span>) <span class="keyword">DEFAULT</span> <span class="string">'0'</span>,</span><br><span class="line">  <span class="string">`fileProtocol`</span> <span class="built_in">tinyint</span>(<span class="number">1</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'0'</span> ,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) ;</span><br></pre></td></tr></table></figure><p>sql中为每个字段都加上了长度限制，能限制住吗？存储数据时占用的空间又是多少呢？</p><p>具体见<a href="https://dev.mysql.com/doc/refman/5.7/en/storage-requirements.html" target="_blank" rel="noopener">Data Type Storage Requirements</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;经常看到这种建表sql&lt;/p&gt;
+&lt;figure class=&quot;highlight sql&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/spa</summary>
+      
+    
+    
+    
+    <category term="Data" scheme="https://2tu.github.io/categories/Data/"/>
+    
+    
+    <category term="MySQL" scheme="https://2tu.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>内存没满但是频繁fullgc，是不是ReservedCodeCacheSize的锅</title>
+    <link href="https://2tu.github.io/2023/09/03/why-the-memory-not-full-but-frequently-fullgc/"/>
+    <id>https://2tu.github.io/2023/09/03/why-the-memory-not-full-but-frequently-fullgc/</id>
+    <published>2023-09-03T02:38:35.000Z</published>
+    <updated>2024-06-28T13:28:09.935Z</updated>
+    
+    <content type="html"><![CDATA[<h5 id="业务中的现象表现"><a href="#业务中的现象表现" class="headerlink" title="业务中的现象表现"></a>业务中的现象表现</h5><p>运行一段时间后，频繁fullgc，2s10几次fullgc，无法对外提供服务</p><h4 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h4><h5 id="gc日志"><a href="#gc日志" class="headerlink" title="gc日志"></a>gc日志</h5><p>内存还有非常多的情况下就开始了fullgc</p><h5 id="dump分析"><a href="#dump分析" class="headerlink" title="dump分析"></a>dump分析</h5><p>只看到class loader的一直重新加载？内存指向java.security.Permission，没有其他大对象？没有搞懂重新改好了也是这样，需要再搞懂</p><h5 id="jvm参数"><a href="#jvm参数" class="headerlink" title="jvm参数"></a>jvm参数</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-Xms128m -Xmx256m -XX:ReservedCodeCacheSize=50m -XX:MetaspaceSize=96m -XX:MaxMetaspaceSize=96m -Xss256k -XX:MaxDirectMemorySize=16m</span><br><span class="line">-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSClassUnloadingEnabled</span><br><span class="line">-XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:GCLogFileSize=10M -XX:NumberOfGCLogFiles=3 -Xloggc:/var/logs/gc1.log</span><br><span class="line">-XX:CMSInitiatingOccupancyFraction=75 -XX:+UseCMSInitiatingOccupancyOnly -XX:NativeMemoryTracking=summary</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError  -XX:HeapDumpPath=/var/logs/dump1-$(date +%Y%m%d%H%M%S).hprof"</span><br></pre></td></tr></table></figure><h5 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h5><p>怀疑是-XX:ReservedCodeCacheSize=50m导致Meta不生效，导致重新加载fullgc?</p><p>修改为jvm参数，后好使了</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-Xms128m -Xmx256m -XX:PermSize=128m -XX:-UseGCOverheadLimit -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=80</span><br><span class="line">-XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:GCLogFileSize=10M -XX:NumberOfGCLogFiles=3 -Xloggc:/var/logs/gc1.log</span><br><span class="line">-XX:CMSInitiatingOccupancyFraction=75 -XX:+UseCMSInitiatingOccupancyOnly -XX:NativeMemoryTracking=summary</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError  -XX:HeapDumpPath=/var/logs/dump1-$(date +%Y%m%d%H%M%S).hprof"</span><br></pre></td></tr></table></figure><p>需要再研究，怎么来指向这个问题。</p><p>另外火焰图必不可少</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h5 id=&quot;业务中的现象表现&quot;&gt;&lt;a href=&quot;#业务中的现象表现&quot; class=&quot;headerlink&quot; title=&quot;业务中的现象表现&quot;&gt;&lt;/a&gt;业务中的现象表现&lt;/h5&gt;&lt;p&gt;运行一段时间后，频繁fullgc，2s10几次fullgc，无法对外提供服务&lt;/p&gt;
+&lt;h4</summary>
+      
+    
+    
+    
+    <category term="Java" scheme="https://2tu.github.io/categories/Java/"/>
+    
+    
+    <category term="fullgc" scheme="https://2tu.github.io/tags/fullgc/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>怎样使用DataX将HBase数据导入到MySQL</title>
+    <link href="https://2tu.github.io/2023/08/04/how-to-hbase-to-mysql-on-datax/"/>
+    <id>https://2tu.github.io/2023/08/04/how-to-hbase-to-mysql-on-datax/</id>
+    <published>2023-08-04T10:03:44.000Z</published>
+    <updated>2024-06-28T13:28:09.915Z</updated>
+    
+    <content type="html"><![CDATA[<p>有需求使用DataX将HBase表中数据迁移到MySQL中，有的表在Phoenix中定义，使用hbase20xsqlreader读取。有的没有在Phoenix中定义，数据是动态插入，列是不固定的。</p><ul><li>hbase20xsqlreader，读取Phoenix</li><li>hbase11xreader，读取HBase</li></ul><p>不管读取HBase还是Phoenix都要求填写column，但是可以写sql占位，传进来。</p><p>我这里由于业务原因就没有使用占位符的方式传递。</p><p>现在的业务需求是我HBase横表迁移到MySQL纵表中。</p><p>动态列中的列名有在MySQL表中记录，所以实现流程就是</p><ol><li>shell 脚本调用mysql读取出要在HBase中读取的列</li><li>循环生成hbase11xreader读取-写入txt的DataX json</li><li>调用DataX执行上面的json文件导出txt</li><li>循环txt为每行加入MySQL要插入的列key</li><li>生成读取txt，写入MySQL</li></ol><a id="more"></a><p>代码</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> MySQL连接信息</span></span><br><span class="line">DB_USER=""</span><br><span class="line">DB_PASS=""</span><br><span class="line">DB_HOST=""</span><br><span class="line">DB_NAME=""</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行的SQL语句</span></span><br><span class="line">SQL_QUERY="SELECT columnKey,otherColumn FROM KV;"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行SQL并将结果存储到关联数组</span></span><br><span class="line">result=($(mysql -u$&#123;DB_USER&#125; -p$&#123;DB_PASS&#125; -h$&#123;DB_HOST&#125; -D$&#123;DB_NAME&#125; -N -B -e "$&#123;SQL_QUERY&#125;"))</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 遍历结果，生成文件</span></span><br><span class="line">for ((i=0; i&lt;$&#123;#result[@]&#125;; i+=2)); do</span><br><span class="line">    columnKey=$&#123;result[i]&#125;</span><br><span class="line">    otherColumn=$&#123;result[i+1]&#125;</span><br><span class="line">    </span><br><span class="line">    # 生成JSON内容</span><br><span class="line">    json_content="&#123;</span><br><span class="line">        \"job\": &#123;</span><br><span class="line">            \"setting\": &#123;</span><br><span class="line">                \"speed\": &#123;</span><br><span class="line">                    \"channel\": 1</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            \"content\": [</span><br><span class="line">                &#123;</span><br><span class="line">                    \"reader\": &#123;</span><br><span class="line">                        \"name\": \"hbase11xreader\",</span><br><span class="line">                        \"parameter\": &#123;</span><br><span class="line">                            \"hbaseConfig\": &#123;</span><br><span class="line">                                \"hbase.zookeeper.quorum\": \"localhost\"</span><br><span class="line">                            &#125;,</span><br><span class="line">                            \"table\": \"Table\",</span><br><span class="line">                            \"encoding\": \"utf-8\",</span><br><span class="line">                            \"mode\": \"normal\",</span><br><span class="line">                            \"column\": [</span><br><span class="line">                                &#123;</span><br><span class="line">                                    \"name\": \"cf: column1\",</span><br><span class="line">                                    \"type\": \"string\"</span><br><span class="line">                                &#125;,</span><br><span class="line">                               &#123;</span><br><span class="line">                                    \"name\": \"cf: column2\",</span><br><span class="line">                                    \"type\": \"date\",</span><br><span class="line">                                    \"format\":\"yyyy-MM-dd HH:mm:ss\"</span><br><span class="line">                                &#125;,</span><br><span class="line">                               &#123;</span><br><span class="line">                                    \"name\": \"cf: $&#123;columnKey&#125;\",</span><br><span class="line">                                    \"type\": \"string\"</span><br><span class="line">                                &#125;</span><br><span class="line">                            ],</span><br><span class="line">                            \"range\": &#123;</span><br><span class="line">                                \"startRowkey\": \"\",</span><br><span class="line">                                \"endRowkey\": \"\",</span><br><span class="line">                                \"isBinaryRowkey\": true</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;,</span><br><span class="line">                    \"writer\": &#123;</span><br><span class="line">                        \"name\": \"txtfilewriter\",</span><br><span class="line">                        \"parameter\": &#123;</span><br><span class="line">                            \"path\": \"datax_trans_file/tmp\",</span><br><span class="line">                            \"fileName\": \"dataCustom_$&#123;columnKey&#125;_$&#123;otherColumn&#125;\",</span><br><span class="line">                            \"writeMode\": \"truncate\",</span><br><span class="line">                            \"fieldDelimiter\": \"|\"</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;"</span><br><span class="line">    </span><br><span class="line">    # 将JSON内容写入文件</span><br><span class="line">    echo "$json_content" &gt; "datax_trans_file/dataCustom_$&#123;columnKey&#125;_$&#123;otherColumn&#125;_2txt.json"</span><br><span class="line"></span><br><span class="line">    # 执行datax 生成txt文件</span><br><span class="line">    dataxtool/datax/bin/datax.py datax_trans_file/dataCustom_$&#123;columnKey&#125;_$&#123;otherColumn&#125;_2txt.json</span><br><span class="line">    </span><br><span class="line">     # 读出对应txt 插入统计编码和名称</span><br><span class="line"></span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 列出txt文件列表 插入数据</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 遍历指定目录下的匹配文件，并处理文件内容</span></span><br><span class="line">for file in datax_trans_file/tmp/dataCustom_*; do</span><br><span class="line">    if [[ -f "$file" ]]; then</span><br><span class="line">        # 提取otherColumn和columnKey</span><br><span class="line">        filename=$(basename "$file")</span><br><span class="line">        IFS="_" read -ra parts &lt;&lt;&lt; "$filename"</span><br><span class="line">        columnKey="$&#123;parts[1]&#125;"</span><br><span class="line">        otherColumn="$&#123;parts[2]&#125;"</span><br><span class="line"></span><br><span class="line">          # 为每一行添加信息</span><br><span class="line">        while IFS= read -r line; do</span><br><span class="line">            echo "$line|$columnKey|$otherColumn|1"</span><br><span class="line">        done &lt; "$file" &gt; "$file.tmp"</span><br><span class="line"></span><br><span class="line">        # 将临时文件替换原文件</span><br><span class="line">        mv "$file.tmp" "$file"</span><br><span class="line"></span><br><span class="line">        echo "Added info to: $file"</span><br><span class="line">    fi</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行写入mysql</span></span><br><span class="line">dataxtool/datax/bin/datax.py datax_trans_file/dataCustom2mysql.json</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;有需求使用DataX将HBase表中数据迁移到MySQL中，有的表在Phoenix中定义，使用hbase20xsqlreader读取。有的没有在Phoenix中定义，数据是动态插入，列是不固定的。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;hbase20xsqlreader，读取Phoenix&lt;/li&gt;
+&lt;li&gt;hbase11xreader，读取HBase&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;不管读取HBase还是Phoenix都要求填写column，但是可以写sql占位，传进来。&lt;/p&gt;
+&lt;p&gt;我这里由于业务原因就没有使用占位符的方式传递。&lt;/p&gt;
+&lt;p&gt;现在的业务需求是我HBase横表迁移到MySQL纵表中。&lt;/p&gt;
+&lt;p&gt;动态列中的列名有在MySQL表中记录，所以实现流程就是&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;shell 脚本调用mysql读取出要在HBase中读取的列&lt;/li&gt;
+&lt;li&gt;循环生成hbase11xreader读取-写入txt的DataX json&lt;/li&gt;
+&lt;li&gt;调用DataX执行上面的json文件导出txt&lt;/li&gt;
+&lt;li&gt;循环txt为每行加入MySQL要插入的列key&lt;/li&gt;
+&lt;li&gt;生成读取txt，写入MySQL&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    
+    
+    
+    <category term="Data" scheme="https://2tu.github.io/categories/Data/"/>
+    
+    
+    <category term="DataX" scheme="https://2tu.github.io/tags/DataX/"/>
+    
+    <category term="HBase" scheme="https://2tu.github.io/tags/HBase/"/>
+    
+    <category term="MySQL" scheme="https://2tu.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>符合国际标准的城市编码</title>
+    <link href="https://2tu.github.io/2023/08/03/the-international-standard-country-codes/"/>
+    <id>https://2tu.github.io/2023/08/03/the-international-standard-country-codes/</id>
+    <published>2023-08-03T23:53:00.000Z</published>
+    <updated>2024-06-28T13:28:09.923Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>fork的项目<a href="https://github.com/yihong0618/running_page" target="_blank" rel="noopener">running_page</a>有一个<a href="https://github.com/yihong0618/running_page/issues/292" target="_blank" rel="noopener">Issue</a>提到国家和地区识别不正确，看了数据样例较为复杂，有的是有国家省市区，有的只有部分，还有国外的。running_page中代码以逗号分隔取国家，然后根据<a href="http://www.stats.gov.cn/sj/tjbz/qhdm/" target="_blank" rel="noopener">统计用区划代码和城乡划分代码</a>对比取出城市。</p><p>问题是，数据是全球的用户是全球的，那全球各个国家和区域的标准应该是什么？中国有省市区，那其他国家有吗？有统一标准吗？</p><h3 id="国际标准-ISO-3166"><a href="#国际标准-ISO-3166" class="headerlink" title="国际标准 ISO 3166"></a>国际标准 ISO 3166</h3><p>全球化那就必然要找国际标准了，看这里<a href="https://en.wikipedia.org/wiki/ISO_3166" target="_blank" rel="noopener">ISO 3166</a>, <strong><em>Codes for the representation of names of countries and their subdivisions</em></strong></p><p>里面又包含了</p><ul><li><strong><a href="https://en.wikipedia.org/wiki/ISO_3166-1" target="_blank" rel="noopener">ISO 3166-1</a></strong> 国家代码</li><li><strong><a href="https://en.wikipedia.org/wiki/ISO_3166-2" target="_blank" rel="noopener">ISO 3166-2</a></strong> 国家分支机构代码</li><li><strong><a href="https://en.wikipedia.org/wiki/ISO_3166-3" target="_blank" rel="noopener">ISO 3166-3</a></strong> 国家曾用名代码</li></ul><h3 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h3><p>我们拿到gps后做需要逆地址解析拿到ISO 3166标准的代码，有哪些方式可以呢，google map？</p><p>我调研了2个方式</p><a id="more"></a><h4 id="GeoNames"><a href="#GeoNames" class="headerlink" title="GeoNames"></a>GeoNames</h4><p>The GeoNames geographical database covers all countries and contains over eleven million placenames that are available for download free of charge.</p><p>免费全球地理数据库</p><p>注册账号，每个账号有免费调用接口额度，对于个人来说完全够了，接口不同占用额度不同，具体如下</p><p><a href="https://www.geonames.org/export/" target="_blank" rel="noopener">Terms and Conditions</a></p><p><img src="/2023/08/03/the-international-standard-country-codes/terms-and-conditions.png" alt="Terms and Conditions"></p><p><a href="https://www.geonames.org/export/credits.html" target="_blank" rel="noopener">GeoNames Webservice Credits</a></p><p><img src="/2023/08/03/the-international-standard-country-codes/webservice-credits.png" alt="GeoNames Webservice Credits"></p><h4 id="Nominatim"><a href="#Nominatim" class="headerlink" title="Nominatim"></a>Nominatim</h4><p><a href="https://nominatim.org/release-docs/develop/" target="_blank" rel="noopener">Nominatim</a></p><p>Nominatim 是一个开源的地理数据库，可通过 REST API 访问。它由 OpenStreetMap 社区维护，包含来自各种来源的数据，包括 OpenStreetMap 数据库、维基百科和其他开放数据集。</p><p>Nominatim 解析的地址是使用国际标准化组织 (ISO) 3166 标准。ISO 3166 标准定义了世界各国的名称和代码。Nominatim 还使用其他标准，如 ISO 6709 标准，该标准定义了地理坐标的格式。</p><p>有python库Nominatim</p><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://mp.weixin.qq.com/s?__biz=MzIzMjU3MjUyMg==&amp;mid=2247484595&amp;idx=4&amp;sn=0cbe29b0051ac460b3bb7924dba62395&amp;chksm=e89397b6dfe41ea03322c234d5745812f144968e74034fc229b550bab65a1755a1fba446629b&amp;scene=27" target="_blank" rel="noopener">对ISO3166《国家和所属地区名称代码》国际标准的几点认识</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;fork的项目&lt;a href=&quot;https://github.com/yihong0618/running_page&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;running_page&lt;/a&gt;有一个&lt;a href=&quot;https://github.com/yihong0618/running_page/issues/292&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Issue&lt;/a&gt;提到国家和地区识别不正确，看了数据样例较为复杂，有的是有国家省市区，有的只有部分，还有国外的。running_page中代码以逗号分隔取国家，然后根据&lt;a href=&quot;http://www.stats.gov.cn/sj/tjbz/qhdm/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;统计用区划代码和城乡划分代码&lt;/a&gt;对比取出城市。&lt;/p&gt;
+&lt;p&gt;问题是，数据是全球的用户是全球的，那全球各个国家和区域的标准应该是什么？中国有省市区，那其他国家有吗？有统一标准吗？&lt;/p&gt;
+&lt;h3 id=&quot;国际标准-ISO-3166&quot;&gt;&lt;a href=&quot;#国际标准-ISO-3166&quot; class=&quot;headerlink&quot; title=&quot;国际标准 ISO 3166&quot;&gt;&lt;/a&gt;国际标准 ISO 3166&lt;/h3&gt;&lt;p&gt;全球化那就必然要找国际标准了，看这里&lt;a href=&quot;https://en.wikipedia.org/wiki/ISO_3166&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ISO 3166&lt;/a&gt;, &lt;strong&gt;&lt;em&gt;Codes for the representation of names of countries and their subdivisions&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;里面又包含了&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/ISO_3166-1&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ISO 3166-1&lt;/a&gt;&lt;/strong&gt; 国家代码&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/ISO_3166-2&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ISO 3166-2&lt;/a&gt;&lt;/strong&gt; 国家分支机构代码&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/ISO_3166-3&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ISO 3166-3&lt;/a&gt;&lt;/strong&gt; 国家曾用名代码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;如何使用&quot;&gt;&lt;a href=&quot;#如何使用&quot; class=&quot;headerlink&quot; title=&quot;如何使用&quot;&gt;&lt;/a&gt;如何使用&lt;/h3&gt;&lt;p&gt;我们拿到gps后做需要逆地址解析拿到ISO 3166标准的代码，有哪些方式可以呢，google map？&lt;/p&gt;
+&lt;p&gt;我调研了2个方式&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Other" scheme="https://2tu.github.io/categories/Other/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>如何启动Phoenix Query Server</title>
+    <link href="https://2tu.github.io/2023/08/03/how-to-start-phoenix-query-server/"/>
+    <id>https://2tu.github.io/2023/08/03/how-to-start-phoenix-query-server/</id>
+    <published>2023-08-03T13:57:55.000Z</published>
+    <updated>2024-06-28T13:28:09.915Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>启动Phenix Query Server 6.0.0报错</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2023-08-03 15:20:01.672088 launching /var/jdk/bin/java -cp /etc/hbase/conf:/etc/hadoop/conf::/var/phoenix-queryserver-6.0.0/bin/../phoenix-queryserver-6.0.0.jar: -Dproc_phoenixserver -Dlog4j.configuration=file:/var/phoenix-queryserver-6.0.0/bin/log4j.properties -Dpsql.root.logger=INFO,DRFA -Dpsql.log.dir=/tmp/phoenix -Dpsql.log.file=phoenix-root-queryserver.log org.apache.phoenix.queryserver.server.QueryServer</span><br><span class="line"></span><br><span class="line">错误: 找不到或无法加载主类 org.apache.phoenix.queryserver.server.QueryServer</span><br></pre></td></tr></table></figure><p>HBase 2.4.15</p><p>Phoenix 5.1.3</p><h3 id="前因"><a href="#前因" class="headerlink" title="前因"></a>前因</h3><p>升级HBase 2.4.15后，之前的Phoenix 4.13.1就不能用了。从Phoenix官网看到Phoenix和HBase的版本对应。</p><blockquote><p>Current release 4.16.1 can run on Apache HBase 1.3, 1.4, 1.5 and 1.6.<br>Current release 5.1.3 can run on Apache HBase 2.1, 2.2, 2.3, 2.4 and 2.5.</p></blockquote><p>然后Phoenix 5.1.3中没有带query server，需要单独下载query server并启动，如图</p><p><img src="/2023/08/03/how-to-start-phoenix-query-server/query-server-installation.png" alt="Query Server Installation"></p><a id="more"></a><h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p>下载启动<a href="https://phoenix.apache.org/download.html" target="_blank" rel="noopener">Phonex Query 6.0.0</a>报了上面的错误</p><h4 id="找不到或无法加载主类"><a href="#找不到或无法加载主类" class="headerlink" title="找不到或无法加载主类"></a>找不到或无法加载主类</h4><p>报这种错，原因有可能是</p><ul><li><p>class path路径不对</p></li><li><p>子路径不匹配</p></li><li><p>class path缺少依赖</p><p>class-path需要你整个应用所有的依赖的class，也就是为了主类加载正确，JVM需要找到：</p><ul><li>主类本身；</li><li>所有父亲类以及接口；</li><li>所有声明变量的类以及调用的方法等</li></ul></li></ul><p>查看上面的错误日志phoenix-queryserver-6.0.0.jar中是有org.apache.phoenix.queryserver.server.QueryServer的，可能的问题是class path缺少依赖</p><h4 id="修改日志级别，查看详细错误信息"><a href="#修改日志级别，查看详细错误信息" class="headerlink" title="修改日志级别，查看详细错误信息"></a>修改日志级别，查看详细错误信息</h4><p>需要找到具体缺少了什么依赖，能否拿到详细报错信息辅助我们找到错误？</p><p>启动命令中有log4j.properties -Dpsql.root.logger=INFO,</p><p>我选择修改log3j.properties中的日志类型为DEBUG，再重新启动，查看日志，得到如下错误信息</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">2023-08-03 15:28:01.024619 launching /var/jdk/bin/java -cp /etc/hbase/conf:/etc/hadoop/conf:/var/phoenix-queryserver-6.0.0/bin/../phoenix-client-hbase-2.4-5.1.3.jar:/var/phoenix-queryserver-6.0.0/bin/../phoenix-queryserver-6.0.0.jar: -Dproc_phoenixserver -Dlog4j.configuration=file:/var/phoenix-queryserver-6.0.0/bin/log4j.properties -Dpsql.root.logger=INFO,DRFA -Dpsql.log.dir=/tmp/phoenix -Dpsql.log.file=phoenix-root-queryserver.log  org.apache.phoenix.queryserver.server.QueryServer</span><br><span class="line">Exception in thread "Thread-20" java.lang.RuntimeException: java.io.FileNotFoundException: /var/phoenix-queryserver-6.0.0/phoenix-client-hbase-2.4-5.1.3.jar (没有那个文件或目录)</span><br><span class="line">        at org.apache.hadoop.conf.Configuration.loadResource(Configuration.java:3021)</span><br><span class="line">        at org.apache.hadoop.conf.Configuration.loadResources(Configuration.java:2968)</span><br><span class="line">        at org.apache.hadoop.conf.Configuration.getProps(Configuration.java:2848)</span><br><span class="line">        at org.apache.hadoop.conf.Configuration.get(Configuration.java:1200)</span><br><span class="line">        at org.apache.hadoop.conf.Configuration.getTrimmed(Configuration.java:1254)</span><br><span class="line">        at org.apache.hadoop.conf.Configuration.getBoolean(Configuration.java:1660)</span><br><span class="line">        at org.apache.hadoop.hbase.HBaseConfiguration.checkDefaultsVersion(HBaseConfiguration.java:69)</span><br><span class="line">        at org.apache.hadoop.hbase.HBaseConfiguration.addHbaseResources(HBaseConfiguration.java:83)</span><br><span class="line">        at org.apache.hadoop.hbase.HBaseConfiguration.create(HBaseConfiguration.java:97)</span><br><span class="line">        at org.apache.phoenix.query.ConfigurationFactory$ConfigurationFactoryImpl$1.call(ConfigurationFactory.java:49)</span><br><span class="line">        at org.apache.phoenix.query.ConfigurationFactory$ConfigurationFactoryImpl$1.call(ConfigurationFactory.java:46)</span><br><span class="line">        at org.apache.phoenix.util.PhoenixContextExecutor.call(PhoenixContextExecutor.java:76)</span><br><span class="line">        at org.apache.phoenix.util.PhoenixContextExecutor.callWithoutPropagation(PhoenixContextExecutor.java:90)</span><br><span class="line">        at org.apache.phoenix.query.ConfigurationFactory$ConfigurationFactoryImpl.getConfiguration(ConfigurationFactory.java:46)</span><br><span class="line">        at org.apache.phoenix.jdbc.PhoenixDriver$1.run(PhoenixDriver.java:77)</span><br><span class="line">Caused by: java.io.FileNotFoundException: /var/phoenix-queryserver-6.0.0/phoenix-client-hbase-2.4-5.1.3.jar (没有那个文件或目录)</span><br><span class="line">        at java.util.zip.ZipFile.open(Native Method)</span><br><span class="line">        at java.util.zip.ZipFile.&lt;init&gt;(ZipFile.java:225)</span><br><span class="line">        at java.util.zip.ZipFile.&lt;init&gt;(ZipFile.java:155)</span><br><span class="line">        at java.util.jar.JarFile.&lt;init&gt;(JarFile.java:166)</span><br><span class="line">        at java.util.jar.JarFile.&lt;init&gt;(JarFile.java:103)</span><br><span class="line">        at sun.net.www.protocol.jar.URLJarFile.&lt;init&gt;(URLJarFile.java:93)</span><br><span class="line">        at sun.net.www.protocol.jar.URLJarFile.getJarFile(URLJarFile.java:69)</span><br><span class="line">        at sun.net.www.protocol.jar.JarFileFactory.get(JarFileFactory.java:99)</span><br><span class="line">        at sun.net.www.protocol.jar.JarURLConnection.connect(JarURLConnection.java:122)</span><br><span class="line">        at sun.net.www.protocol.jar.JarURLConnection.getInputStream(JarURLConnection.java:152)</span><br><span class="line">        at org.apache.hadoop.conf.Configuration.parse(Configuration.java:2943)</span><br><span class="line">        at org.apache.hadoop.conf.Configuration.getStreamReader(Configuration.java:3037)</span><br><span class="line">        at org.apache.hadoop.conf.Configuration.loadResource(Configuration.java:2995)</span><br><span class="line">        ... 14 more</span><br><span class="line">2023-08-03 17:44:55.845183 launching /var/jdk/bin/java -cp /etc/hbase/conf:/etc/hadoop/conf::/var/phoenix-queryserver-6.0.0/bin/../phoenix-queryserver-6.0.0.jar: -Dproc_phoenixserver -Dlog4j.configuration=file:/var/phoenix-queryserver-6.0.0/bin/log4j.properties -Dpsql.root.logger=INFO,DRFA -Dpsql.log.dir=/tmp/phoenix -Dpsql.log.file=phoenix-root-queryserver.log  org.apache.phoenix.queryserver.server.QueryServer</span><br><span class="line">错误: 找不到或无法加载主类 org.apache.phoenix.queryserver.server.QueryServer</span><br></pre></td></tr></table></figure><p>从上面日志，看到了错误问题，缺少phoenix-client-hbase-2.4-5.1.3.jar</p><h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><h4 id="复制phoenix-client-hbase-2-4-5-1-3-jar"><a href="#复制phoenix-client-hbase-2-4-5-1-3-jar" class="headerlink" title="复制phoenix-client-hbase-2.4-5.1.3.jar"></a>复制phoenix-client-hbase-2.4-5.1.3.jar</h4><p>从Phoenix 5.1.3目录下复制phoenix-client-hbase-2.4-5.1.3.jar到phoenix-queryserver-6.0.0的目录下</p><h4 id="启动Phoenix-Query-Server"><a href="#启动Phoenix-Query-Server" class="headerlink" title="启动Phoenix Query Server"></a>启动Phoenix Query Server</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/queryserver.py start</span><br></pre></td></tr></table></figure><p>启动成功</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@ump225 phoenix-queryserver-6.0.0]# bin/queryserver.py start</span><br><span class="line">starting Query Server, logging to /tmp/phoenix/phoenix-root-queryserver.log</span><br><span class="line">[root@ump225 phoenix-queryserver-6.0.0]# tail -100f /tmp/phoenix/phoenix-root-queryserver.out</span><br><span class="line">2023-08-03 23:13:57.910434 launching /var/jdk/bin/java -cp /etc/hbase/conf:/etc/hadoop/conf:/var/phoenix-queryserver-6.0.0/bin/../phoenix-client-hbase-2.4-5.1.3.jar:/var/phoenix-queryserver-6.0.0/bin/../phoenix-queryserver-6.0.0.jar: -Dproc_phoenixserver -Dlog4j.configuration=file:/var/phoenix-queryserver-6.0.0/bin/log4j.properties -Dpsql.root.logger=INFO,DRFA -Dpsql.log.dir=/tmp/phoenix -Dpsql.log.file=phoenix-root-queryserver.log  org.apache.phoenix.queryserver.server.QueryServer</span><br></pre></td></tr></table></figure><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>如何启动Phoenix Query Server 6.0.0</p><ul><li>从Phoenix 5.1.3目录下复制phoenix-client-hbase-2.4-5.1.3.jar到phoenix-queryserver-6.0.0的目录下</li><li>在Phoenix Query Server 6.0.0目录下执行bin/queryserver.py start</li><li>查看日志/tmp/phoenix/phoenix-root-queryserver.out是否启动成功</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;启动Phenix Query Server 6.0.0报错&lt;/p&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;2023-08-03 15:20:01.672088 launching /var/jdk/bin/java -cp /etc/hbase/conf:/etc/hadoop/conf::/var/phoenix-queryserver-6.0.0/bin/../phoenix-queryserver-6.0.0.jar: -Dproc_phoenixserver -Dlog4j.configuration=file:/var/phoenix-queryserver-6.0.0/bin/log4j.properties -Dpsql.root.logger=INFO,DRFA -Dpsql.log.dir=/tmp/phoenix -Dpsql.log.file=phoenix-root-queryserver.log org.apache.phoenix.queryserver.server.QueryServer&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;错误: 找不到或无法加载主类 org.apache.phoenix.queryserver.server.QueryServer&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;HBase 2.4.15&lt;/p&gt;
+&lt;p&gt;Phoenix 5.1.3&lt;/p&gt;
+&lt;h3 id=&quot;前因&quot;&gt;&lt;a href=&quot;#前因&quot; class=&quot;headerlink&quot; title=&quot;前因&quot;&gt;&lt;/a&gt;前因&lt;/h3&gt;&lt;p&gt;升级HBase 2.4.15后，之前的Phoenix 4.13.1就不能用了。从Phoenix官网看到Phoenix和HBase的版本对应。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Current release 4.16.1 can run on Apache HBase 1.3, 1.4, 1.5 and 1.6.&lt;br&gt;Current release 5.1.3 can run on Apache HBase 2.1, 2.2, 2.3, 2.4 and 2.5.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;然后Phoenix 5.1.3中没有带query server，需要单独下载query server并启动，如图&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2023/08/03/how-to-start-phoenix-query-server/query-server-installation.png&quot; alt=&quot;Query Server Installation&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Data" scheme="https://2tu.github.io/categories/Data/"/>
+    
+    
+    <category term="Phoenix Query Server 6.0.0" scheme="https://2tu.github.io/tags/Phoenix-Query-Server-6-0-0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>FTP传输到底用的哪个端口</title>
+    <link href="https://2tu.github.io/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/"/>
+    <id>https://2tu.github.io/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/</id>
+    <published>2023-06-30T11:38:35.000Z</published>
+    <updated>2024-06-28T13:28:09.931Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>最近使用Docker搭建FTP后，<strong>客户端可以连接无法列出目录，无法上传</strong>。通常我们认为FTP占用端口21用于传输控制命令，20传输数据。而我的21、20端口都有映射、开放。</p><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><ul><li><a href="https://www.docker.com/" target="_blank" rel="noopener">Docker</a> (24.0.2, build cb74dfc)</li><li><a href="https://mina.apache.org/ftpserver-project/index.html" target="_blank" rel="noopener">Apache FtpServer</a> (1.0.0)</li></ul><h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p>FileZilla连接效果如下</p><p><img src="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/log-FileZilla-pasv-port-not-open.png" alt></p><a id="more"></a><p>对应FtpServer的日志如下</p><p><img src="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/log-ftpserver-pasv-port-not-open.png" alt></p><p>根据上面信息看到前面的控制命令都正常工作，直到FtpServer收到”MLSD”时，出现异常</p><p>MLSD：获取远程服务器上的文件和目录列表（Machine List Directory）</p><p>此时，连接为PASV（被动模式），FtpServer使用端口26037与客户端连接传输数据</p><p>而26037端口并未对外开放，我们以为的只有21、20，26037又是怎么来的，在哪里配置的呢？</p><p>原来FTP分为PORT(主动模式)和PASV(被动模式)</p><h3 id="FTP主动模式和被动模式"><a href="#FTP主动模式和被动模式" class="headerlink" title="FTP主动模式和被动模式"></a>FTP主动模式和被动模式</h3><p>以下内容来源于ChatGPT</p><ol><li><p><strong>主动模式</strong></p><p>在主动模式中，客户端首先建立一个控制连接（Control Connection）到服务器的FTP控制端口（默认为21）。当需要进行数据传输时，客户端会随机选择一个高位端口（大于1023）作为数据端口，并将该端口号发送给服务器。服务器会通过控制连接告知客户端它将使用的数据端口（服务器端口）。然后，客户端会主动连接服务器的数据端口，以进行数据传输。</p></li><li><p><strong>被动模式</strong></p><p>在被动模式中，客户端首先建立一个控制连接到服务器的FTP控制端口（默认为21）。当需要进行数据传输时，服务器会随机选择一个高位端口（1024-65535）作为数据端口，并将该端口号发送给客户端。然后，客户端会通过控制连接告知服务器它将使用的数据端口（客户端端口）。服务器会主动连接客户端的数据端口，以进行数据传输。</p></li></ol><p>主动模式和被动模式的区别在于数据连接的建立方式。在主动模式中，客户端主动连接服务器的数据端口，而在被动模式中，服务器主动连接客户端的数据端口。</p><p>使用主动模式时，客户端需要打开一个高位端口用于数据连接，这可能会导致防火墙或网络设备的配置问题。而使用被动模式时，服务器打开一个高位端口用于数据连接，这样更容易通过防火墙和网络设备。</p><p>需要注意的是，FTP协议已经有一些安全性和性能问题，因此在实际应用中，往往会使用更安全和高效的替代协议，如SFTP（SSH File Transfer Protocol）或FTPS（FTP over SSL/TLS）。</p><p>附图</p><p><img src="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/PORT.jpg" alt></p><p><img src="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/PASV.jpg" alt></p><h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><p>了解到FTP主动模式、被动模式后，我们选择的是修改被动模式，因为我们无法干涉客户端的环境，客户端随机端口被防火墙拦截，我们无法处理。但被动模式下1024-65535的端口范围太大，我们不希望FtpServer开放这么多端口，那如何自定义修改呢？</p><h4 id="修改FtpServer被动模式端口"><a href="#修改FtpServer被动模式端口" class="headerlink" title="修改FtpServer被动模式端口"></a>修改FtpServer被动模式端口</h4><p>修改FtpServer的ftpd-typical.xml</p><p><img src="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/passive-port.png" alt></p><p>修改后端口范围为12200-12202，再开放映射端口后，就可以正常工作了</p><p><strong>Notice：</strong></p><p>When the client wants to use a passive data connection, the server should provide the port to use.<br> By default, FtpServer will choose any available port. However this can be overridden using the configuration for the passive data connection.<br> When the server has used up all passive ports (one per client doing passive data transfer), t<strong>he next clients will have to wait for an available port</strong>.<br> It is therefore advised to provide multiple passive ports.</p><p><a href="https://mina.apache.org/ftpserver-project/configuration_passive_ports.html" target="_blank" rel="noopener">Configure passive ports</a></p><p>是否需要根据并发来考虑端口范围呢？</p><p>其中tcpdump作用太大，得精研一下</p><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/ct_bao/article/details/110162301" target="_blank" rel="noopener">FTP的主动模式和被动模式详解</a></p><p><a href="https://datatracker.ietf.org/doc/html/rfc959" target="_blank" rel="noopener">FILE TRANSFER PROTOCOL</a></p><p><a href="https://datatracker.ietf.org/doc/html/rfc1579" target="_blank" rel="noopener">Firewall-Friendly FTP</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;最近使用Docker搭建FTP后，&lt;strong&gt;客户端可以连接无法列出目录，无法上传&lt;/strong&gt;。通常我们认为FTP占用端口21用于传输控制命令，20传输数据。而我的21、20端口都有映射、开放。&lt;/p&gt;
+&lt;h3 id=&quot;环境&quot;&gt;&lt;a href=&quot;#环境&quot; class=&quot;headerlink&quot; title=&quot;环境&quot;&gt;&lt;/a&gt;环境&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.docker.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Docker&lt;/a&gt; (24.0.2, build cb74dfc)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://mina.apache.org/ftpserver-project/index.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Apache FtpServer&lt;/a&gt; (1.0.0)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;原因分析&quot;&gt;&lt;a href=&quot;#原因分析&quot; class=&quot;headerlink&quot; title=&quot;原因分析&quot;&gt;&lt;/a&gt;原因分析&lt;/h3&gt;&lt;p&gt;FileZilla连接效果如下&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/log-FileZilla-pasv-port-not-open.png&quot; alt&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Java" scheme="https://2tu.github.io/categories/Java/"/>
+    
+    
+    <category term="FTP" scheme="https://2tu.github.io/tags/FTP/"/>
+    
+    <category term="EPASV" scheme="https://2tu.github.io/tags/EPASV/"/>
+    
+  </entry>
+  
+</feed>
