@@ -74,4 +74,4 @@ theme: landscape
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
 - type: git
-  repo: git@github.com:2tu/2tu.github.io.git
+  repo: git@github.com:zongbintu/2tu.github.io.git
