@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>FTP传输到底用的哪个端口 | 程序猜想</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="问题最近使用Docker搭建FTP后，客户端可以连接无法列出目录，无法上传。通常我们认为FTP占用端口21用于传输控制命令，20传输数据。而我的21、20端口都有映射、开放。 环境 Docker (24.0.2, build cb74dfc) Apache FtpServer (1.0.0)  原因分析FileZilla连接效果如下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FTP传输到底用的哪个端口">
+<meta property="og:url" content="https://2tu.github.io/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/index.html">
+<meta property="og:site_name" content="程序猜想">
+<meta property="og:description" content="问题最近使用Docker搭建FTP后，客户端可以连接无法列出目录，无法上传。通常我们认为FTP占用端口21用于传输控制命令，20传输数据。而我的21、20端口都有映射、开放。 环境 Docker (24.0.2, build cb74dfc) Apache FtpServer (1.0.0)  原因分析FileZilla连接效果如下">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://2tu.github.io/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/log-FileZilla-pasv-port-not-open.png">
+<meta property="og:image" content="https://2tu.github.io/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/log-ftpserver-pasv-port-not-open.png">
+<meta property="og:image" content="https://2tu.github.io/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/PORT.jpg">
+<meta property="og:image" content="https://2tu.github.io/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/PASV.jpg">
+<meta property="og:image" content="https://2tu.github.io/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/passive-port.png">
+<meta property="article:published_time" content="2023-06-30T11:38:35.000Z">
+<meta property="article:modified_time" content="2026-01-15T12:42:41.754Z">
+<meta property="article:author" content="2Tu">
+<meta property="article:tag" content="FTP">
+<meta property="article:tag" content="EPASV">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://2tu.github.io/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/log-FileZilla-pasv-port-not-open.png">
+  
+    <link rel="alternate" href="/" title="程序猜想">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="程序猜想" type="application/atom+xml">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">程序猜想</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">瞎写的程序员</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://2tu.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-which-port-is-used-to-data-transmission-by-ftp" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/" class="article-date">
+  <time class="dt-published" datetime="2023-06-30T11:38:35.000Z" itemprop="datePublished">2023-06-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      FTP传输到底用的哪个端口
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>最近使用Docker搭建FTP后，<strong>客户端可以连接无法列出目录，无法上传</strong>。通常我们认为FTP占用端口21用于传输控制命令，20传输数据。而我的21、20端口都有映射、开放。</p>
+<h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><ul>
+<li><a href="https://www.docker.com/" target="_blank" rel="noopener">Docker</a> (24.0.2, build cb74dfc)</li>
+<li><a href="https://mina.apache.org/ftpserver-project/index.html" target="_blank" rel="noopener">Apache FtpServer</a> (1.0.0)</li>
+</ul>
+<h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p>FileZilla连接效果如下</p>
+<p><img src="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/log-FileZilla-pasv-port-not-open.png" alt></p>
+<a id="more"></a>
+<p>对应FtpServer的日志如下</p>
+<p><img src="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/log-ftpserver-pasv-port-not-open.png" alt></p>
+<p>根据上面信息看到前面的控制命令都正常工作，直到FtpServer收到”MLSD”时，出现异常</p>
+<p>MLSD：获取远程服务器上的文件和目录列表（Machine List Directory）</p>
+<p>此时，连接为PASV（被动模式），FtpServer使用端口26037与客户端连接传输数据</p>
+<p>而26037端口并未对外开放，我们以为的只有21、20，26037又是怎么来的，在哪里配置的呢？</p>
+<p>原来FTP分为PORT(主动模式)和PASV(被动模式)</p>
+<h3 id="FTP主动模式和被动模式"><a href="#FTP主动模式和被动模式" class="headerlink" title="FTP主动模式和被动模式"></a>FTP主动模式和被动模式</h3><p>以下内容来源于ChatGPT</p>
+<ol>
+<li><p><strong>主动模式</strong></p>
+<p>在主动模式中，客户端首先建立一个控制连接（Control Connection）到服务器的FTP控制端口（默认为21）。当需要进行数据传输时，客户端会随机选择一个高位端口（大于1023）作为数据端口，并将该端口号发送给服务器。服务器会通过控制连接告知客户端它将使用的数据端口（服务器端口）。然后，客户端会主动连接服务器的数据端口，以进行数据传输。</p>
+</li>
+<li><p><strong>被动模式</strong></p>
+<p>在被动模式中，客户端首先建立一个控制连接到服务器的FTP控制端口（默认为21）。当需要进行数据传输时，服务器会随机选择一个高位端口（1024-65535）作为数据端口，并将该端口号发送给客户端。然后，客户端会通过控制连接告知服务器它将使用的数据端口（客户端端口）。服务器会主动连接客户端的数据端口，以进行数据传输。</p>
+</li>
+</ol>
+<p>主动模式和被动模式的区别在于数据连接的建立方式。在主动模式中，客户端主动连接服务器的数据端口，而在被动模式中，服务器主动连接客户端的数据端口。</p>
+<p>使用主动模式时，客户端需要打开一个高位端口用于数据连接，这可能会导致防火墙或网络设备的配置问题。而使用被动模式时，服务器打开一个高位端口用于数据连接，这样更容易通过防火墙和网络设备。</p>
+<p>需要注意的是，FTP协议已经有一些安全性和性能问题，因此在实际应用中，往往会使用更安全和高效的替代协议，如SFTP（SSH File Transfer Protocol）或FTPS（FTP over SSL/TLS）。</p>
+<p>附图</p>
+<p><img src="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/PORT.jpg" alt></p>
+<p><img src="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/PASV.jpg" alt></p>
+<h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><p>了解到FTP主动模式、被动模式后，我们选择的是修改被动模式，因为我们无法干涉客户端的环境，客户端随机端口被防火墙拦截，我们无法处理。但被动模式下1024-65535的端口范围太大，我们不希望FtpServer开放这么多端口，那如何自定义修改呢？</p>
+<h4 id="修改FtpServer被动模式端口"><a href="#修改FtpServer被动模式端口" class="headerlink" title="修改FtpServer被动模式端口"></a>修改FtpServer被动模式端口</h4><p>修改FtpServer的ftpd-typical.xml</p>
+<p><img src="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/passive-port.png" alt></p>
+<p>修改后端口范围为12200-12202，再开放映射端口后，就可以正常工作了</p>
+<p><strong>Notice：</strong></p>
+<p>When the client wants to use a passive data connection, the server should provide the port to use.<br> By default, FtpServer will choose any available port. However this can be overridden using the configuration for the passive data connection.<br> When the server has used up all passive ports (one per client doing passive data transfer), t<strong>he next clients will have to wait for an available port</strong>.<br> It is therefore advised to provide multiple passive ports.</p>
+<p><a href="https://mina.apache.org/ftpserver-project/configuration_passive_ports.html" target="_blank" rel="noopener">Configure passive ports</a></p>
+<p>是否需要根据并发来考虑端口范围呢？</p>
+<p>其中tcpdump作用太大，得精研一下</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/ct_bao/article/details/110162301" target="_blank" rel="noopener">FTP的主动模式和被动模式详解</a></p>
+<p><a href="https://datatracker.ietf.org/doc/html/rfc959" target="_blank" rel="noopener">FILE TRANSFER PROTOCOL</a></p>
+<p><a href="https://datatracker.ietf.org/doc/html/rfc1579" target="_blank" rel="noopener">Firewall-Friendly FTP</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/" data-id="cmkffwwkl006zqm2ch47x1884" data-title="FTP传输到底用的哪个端口" class="article-share-link">分享</a>
+      
+      
+        <a href="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EPASV/" rel="tag">EPASV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FTP/" rel="tag">FTP</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/08/03/how-to-start-phoenix-query-server/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          如何启动Phoenix Query Server
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/06/24/what-cause-hibernate-dialect-not-set/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">服务器时间错误导致MySQL证书错误问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+  <section id="comments" class="vcomment">
+
+  </section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data/">Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Other/">Other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Rich/">Rich</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/02-00-00-00-00-00/" rel="tag">02:00:00:00:00:00</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/0kb/" rel="tag">0kb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/301/" rel="tag">301</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/302/" rel="tag">302</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/APKParser/" rel="tag">APKParser</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AXMLPrinter2/" rel="tag">AXMLPrinter2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Activity/" rel="tag">Activity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-TV/" rel="tag">Android TV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AndroidStudio/" rel="tag">AndroidStudio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Aviator/" rel="tag">Aviator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BCM4331/" rel="tag">BCM4331</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bean/" rel="tag">Bean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CJCommunicationsException/" rel="tag">CJCommunicationsException</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compiler/" rel="tag">Compiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DataBinding/" rel="tag">DataBinding</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DataX/" rel="tag">DataX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DateFormat/" rel="tag">DateFormat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DebugNativeLibs/" rel="tag">DebugNativeLibs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Debugger/" rel="tag">Debugger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Deferred-Deep-Link/" rel="tag">Deferred Deep Link</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DownloadManager/" rel="tag">DownloadManager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Links/" rel="tag">Dynamic Links</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EPASV/" rel="tag">EPASV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Excel/" rel="tag">Excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FTP/" rel="tag">FTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FeignClient/" rel="tag">FeignClient</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/" rel="tag">Gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gson/" rel="tag">Gson</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HBase/" rel="tag">HBase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hibernate/" rel="tag">Hibernate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/How-to-Get-Rich/" rel="tag">How to Get Rich</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Http-Status-Code/" rel="tag">Http Status Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HttpClient/" rel="tag">HttpClient</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Interview/" rel="tag">Interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JNI/" rel="tag">JNI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JitPack/" rel="tag">JitPack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kids/" rel="tag">Kids</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MGR/" rel="tag">MGR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/" rel="tag">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Makefile/" rel="tag">Makefile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Manjaro/" rel="tag">Manjaro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mock/" rel="tag">Mock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NDK/" rel="tag">NDK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NODE-ENV/" rel="tag">NODE_ENV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Native/" rel="tag">Native</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Naval/" rel="tag">Naval</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js%E7%89%88%E6%9C%AC/" rel="tag">Node.js版本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSS/" rel="tag">OSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Override/" rel="tag">Override</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Phoenix-Query-Server-6-0-0/" rel="tag">Phoenix Query Server 6.0.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qualifier/" rel="tag">Qualifier</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RestTemplate/" rel="tag">RestTemplate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RestoreInstance/" rel="tag">RestoreInstance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK/" rel="tag">SDK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK%E6%9B%B4%E6%96%B0%E7%BB%99%E5%BC%80%E5%8F%91%E8%80%85/" rel="tag">SDK更新给开发者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SPI/" rel="tag">SPI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ShardingSphere/" rel="tag">ShardingSphere</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SimpleDateFormat/" rel="tag">SimpleDateFormat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Singleton/" rel="tag">Singleton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBatch/" rel="tag">SpringBatch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/StepScope/" rel="tag">StepScope</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadPoolExecutor/" rel="tag">ThreadPoolExecutor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Time-Zone/" rel="tag">Time Zone</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WEBGL-debug-renderer-info/" rel="tag">WEBGL_debug_renderer_info</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WIFI/" rel="tag">WIFI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebGL/" rel="tag">WebGL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/" rel="tag">WebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XML/" rel="tag">XML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/YYYY/" rel="tag">YYYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/In/" rel="tag">_In_</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Out/" rel="tag">_Out_</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/antd/" rel="tag">antd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/brew/" rel="tag">brew</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/" rel="tag">chrome</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cross-env/" rel="tag">cross-env</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dom4j/" rel="tag">dom4j</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/druid/" rel="tag">druid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experimental-webgl/" rel="tag">experimental-webgl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fit/" rel="tag">fit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flavor/" rel="tag">flavor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fullgc/" rel="tag">fullgc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github-api/" rel="tag">github api</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ip/" rel="tag">ip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libjpeg-turbo/" rel="tag">libjpeg-turbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lxml/" rel="tag">lxml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/manifest/" rel="tag">manifest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/manjaro/" rel="tag">manjaro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mockjs/" rel="tag">mockjs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/module/" rel="tag">module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nvm/" rel="tag">nvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/onActivityForResult/" rel="tag">onActivityForResult</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/onPageFinished/" rel="tag">onPageFinished</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scope/" rel="tag">scope</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/so/" rel="tag">so</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spawn/" rel="tag">spawn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/v36/" rel="tag">v36</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/versionCode/" rel="tag">versionCode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E4%BD%8D%E6%95%B0/" rel="tag">中位数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%A8%8B%E6%95%B0/" rel="tag">中程数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E5%8A%A8push/" rel="tag">主动push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E8%84%B8%E6%94%AF%E4%BB%98/" rel="tag">人脸支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BC%97%E6%95%B0/" rel="tag">众数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%BC%E5%AE%B9%E9%97%AE%E9%A2%98/" rel="tag">兼容问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%8F%82%E6%95%B0/" rel="tag">动态参数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8C%E6%AD%A5%E6%94%AF%E4%BB%98/" rel="tag">同步支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/" rel="tag">命名空间</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9D%87%E5%80%BC/" rel="tag">均值</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E5%BD%A2%E5%8F%82/" rel="tag">多形参</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%B4%E6%96%87%E4%BB%B6/" rel="tag">头文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A6%82%E4%BD%95%E4%B8%BB%E5%8A%A8PUSH/" rel="tag">如何主动PUSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%BD%E8%A1%A8/" rel="tag">宽表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E6%94%AF%E4%BB%98/" rel="tag">异步支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%95%E6%B5%81/" rel="tag">引流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%AF%E4%BB%98/" rel="tag">支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%86%B3%E7%AD%96/" rel="tag">数据决策</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%98%A5%E8%BF%90%E4%BA%A4%E9%80%9A%E6%83%85%E5%86%B5/" rel="tag">春运交通情况</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/" rel="tag">智能硬件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%89%E7%BC%BA%E9%99%B7%E7%9A%84OpenSSL%E7%89%88%E6%9C%AC/" rel="tag">有缺陷的OpenSSL版本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%81%E5%B7%AE/" rel="tag">极差</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/" rel="tag">构造函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%AA%E8%A1%A8/" rel="tag">横表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B0%B4%E5%8D%B0/" rel="tag">水印</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C/" rel="tag">用户体验</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AA%84%E8%A1%A8/" rel="tag">窄表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AB%96%E8%A1%A8/" rel="tag">竖表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%B5%E8%A1%A8/" rel="tag">纵表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%93%9D%E7%89%99/" rel="tag">蓝牙</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E8%B4%B9%E5%A5%97%E9%A4%90/" rel="tag">资费套餐</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A6%99%E6%B8%AF%E5%8D%A1/" rel="tag">香港卡</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/02-00-00-00-00-00/" style="font-size: 10px;">02:00:00:00:00:00</a> <a href="/tags/0kb/" style="font-size: 10px;">0kb</a> <a href="/tags/301/" style="font-size: 10px;">301</a> <a href="/tags/302/" style="font-size: 10px;">302</a> <a href="/tags/APKParser/" style="font-size: 10px;">APKParser</a> <a href="/tags/AXMLPrinter2/" style="font-size: 10px;">AXMLPrinter2</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android-TV/" style="font-size: 10px;">Android TV</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Aviator/" style="font-size: 10px;">Aviator</a> <a href="/tags/BCM4331/" style="font-size: 10px;">BCM4331</a> <a href="/tags/Bean/" style="font-size: 10px;">Bean</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/CJCommunicationsException/" style="font-size: 10px;">CJCommunicationsException</a> <a href="/tags/Compiler/" style="font-size: 10px;">Compiler</a> <a href="/tags/DataBinding/" style="font-size: 10px;">DataBinding</a> <a href="/tags/DataX/" style="font-size: 10px;">DataX</a> <a href="/tags/DateFormat/" style="font-size: 10px;">DateFormat</a> <a href="/tags/DebugNativeLibs/" style="font-size: 10px;">DebugNativeLibs</a> <a href="/tags/Debugger/" style="font-size: 10px;">Debugger</a> <a href="/tags/Deferred-Deep-Link/" style="font-size: 10px;">Deferred Deep Link</a> <a href="/tags/DownloadManager/" style="font-size: 10px;">DownloadManager</a> <a href="/tags/Dynamic-Links/" style="font-size: 10px;">Dynamic Links</a> <a href="/tags/EPASV/" style="font-size: 10px;">EPASV</a> <a href="/tags/Excel/" style="font-size: 10px;">Excel</a> <a href="/tags/FTP/" style="font-size: 10px;">FTP</a> <a href="/tags/FeignClient/" style="font-size: 10px;">FeignClient</a> <a href="/tags/Gradle/" style="font-size: 16.67px;">Gradle</a> <a href="/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/tags/HBase/" style="font-size: 10px;">HBase</a> <a href="/tags/Hibernate/" style="font-size: 10px;">Hibernate</a> <a href="/tags/How-to-Get-Rich/" style="font-size: 16.67px;">How to Get Rich</a> <a href="/tags/Http-Status-Code/" style="font-size: 10px;">Http Status Code</a> <a href="/tags/HttpClient/" style="font-size: 10px;">HttpClient</a> <a href="/tags/Interview/" style="font-size: 10px;">Interview</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/JitPack/" style="font-size: 10px;">JitPack</a> <a href="/tags/Kids/" style="font-size: 10px;">Kids</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MGR/" style="font-size: 10px;">MGR</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/Makefile/" style="font-size: 10px;">Makefile</a> <a href="/tags/Manjaro/" style="font-size: 13.33px;">Manjaro</a> <a href="/tags/Mock/" style="font-size: 10px;">Mock</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/NDK/" style="font-size: 10px;">NDK</a> <a href="/tags/NODE-ENV/" style="font-size: 10px;">NODE_ENV</a> <a href="/tags/Native/" style="font-size: 10px;">Native</a> <a href="/tags/Naval/" style="font-size: 16.67px;">Naval</a> <a href="/tags/Node-js%E7%89%88%E6%9C%AC/" style="font-size: 10px;">Node.js版本</a> <a href="/tags/OSS/" style="font-size: 10px;">OSS</a> <a href="/tags/Override/" style="font-size: 10px;">Override</a> <a href="/tags/Phoenix-Query-Server-6-0-0/" style="font-size: 10px;">Phoenix Query Server 6.0.0</a> <a href="/tags/Qualifier/" style="font-size: 10px;">Qualifier</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/RestTemplate/" style="font-size: 10px;">RestTemplate</a> <a href="/tags/RestoreInstance/" style="font-size: 10px;">RestoreInstance</a> <a href="/tags/SDK/" style="font-size: 10px;">SDK</a> <a href="/tags/SDK%E6%9B%B4%E6%96%B0%E7%BB%99%E5%BC%80%E5%8F%91%E8%80%85/" style="font-size: 10px;">SDK更新给开发者</a> <a href="/tags/SPI/" style="font-size: 10px;">SPI</a> <a href="/tags/ShardingSphere/" style="font-size: 10px;">ShardingSphere</a> <a href="/tags/SimpleDateFormat/" style="font-size: 10px;">SimpleDateFormat</a> <a href="/tags/Singleton/" style="font-size: 10px;">Singleton</a> <a href="/tags/Spring/" style="font-size: 13.33px;">Spring</a> <a href="/tags/SpringBatch/" style="font-size: 10px;">SpringBatch</a> <a href="/tags/StepScope/" style="font-size: 10px;">StepScope</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 10px;">ThreadPoolExecutor</a> <a href="/tags/Time-Zone/" style="font-size: 10px;">Time Zone</a> <a href="/tags/WEBGL-debug-renderer-info/" style="font-size: 10px;">WEBGL_debug_renderer_info</a> <a href="/tags/WIFI/" style="font-size: 10px;">WIFI</a> <a href="/tags/WebGL/" style="font-size: 10px;">WebGL</a> <a href="/tags/WebView/" style="font-size: 13.33px;">WebView</a> <a href="/tags/XML/" style="font-size: 10px;">XML</a> <a href="/tags/YYYY/" style="font-size: 10px;">YYYY</a> <a href="/tags/In/" style="font-size: 10px;">_In_</a> <a href="/tags/Out/" style="font-size: 10px;">_Out_</a> <a href="/tags/antd/" style="font-size: 10px;">antd</a> <a href="/tags/brew/" style="font-size: 10px;">brew</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/cross-env/" style="font-size: 10px;">cross-env</a> <a href="/tags/dom4j/" style="font-size: 10px;">dom4j</a> <a href="/tags/druid/" style="font-size: 10px;">druid</a> <a href="/tags/experimental-webgl/" style="font-size: 10px;">experimental-webgl</a> <a href="/tags/fit/" style="font-size: 10px;">fit</a> <a href="/tags/flavor/" style="font-size: 10px;">flavor</a> <a href="/tags/fullgc/" style="font-size: 13.33px;">fullgc</a> <a href="/tags/github-api/" style="font-size: 10px;">github api</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/ip/" style="font-size: 10px;">ip</a> <a href="/tags/libjpeg-turbo/" style="font-size: 10px;">libjpeg-turbo</a> <a href="/tags/lxml/" style="font-size: 10px;">lxml</a> <a href="/tags/manifest/" style="font-size: 10px;">manifest</a> <a href="/tags/manjaro/" style="font-size: 10px;">manjaro</a> <a href="/tags/mockjs/" style="font-size: 10px;">mockjs</a> <a href="/tags/module/" style="font-size: 10px;">module</a> <a href="/tags/nvm/" style="font-size: 10px;">nvm</a> <a href="/tags/onActivityForResult/" style="font-size: 10px;">onActivityForResult</a> <a href="/tags/onPageFinished/" style="font-size: 10px;">onPageFinished</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/scope/" style="font-size: 10px;">scope</a> <a href="/tags/so/" style="font-size: 10px;">so</a> <a href="/tags/spawn/" style="font-size: 10px;">spawn</a> <a href="/tags/v36/" style="font-size: 10px;">v36</a> <a href="/tags/versionCode/" style="font-size: 10px;">versionCode</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/%E4%B8%AD%E4%BD%8D%E6%95%B0/" style="font-size: 10px;">中位数</a> <a href="/tags/%E4%B8%AD%E7%A8%8B%E6%95%B0/" style="font-size: 10px;">中程数</a> <a href="/tags/%E4%B8%BB%E5%8A%A8push/" style="font-size: 10px;">主动push</a> <a href="/tags/%E4%BA%BA%E8%84%B8%E6%94%AF%E4%BB%98/" style="font-size: 16.67px;">人脸支付</a> <a href="/tags/%E4%BC%97%E6%95%B0/" style="font-size: 10px;">众数</a> <a href="/tags/%E5%85%BC%E5%AE%B9%E9%97%AE%E9%A2%98/" style="font-size: 10px;">兼容问题</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8F%82%E6%95%B0/" style="font-size: 10px;">动态参数</a> <a href="/tags/%E5%90%8C%E6%AD%A5%E6%94%AF%E4%BB%98/" style="font-size: 10px;">同步支付</a> <a href="/tags/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/" style="font-size: 10px;">命名空间</a> <a href="/tags/%E5%9D%87%E5%80%BC/" style="font-size: 10px;">均值</a> <a href="/tags/%E5%A4%9A%E5%BD%A2%E5%8F%82/" style="font-size: 10px;">多形参</a> <a href="/tags/%E5%A4%B4%E6%96%87%E4%BB%B6/" style="font-size: 10px;">头文件</a> <a href="/tags/%E5%A6%82%E4%BD%95%E4%B8%BB%E5%8A%A8PUSH/" style="font-size: 10px;">如何主动PUSH</a> <a href="/tags/%E5%AE%BD%E8%A1%A8/" style="font-size: 10px;">宽表</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E6%94%AF%E4%BB%98/" style="font-size: 10px;">异步支付</a> <a href="/tags/%E5%BC%95%E6%B5%81/" style="font-size: 10px;">引流</a> <a href="/tags/%E6%94%AF%E4%BB%98/" style="font-size: 10px;">支付</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%86%B3%E7%AD%96/" style="font-size: 10px;">数据决策</a> <a href="/tags/%E6%98%A5%E8%BF%90%E4%BA%A4%E9%80%9A%E6%83%85%E5%86%B5/" style="font-size: 10px;">春运交通情况</a> <a href="/tags/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/" style="font-size: 10px;">智能硬件</a> <a href="/tags/%E6%9C%89%E7%BC%BA%E9%99%B7%E7%9A%84OpenSSL%E7%89%88%E6%9C%AC/" style="font-size: 10px;">有缺陷的OpenSSL版本</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 10px;">权限</a> <a href="/tags/%E6%9E%81%E5%B7%AE/" style="font-size: 10px;">极差</a> <a href="/tags/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/" style="font-size: 10px;">构造函数</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%A8%AA%E8%A1%A8/" style="font-size: 13.33px;">横表</a> <a href="/tags/%E6%B0%B4%E5%8D%B0/" style="font-size: 10px;">水印</a> <a href="/tags/%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C/" style="font-size: 10px;">用户体验</a> <a href="/tags/%E7%AA%84%E8%A1%A8/" style="font-size: 10px;">窄表</a> <a href="/tags/%E7%AB%96%E8%A1%A8/" style="font-size: 10px;">竖表</a> <a href="/tags/%E7%BA%B5%E8%A1%A8/" style="font-size: 13.33px;">纵表</a> <a href="/tags/%E8%93%9D%E7%89%99/" style="font-size: 10px;">蓝牙</a> <a href="/tags/%E8%B5%84%E8%B4%B9%E5%A5%97%E9%A4%90/" style="font-size: 10px;">资费套餐</a> <a href="/tags/%E9%A6%99%E6%B8%AF%E5%8D%A1/" style="font-size: 10px;">香港卡</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">十二月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">六月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/02/">二月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">四月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/01/15/how-to-search-application-on-manjaro/">Manjaro怎么把安装的程序放到Applications</a>
+          </li>
+        
+          <li>
+            <a href="/2026/01/13/how-to-install-lxml-on-manjaro/">manjaro安装lxml报错解决</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/31/Free-Markets-Are-Intrinsic-to-Humans/">Free Markets Are Intrinsic to Humans(自由市场是人类本性)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/31/install-BCM4331-driver-on-manjaro/">install-BCM4331-driver-on-manjaro</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/30/Make-Abundance-for-the-World/">Make Abundance for the World(为世界创造富足)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 2Tu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+<script>
+    var GUEST_INFO = ['nick','mail','link'];
+    var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+        return GUEST_INFO.indexOf(item) > -1
+    });
+    var notify = 'false' == true;
+    var verify = 'false' == true;
+    new Valine({
+        el: '.vcomment',
+        notify: notify,
+        verify: verify,
+        appId: "QAEjRRlPjwiwbrf8CnJ2KpP7-gzGzoHsz",
+        appKey: "2mDCN9Rgxlu7Jzcfg8HkJmy6",
+        placeholder: "Just go go",
+        pageSize:'10',
+        avatar:'mm',
+        lang:'zh-cn'
+    });
+</script>
+
+  </div>
+</body>
+</html>

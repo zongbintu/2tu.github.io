@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>程序猜想</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="成长就是不断骂过去的自己傻逼,一路认可过去的自己过去的选择">
+<meta property="og:type" content="website">
+<meta property="og:title" content="程序猜想">
+<meta property="og:url" content="https://2tu.github.io/index.html">
+<meta property="og:site_name" content="程序猜想">
+<meta property="og:description" content="成长就是不断骂过去的自己傻逼,一路认可过去的自己过去的选择">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="2Tu">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/" title="程序猜想">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="程序猜想" type="application/atom+xml">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">程序猜想</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">瞎写的程序员</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://2tu.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-how-to-search-application-on-manjaro" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/01/15/how-to-search-application-on-manjaro/" class="article-date">
+  <time class="dt-published" datetime="2026-01-15T12:26:37.000Z" itemprop="datePublished">2026-01-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Other/">Other</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/01/15/how-to-search-application-on-manjaro/">Manjaro怎么把安装的程序放到Applications</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>自己下载安装的程序在Manjaro的Applications搜索不到，每次从opt目录点进去打开太麻烦了。解决需要手动创建一个 .desktop 快捷方式文件</p>
+<ol>
+<li>创建桌面入口文件<br>  在终端中使用编辑器（如 nano）在用户应用目录中创建一个新文件：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi ~/.local/share/applications/软件名.desktop</span><br></pre></td></tr></table></figure></li>
+<li>编写文件内容<br>将以下模板复制并粘贴到文件中，根据实际情况修改路径：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[Desktop Entry]</span><br><span class="line">Version=1.0</span><br><span class="line">Name=你的应用名称 (e.g., IntelliJ IDEA)</span><br><span class="line">Comment=你的应用描述 (e.g., Powerful IDE)</span><br><span class="line">Exec=/opt/your-app-name/bin/your-executable-file %U  # 替换成你的实际路径</span><br><span class="line">Icon=/opt/your-app-name/icon.png # 替换成你的图标路径 (可选)</span><br><span class="line">Terminal=false</span><br><span class="line">Type=Application</span><br><span class="line">Categories=Development;IDE; # 替换成适合你应用的分类</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>关键字段说明：<br>Name: 搜索栏中显示的名称。<br>Exec: 程序启动文件的绝对路径。 %U 支持一次性打开多个文件或链接。<br>Icon: 图标文件的路径（通常在 /opt 目录下可以找到 .png 或 .svg 文件）。<br>Terminal: 如果程序需要打开终端运行，设为 true；普通图形界面程序设为 false。</p>
+<ol start="3">
+<li>设置可执行<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x ~/.local/share/applications/软件名.desktop</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2026/01/15/how-to-search-application-on-manjaro/" data-id="cmkffwwjl003yqm2cat4c1z3t" data-title="Manjaro怎么把安装的程序放到Applications" class="article-share-link">分享</a>
+      
+      
+        <a href="/2026/01/15/how-to-search-application-on-manjaro/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2026/01/15/how-to-search-application-on-manjaro/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Manjaro/" rel="tag">Manjaro</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-how-to-install-lxml-on-manjaro" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/01/13/how-to-install-lxml-on-manjaro/" class="article-date">
+  <time class="dt-published" datetime="2026-01-13T08:27:27.000Z" itemprop="datePublished">2026-01-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/01/13/how-to-install-lxml-on-manjaro/">manjaro安装lxml报错解决</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>OS: Manjaro xfc<br>Python: 3.13.11<br>lxml: 4.9.7<br>通过requirements.txt文件安装报错<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br></pre></td><td class="code"><pre><span class="line">[output] Collecting lxml==4.9.4</span><br><span class="line">[output]   Using cached lxml-4.9.4.tar.gz (3.6 MB)</span><br><span class="line">[output]   Installing build dependencies: started</span><br><span class="line">[output]   Installing build dependencies: finished with status 'done'</span><br><span class="line">[output]   Getting requirements to build wheel: started</span><br><span class="line">[output]   Getting requirements to build wheel: finished with status 'done'</span><br><span class="line">[output]   Preparing metadata (pyproject.toml): started</span><br><span class="line">[output]   Preparing metadata (pyproject.toml): finished with status 'done'</span><br><span class="line">[output] Collecting openpyxl==2.5.12</span><br><span class="line">[output]   Using cached openpyxl-2.5.12-py2.py3-none-any.whl</span><br><span class="line">[output] Collecting requests==2.31.0</span><br><span class="line">[output]   Using cached requests-2.31.0-py3-none-any.whl.metadata (4.6 kB)</span><br><span class="line">[output] Collecting jdcal (from openpyxl==2.5.12)</span><br><span class="line">[output]   Using cached jdcal-1.4.1-py2.py3-none-any.whl.metadata (5.0 kB)</span><br><span class="line">[output] Collecting et_xmlfile (from openpyxl==2.5.12)</span><br><span class="line">[output]   Using cached et_xmlfile-2.0.0-py3-none-any.whl.metadata (2.7 kB)</span><br><span class="line">[output] Collecting charset-normalizer&lt;4,&gt;=2 (from requests==2.31.0)</span><br><span class="line">[output]   Using cached charset_normalizer-3.4.4-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (37 kB)</span><br><span class="line">[output] Collecting idna&lt;4,&gt;=2.5 (from requests==2.31.0)</span><br><span class="line">[output]   Using cached idna-3.11-py3-none-any.whl.metadata (8.4 kB)</span><br><span class="line">[output] Collecting urllib3&lt;3,&gt;=1.21.1 (from requests==2.31.0)</span><br><span class="line">[output]   Using cached urllib3-2.6.3-py3-none-any.whl.metadata (6.9 kB)</span><br><span class="line">[output] Collecting certifi&gt;=2017.4.17 (from requests==2.31.0)</span><br><span class="line">[output]   Using cached certifi-2026.1.4-py3-none-any.whl.metadata (2.5 kB)</span><br><span class="line">[output] Using cached requests-2.31.0-py3-none-any.whl (62 kB)</span><br><span class="line">[output] Using cached certifi-2026.1.4-py3-none-any.whl (152 kB)</span><br><span class="line">[output] Using cached charset_normalizer-3.4.4-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (153 kB)</span><br><span class="line">[output] Using cached idna-3.11-py3-none-any.whl (71 kB)</span><br><span class="line">[output] Using cached urllib3-2.6.3-py3-none-any.whl (131 kB)</span><br><span class="line">[output] Using cached et_xmlfile-2.0.0-py3-none-any.whl (18 kB)</span><br><span class="line">[output] Using cached jdcal-1.4.1-py2.py3-none-any.whl (9.5 kB)</span><br><span class="line">[output] Building wheels for collected packages: lxml</span><br><span class="line">[output]   Building wheel for lxml (pyproject.toml): started</span><br><span class="line">[output]   Building wheel for lxml (pyproject.toml): finished with status 'error'</span><br><span class="line">[output] Failed to build lxml</span><br><span class="line"> [error]   error: subprocess-exited-with-error</span><br><span class="line"> [error]   </span><br><span class="line"> [error]   × Building wheel for lxml (pyproject.toml) did not run successfully.</span><br><span class="line"> [error]   │ exit code: 1</span><br><span class="line"> [error]   ╰─&gt; [425 lines of output]</span><br><span class="line"> [error]       &lt;string&gt;:67: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools&lt;81.</span><br><span class="line"> [error]       /tmp/pip-build-env-2w5tteta/overlay/lib/python3.13/site-packages/setuptools/dist.py:759: SetuptoolsDeprecationWarning: License classifiers are deprecated.</span><br><span class="line"> [error]       !!</span><br><span class="line"> [error]       </span><br><span class="line"> [error]               ********************************************************************************</span><br><span class="line"> [error]               Please consider removing the following classifiers in favor of a SPDX license expression:</span><br><span class="line"> [error]       </span><br><span class="line"> [error]               License :: OSI Approved :: BSD License</span><br><span class="line"> [error]       </span><br><span class="line"> [error]               See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.</span><br><span class="line"> [error]               ********************************************************************************</span><br><span class="line"> [error]       </span><br><span class="line"> [error]       !!</span><br><span class="line"> [error]         self._finalize_license_expression()</span><br><span class="line"> [error]       Building lxml version 4.9.4.</span><br><span class="line"> [error]       Building without Cython.</span><br><span class="line"> [error]       Building against libxml2 2.15.1 and libxslt 1.1.45</span><br><span class="line"> [error]       running bdist_wheel</span><br><span class="line"> [error]       running build</span><br><span class="line"> [error]       running build_py</span><br><span class="line"> [error]       creating build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/usedoctest.py -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/sax.py -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/pyclasslookup.py -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/doctestcompare.py -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/cssselect.py -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/builder.py -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/_elementpath.py -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/__init__.py -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/ElementInclude.py -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       creating build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/__init__.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       creating build/lib.linux-x86_64-cpython-313/lxml/html</span><br><span class="line"> [error]       copying src/lxml/html/usedoctest.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/html</span><br><span class="line"> [error]       copying src/lxml/html/soupparser.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/html</span><br><span class="line"> [error]       copying src/lxml/html/html5parser.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/html</span><br><span class="line"> [error]       copying src/lxml/html/formfill.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/html</span><br><span class="line"> [error]       copying src/lxml/html/diff.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/html</span><br><span class="line"> [error]       copying src/lxml/html/defs.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/html</span><br><span class="line"> [error]       copying src/lxml/html/clean.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/html</span><br><span class="line"> [error]       copying src/lxml/html/builder.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/html</span><br><span class="line"> [error]       copying src/lxml/html/_setmixin.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/html</span><br><span class="line"> [error]       copying src/lxml/html/_html5builder.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/html</span><br><span class="line"> [error]       copying src/lxml/html/_diffcommand.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/html</span><br><span class="line"> [error]       copying src/lxml/html/__init__.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/html</span><br><span class="line"> [error]       copying src/lxml/html/ElementSoup.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/html</span><br><span class="line"> [error]       creating build/lib.linux-x86_64-cpython-313/lxml/isoschematron</span><br><span class="line"> [error]       copying src/lxml/isoschematron/__init__.py -&gt; build/lib.linux-x86_64-cpython-313/lxml/isoschematron</span><br><span class="line"> [error]       copying src/lxml/etree.h -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/etree_api.h -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/lxml.etree.h -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/lxml.etree_api.h -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/objectify.pyx -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/etree.pyx -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/xsltext.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/xslt.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/xpath.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/xmlschema.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/xmlid.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/xmlerror.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/xinclude.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/serializer.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/schematron.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/saxparser.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/relaxng.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/readonlytree.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/public-api.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/proxy.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/parsertarget.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/parser.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/objectpath.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/nsclasses.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/iterparse.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/extensions.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/dtd.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/docloader.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/debug.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/cleanup.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/classlookup.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/apihelpers.pxi -&gt; build/lib.linux-x86_64-cpython-313/lxml</span><br><span class="line"> [error]       copying src/lxml/includes/xslt.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/xpath.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/xmlschema.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/xmlparser.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/xmlerror.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/xinclude.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/uri.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/tree.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/schematron.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/relaxng.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/htmlparser.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/etreepublic.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/dtdvalid.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/config.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/c14n.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/__init__.pxd -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/lxml-version.h -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       copying src/lxml/includes/etree_defs.h -&gt; build/lib.linux-x86_64-cpython-313/lxml/includes</span><br><span class="line"> [error]       creating build/lib.linux-x86_64-cpython-313/lxml/isoschematron/resources/rng</span><br><span class="line"> [error]       copying src/lxml/isoschematron/resources/rng/iso-schematron.rng -&gt; build/lib.linux-x86_64-cpython-313/lxml/isoschematron/resources/rng</span><br><span class="line"> [error]       creating build/lib.linux-x86_64-cpython-313/lxml/isoschematron/resources/xsl</span><br><span class="line"> [error]       copying src/lxml/isoschematron/resources/xsl/XSD2Schtrn.xsl -&gt; build/lib.linux-x86_64-cpython-313/lxml/isoschematron/resources/xsl</span><br><span class="line"> [error]       copying src/lxml/isoschematron/resources/xsl/RNG2Schtrn.xsl -&gt; build/lib.linux-x86_64-cpython-313/lxml/isoschematron/resources/xsl</span><br><span class="line"> [error]       creating build/lib.linux-x86_64-cpython-313/lxml/isoschematron/resources/xsl/iso-schematron-xslt1</span><br><span class="line"> [error]       copying src/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_svrl_for_xslt1.xsl -&gt; build/lib.linux-x86_64-cpython-313/lxml/isoschematron/resources/xsl/iso-schematron-xslt1</span><br><span class="line"> [error]       copying src/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_schematron_skeleton_for_xslt1.xsl -&gt; build/lib.linux-x86_64-cpython-313/lxml/isoschematron/resources/xsl/iso-schematron-xslt1</span><br><span class="line"> [error]       copying src/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_schematron_message.xsl -&gt; build/lib.linux-x86_64-cpython-313/lxml/isoschematron/resources/xsl/iso-schematron-xslt1</span><br><span class="line"> [error]       copying src/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_dsdl_include.xsl -&gt; build/lib.linux-x86_64-cpython-313/lxml/isoschematron/resources/xsl/iso-schematron-xslt1</span><br><span class="line"> [error]       copying src/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_abstract_expand.xsl -&gt; build/lib.linux-x86_64-cpython-313/lxml/isoschematron/resources/xsl/iso-schematron-xslt1</span><br><span class="line"> [error]       copying src/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/readme.txt -&gt; build/lib.linux-x86_64-cpython-313/lxml/isoschematron/resources/xsl/iso-schematron-xslt1</span><br><span class="line"> [error]       running build_ext</span><br><span class="line"> [error]       building 'lxml.etree' extension</span><br><span class="line"> [error]       creating build/temp.linux-x86_64-cpython-313/src/lxml</span><br><span class="line"> [error]       gcc -fno-strict-overflow -Wsign-compare -DNDEBUG -g -O3 -Wall -march=x86-64 -mtune=generic -O3 -pipe -fno-plt -fexceptions -Wp,-D_FORTIFY_SOURCE=3 -Wformat -Werror=format-security -fstack-clash-protection -fcf-protection -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -g -ffile-prefix-map=/build/python/src=/usr/src/debug/python -flto=auto -ffat-lto-objects -march=x86-64 -mtune=generic -O3 -pipe -fno-plt -fexceptions -Wp,-D_FORTIFY_SOURCE=3 -Wformat -Werror=format-security -fstack-clash-protection -fcf-protection -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -g -ffile-prefix-map=/build/python/src=/usr/src/debug/python -flto=auto -march=x86-64 -mtune=generic -O3 -pipe -fno-plt -fexceptions -Wp,-D_FORTIFY_SOURCE=3 -Wformat -Werror=format-security -fstack-clash-protection -fcf-protection -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -g -ffile-prefix-map=/build/python/src=/usr/src/debug/python -flto=auto -fPIC -DCYTHON_CLINE_IN_TRACEBACK=0 -I/usr/include/libxml2 -Isrc -Isrc/lxml/includes -I/home/project/test/.venv/include -I/usr/include/python3.13 -c src/lxml/etree.c -o build/temp.linux-x86_64-cpython-313/src/lxml/etree.o -w</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__Pyx_init_assertions_enabled’:</span><br><span class="line"> [error]       src/lxml/etree.c:5988:39: error: implicit declaration of function ‘_PyInterpreterState_GetConfig’; did you mean ‘PyInterpreterState_GetID’? [-Wimplicit-function-declaration]</span><br><span class="line"> [error]        5988 |     __pyx_assertions_enabled_flag = ! _PyInterpreterState_GetConfig(__Pyx_PyThreadState_Current-&gt;interp)-&gt;optimization_level;</span><br><span class="line"> [error]             |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]             |                                       PyInterpreterState_GetID</span><br><span class="line"> [error]       src/lxml/etree.c:5988:105: error: invalid type argument of ‘-&gt;’ (have ‘int’)</span><br><span class="line"> [error]        5988 |     __pyx_assertions_enabled_flag = ! _PyInterpreterState_GetConfig(__Pyx_PyThreadState_Current-&gt;interp)-&gt;optimization_level;</span><br><span class="line"> [error]             |                                                                                                         ^~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_f_4lxml_5etree_fixThreadDictNamesForDtd’:</span><br><span class="line"> [error]       src/lxml/etree.c:19193:49: error: passing argument 1 of ‘__pyx_f_4lxml_5etree__fixThreadDictPtr’ from incompatible pointer type [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       19193 |         __pyx_f_4lxml_5etree__fixThreadDictPtr((&amp;__pyx_v_c_attribute-&gt;defaultValue), __pyx_v_c_src_dict, __pyx_v_c_dict);</span><br><span class="line"> [error]             |                                                ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]             |                                                 |</span><br><span class="line"> [error]             |                                                 xmlChar ** &#123;aka unsigned char **&#125;</span><br><span class="line"> [error]       src/lxml/etree.c:18536:82: note: expected ‘const xmlChar **’ &#123;aka ‘const unsigned char **’&#125; but argument is of type ‘xmlChar **’ &#123;aka ‘unsigned char **’&#125;</span><br><span class="line"> [error]       18536 | static CYTHON_INLINE void __pyx_f_4lxml_5etree__fixThreadDictPtr(const xmlChar **__pyx_v_c_ptr, xmlDict *__pyx_v_c_src_dict, xmlDict *__pyx_v_c_dict) &#123;</span><br><span class="line"> [error]             |                                                                  ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_f_4lxml_5etree_14_ParserContext_prepare’:</span><br><span class="line"> [error]       src/lxml/etree.c:113221:38: error: assignment to ‘xmlStructuredErrorFunc’ &#123;aka ‘void (*)(void *, const struct _xmlError *)’&#125; from incompatible pointer type ‘void (*)(void *, xmlError *)’ &#123;aka ‘void (*)(void *, struct _xmlError *)’&#125; [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       113221 |   __pyx_v_self-&gt;_c_ctxt-&gt;sax-&gt;serror = __pyx_f_4lxml_5etree__receiveParserError;</span><br><span class="line"> [error]              |                                      ^</span><br><span class="line"> [error]       src/lxml/etree.c:7472:13: note: ‘__pyx_f_4lxml_5etree__receiveParserError’ declared here</span><br><span class="line"> [error]        7472 | static void __pyx_f_4lxml_5etree__receiveParserError(void *, xmlError *); /*proto*/</span><br><span class="line"> [error]             |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       In file included from /usr/include/libxml2/libxml/valid.h:19,</span><br><span class="line"> [error]                        from /usr/include/libxml2/libxml/parser.h:24,</span><br><span class="line"> [error]                        from /usr/include/libxml2/libxml/tree.h:20,</span><br><span class="line"> [error]                        from src/lxml/includes/etree_defs.h:189,</span><br><span class="line"> [error]                        from src/lxml/etree.c:864:</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/xmlerror.h:953:16: note: ‘xmlStructuredErrorFunc’ declared here</span><br><span class="line"> [error]         953 | typedef void (*xmlStructuredErrorFunc) (void *userData, const xmlError *error);</span><br><span class="line"> [error]             |                ^~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_f_4lxml_5etree_11_BaseParser__registerHtmlErrorHandler’:</span><br><span class="line"> [error]       src/lxml/etree.c:117709:25: error: assignment to ‘xmlStructuredErrorFunc’ &#123;aka ‘void (*)(void *, const struct _xmlError *)’&#125; from incompatible pointer type ‘void (*)(void *, xmlError *)’ &#123;aka ‘void (*)(void *, struct _xmlError *)’&#125; [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       117709 |     __pyx_v_sax-&gt;serror = __pyx_f_4lxml_5etree__receiveParserError;</span><br><span class="line"> [error]              |                         ^</span><br><span class="line"> [error]       src/lxml/etree.c:113855:13: note: ‘__pyx_f_4lxml_5etree__receiveParserError’ declared here</span><br><span class="line"> [error]       113855 | static void __pyx_f_4lxml_5etree__receiveParserError(void *__pyx_v_c_context, xmlError *__pyx_v_error) &#123;</span><br><span class="line"> [error]              |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/xmlerror.h:953:16: note: ‘xmlStructuredErrorFunc’ declared here</span><br><span class="line"> [error]         953 | typedef void (*xmlStructuredErrorFunc) (void *userData, const xmlError *error);</span><br><span class="line"> [error]             |                ^~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_pf_4lxml_5etree_11TreeBuilder_4data’:</span><br><span class="line"> [error]       src/lxml/etree.c:137976:66: error: passing argument 1 of ‘__pyx_f_4lxml_5etree_11TreeBuilder__handleSaxData’ from incompatible pointer type [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       137976 |   __pyx_t_1 = __pyx_f_4lxml_5etree_11TreeBuilder__handleSaxData(((struct __pyx_obj_4lxml_5etree__SaxParserTarget *)__pyx_v_self), __pyx_v_data); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(3, 834, __pyx_L1_error)</span><br><span class="line"> [error]              |                                                                 ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |                                                                  |</span><br><span class="line"> [error]              |                                                                  struct __pyx_obj_4lxml_5etree__SaxParserTarget *</span><br><span class="line"> [error]       src/lxml/etree.c:137352:105: note: expected ‘struct __pyx_obj_4lxml_5etree_TreeBuilder *’ but argument is of type ‘struct __pyx_obj_4lxml_5etree__SaxParserTarget *’</span><br><span class="line"> [error]       137352 | static int __pyx_f_4lxml_5etree_11TreeBuilder__handleSaxData(struct __pyx_obj_4lxml_5etree_TreeBuilder *__pyx_v_self, PyObject *__pyx_v_data) &#123;</span><br><span class="line"> [error]              |                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_pf_4lxml_5etree_11TreeBuilder_6start’:</span><br><span class="line"> [error]       src/lxml/etree.c:138137:67: error: passing argument 1 of ‘__pyx_f_4lxml_5etree_11TreeBuilder__handleSaxStart’ from incompatible pointer type [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       138137 |   __pyx_t_3 = __pyx_f_4lxml_5etree_11TreeBuilder__handleSaxStart(((struct __pyx_obj_4lxml_5etree__SaxParserTarget *)__pyx_v_self), __pyx_v_tag, __pyx_v_attrs, __pyx_v_nsmap); if (unlikely(!__pyx_t_3)) __PYX_ERR(3, 843, __pyx_L1_error)</span><br><span class="line"> [error]              |                                                                  ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |                                                                   |</span><br><span class="line"> [error]              |                                                                   struct __pyx_obj_4lxml_5etree__SaxParserTarget *</span><br><span class="line"> [error]       src/lxml/etree.c:136951:112: note: expected ‘struct __pyx_obj_4lxml_5etree_TreeBuilder *’ but argument is of type ‘struct __pyx_obj_4lxml_5etree__SaxParserTarget *’</span><br><span class="line"> [error]       136951 | static PyObject *__pyx_f_4lxml_5etree_11TreeBuilder__handleSaxStart(struct __pyx_obj_4lxml_5etree_TreeBuilder *__pyx_v_self, PyObject *__pyx_v_tag, PyObject *__pyx_v_attrib, PyObject *__pyx_v_nsmap) &#123;</span><br><span class="line"> [error]              |                                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_pf_4lxml_5etree_11TreeBuilder_8end’:</span><br><span class="line"> [error]       src/lxml/etree.c:138208:65: error: passing argument 1 of ‘__pyx_f_4lxml_5etree_11TreeBuilder__handleSaxEnd’ from incompatible pointer type [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       138208 |   __pyx_t_1 = __pyx_f_4lxml_5etree_11TreeBuilder__handleSaxEnd(((struct __pyx_obj_4lxml_5etree__SaxParserTarget *)__pyx_v_self), __pyx_v_tag); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 850, __pyx_L1_error)</span><br><span class="line"> [error]              |                                                                ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |                                                                 |</span><br><span class="line"> [error]              |                                                                 struct __pyx_obj_4lxml_5etree__SaxParserTarget *</span><br><span class="line"> [error]       src/lxml/etree.c:137251:110: note: expected ‘struct __pyx_obj_4lxml_5etree_TreeBuilder *’ but argument is of type ‘struct __pyx_obj_4lxml_5etree__SaxParserTarget *’</span><br><span class="line"> [error]       137251 | static PyObject *__pyx_f_4lxml_5etree_11TreeBuilder__handleSaxEnd(struct __pyx_obj_4lxml_5etree_TreeBuilder *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_tag) &#123;</span><br><span class="line"> [error]              |                                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_pf_4lxml_5etree_11TreeBuilder_10pi’:</span><br><span class="line"> [error]       src/lxml/etree.c:138409:64: error: passing argument 1 of ‘__pyx_f_4lxml_5etree_11TreeBuilder__handleSaxPi’ from incompatible pointer type [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       138409 |   __pyx_t_1 = __pyx_f_4lxml_5etree_11TreeBuilder__handleSaxPi(((struct __pyx_obj_4lxml_5etree__SaxParserTarget *)__pyx_v_self), __pyx_v_target, __pyx_v_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 861, __pyx_L1_error)</span><br><span class="line"> [error]              |                                                               ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |                                                                |</span><br><span class="line"> [error]              |                                                                struct __pyx_obj_4lxml_5etree__SaxParserTarget *</span><br><span class="line"> [error]       src/lxml/etree.c:137401:109: note: expected ‘struct __pyx_obj_4lxml_5etree_TreeBuilder *’ but argument is of type ‘struct __pyx_obj_4lxml_5etree__SaxParserTarget *’</span><br><span class="line"> [error]       137401 | static PyObject *__pyx_f_4lxml_5etree_11TreeBuilder__handleSaxPi(struct __pyx_obj_4lxml_5etree_TreeBuilder *__pyx_v_self, PyObject *__pyx_v_target, PyObject *__pyx_v_data) &#123;</span><br><span class="line"> [error]              |                                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_pf_4lxml_5etree_11TreeBuilder_12comment’:</span><br><span class="line"> [error]       src/lxml/etree.c:138472:69: error: passing argument 1 of ‘__pyx_f_4lxml_5etree_11TreeBuilder__handleSaxComment’ from incompatible pointer type [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       138472 |   __pyx_t_1 = __pyx_f_4lxml_5etree_11TreeBuilder__handleSaxComment(((struct __pyx_obj_4lxml_5etree__SaxParserTarget *)__pyx_v_self), __pyx_v_comment); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 869, __pyx_L1_error)</span><br><span class="line"> [error]              |                                                                    ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |                                                                     |</span><br><span class="line"> [error]              |                                                                     struct __pyx_obj_4lxml_5etree__SaxParserTarget *</span><br><span class="line"> [error]       src/lxml/etree.c:137607:114: note: expected ‘struct __pyx_obj_4lxml_5etree_TreeBuilder *’ but argument is of type ‘struct __pyx_obj_4lxml_5etree__SaxParserTarget *’</span><br><span class="line"> [error]       137607 | static PyObject *__pyx_f_4lxml_5etree_11TreeBuilder__handleSaxComment(struct __pyx_obj_4lxml_5etree_TreeBuilder *__pyx_v_self, PyObject *__pyx_v_comment) &#123;</span><br><span class="line"> [error]              |                                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_f_4lxml_5etree_12_BaseContext__set_xpath_context’:</span><br><span class="line"> [error]       src/lxml/etree.c:181971:28: error: assignment to ‘xmlStructuredErrorFunc’ &#123;aka ‘void (*)(void *, const struct _xmlError *)’&#125; from incompatible pointer type ‘void (*)(void *, xmlError *)’ &#123;aka ‘void (*)(void *, struct _xmlError *)’&#125; [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       181971 |   __pyx_v_xpathCtxt-&gt;error = __pyx_f_4lxml_5etree__receiveXPathError;</span><br><span class="line"> [error]              |                            ^</span><br><span class="line"> [error]       src/lxml/etree.c:7546:13: note: ‘__pyx_f_4lxml_5etree__receiveXPathError’ declared here</span><br><span class="line"> [error]        7546 | static void __pyx_f_4lxml_5etree__receiveXPathError(void *, xmlError *); /*proto*/</span><br><span class="line"> [error]             |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/xmlerror.h:953:16: note: ‘xmlStructuredErrorFunc’ declared here</span><br><span class="line"> [error]         953 | typedef void (*xmlStructuredErrorFunc) (void *userData, const xmlError *error);</span><br><span class="line"> [error]             |                ^~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_pf_4lxml_5etree_4XSLT_18__call__’:</span><br><span class="line"> [error]       src/lxml/etree.c:203486:73: error: passing argument 1 of ‘__pyx_f_4lxml_5etree_12_XSLTContext__copy’ from incompatible pointer type [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       203486 |     __pyx_t_1 = ((PyObject *)__pyx_f_4lxml_5etree_12_XSLTContext__copy(((struct __pyx_obj_4lxml_5etree__BaseContext *)__pyx_v_self-&gt;_context))); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 550, __pyx_L9_error)</span><br><span class="line"> [error]              |                                                                        ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |                                                                         |</span><br><span class="line"> [error]              |                                                                         struct __pyx_obj_4lxml_5etree__BaseContext *</span><br><span class="line"> [error]       src/lxml/etree.c:201169:138: note: expected ‘struct __pyx_obj_4lxml_5etree__XSLTContext *’ but argument is of type ‘struct __pyx_obj_4lxml_5etree__BaseContext *’</span><br><span class="line"> [error]       201169 | static struct __pyx_obj_4lxml_5etree__BaseContext *__pyx_f_4lxml_5etree_12_XSLTContext__copy(struct __pyx_obj_4lxml_5etree__XSLTContext *__pyx_v_self) &#123;</span><br><span class="line"> [error]              |                                                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_f_4lxml_5etree__copyXSLT’:</span><br><span class="line"> [error]       src/lxml/etree.c:205311:71: error: passing argument 1 of ‘__pyx_f_4lxml_5etree_12_XSLTContext__copy’ from incompatible pointer type [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       205311 |   __pyx_t_1 = ((PyObject *)__pyx_f_4lxml_5etree_12_XSLTContext__copy(((struct __pyx_obj_4lxml_5etree__BaseContext *)__pyx_v_stylesheet-&gt;_context))); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 691, __pyx_L1_error)</span><br><span class="line"> [error]              |                                                                      ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |                                                                       |</span><br><span class="line"> [error]              |                                                                       struct __pyx_obj_4lxml_5etree__BaseContext *</span><br><span class="line"> [error]       src/lxml/etree.c:201169:138: note: expected ‘struct __pyx_obj_4lxml_5etree__XSLTContext *’ but argument is of type ‘struct __pyx_obj_4lxml_5etree__BaseContext *’</span><br><span class="line"> [error]       201169 | static struct __pyx_obj_4lxml_5etree__BaseContext *__pyx_f_4lxml_5etree_12_XSLTContext__copy(struct __pyx_obj_4lxml_5etree__XSLTContext *__pyx_v_self) &#123;</span><br><span class="line"> [error]              |                                                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_pf_4lxml_5etree_7RelaxNG_2__init__’:</span><br><span class="line"> [error]       src/lxml/etree.c:219245:60: error: passing argument 2 of ‘xmlRelaxNGSetParserStructuredErrors’ from incompatible pointer type [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       219245 |   xmlRelaxNGSetParserStructuredErrors(__pyx_v_parser_ctxt, __pyx_f_4lxml_5etree__receiveError, ((void *)__pyx_v_self-&gt;__pyx_base._error_log));</span><br><span class="line"> [error]              |                                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |                                                            |</span><br><span class="line"> [error]              |                                                            void (*)(void *, xmlError *) &#123;aka void (*)(void *, struct _xmlError *)&#125;</span><br><span class="line"> [error]       In file included from src/lxml/etree.c:905:</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/relaxng.h:154:65: note: expected ‘xmlStructuredErrorFunc’ &#123;aka ‘void (*)(void *, const struct _xmlError *)’&#125; but argument is of type ‘void (*)(void *, xmlError *)’ &#123;aka ‘void (*)(void *, struct _xmlError *)’&#125;</span><br><span class="line"> [error]         154 |                                          xmlStructuredErrorFunc serror,</span><br><span class="line"> [error]             |                                          ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c:49484:13: note: ‘__pyx_f_4lxml_5etree__receiveError’ declared here</span><br><span class="line"> [error]       49484 | static void __pyx_f_4lxml_5etree__receiveError(void *__pyx_v_c_log_handler, xmlError *__pyx_v_error) &#123;</span><br><span class="line"> [error]             |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/xmlerror.h:953:16: note: ‘xmlStructuredErrorFunc’ declared here</span><br><span class="line"> [error]         953 | typedef void (*xmlStructuredErrorFunc) (void *userData, const xmlError *error);</span><br><span class="line"> [error]             |                ^~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_pf_4lxml_5etree_7RelaxNG_6__call__’:</span><br><span class="line"> [error]       src/lxml/etree.c:219663:60: error: passing argument 2 of ‘xmlRelaxNGSetValidStructuredErrors’ from incompatible pointer type [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       219663 |     xmlRelaxNGSetValidStructuredErrors(__pyx_v_valid_ctxt, __pyx_f_4lxml_5etree__receiveError, ((void *)__pyx_v_self-&gt;__pyx_base._error_log));</span><br><span class="line"> [error]              |                                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |                                                            |</span><br><span class="line"> [error]              |                                                            void (*)(void *, xmlError *) &#123;aka void (*)(void *, struct _xmlError *)&#125;</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/relaxng.h:189:66: note: expected ‘xmlStructuredErrorFunc’ &#123;aka ‘void (*)(void *, const struct _xmlError *)’&#125; but argument is of type ‘void (*)(void *, xmlError *)’ &#123;aka ‘void (*)(void *, struct _xmlError *)’&#125;</span><br><span class="line"> [error]         189 |                                           xmlStructuredErrorFunc serror, void *ctx);</span><br><span class="line"> [error]             |                                           ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c:49484:13: note: ‘__pyx_f_4lxml_5etree__receiveError’ declared here</span><br><span class="line"> [error]       49484 | static void __pyx_f_4lxml_5etree__receiveError(void *__pyx_v_c_log_handler, xmlError *__pyx_v_error) &#123;</span><br><span class="line"> [error]             |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/xmlerror.h:953:16: note: ‘xmlStructuredErrorFunc’ declared here</span><br><span class="line"> [error]         953 | typedef void (*xmlStructuredErrorFunc) (void *userData, const xmlError *error);</span><br><span class="line"> [error]             |                ^~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_pf_4lxml_5etree_9XMLSchema_2__init__’:</span><br><span class="line"> [error]       src/lxml/etree.c:220552:59: error: passing argument 2 of ‘xmlSchemaSetParserStructuredErrors’ from incompatible pointer type [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       220552 |   xmlSchemaSetParserStructuredErrors(__pyx_v_parser_ctxt, __pyx_f_4lxml_5etree__receiveError, ((void *)__pyx_v_self-&gt;__pyx_base._error_log));</span><br><span class="line"> [error]              |                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |                                                           |</span><br><span class="line"> [error]              |                                                           void (*)(void *, xmlError *) &#123;aka void (*)(void *, struct _xmlError *)&#125;</span><br><span class="line"> [error]       In file included from src/lxml/etree.c:906:</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/xmlschemas.h:151:65: note: expected ‘xmlStructuredErrorFunc’ &#123;aka ‘void (*)(void *, const struct _xmlError *)’&#125; but argument is of type ‘void (*)(void *, xmlError *)’ &#123;aka ‘void (*)(void *, struct _xmlError *)’&#125;</span><br><span class="line"> [error]         151 |                                          xmlStructuredErrorFunc serror,</span><br><span class="line"> [error]             |                                          ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c:49484:13: note: ‘__pyx_f_4lxml_5etree__receiveError’ declared here</span><br><span class="line"> [error]       49484 | static void __pyx_f_4lxml_5etree__receiveError(void *__pyx_v_c_log_handler, xmlError *__pyx_v_error) &#123;</span><br><span class="line"> [error]             |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/xmlerror.h:953:16: note: ‘xmlStructuredErrorFunc’ declared here</span><br><span class="line"> [error]         953 | typedef void (*xmlStructuredErrorFunc) (void *userData, const xmlError *error);</span><br><span class="line"> [error]             |                ^~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_pf_4lxml_5etree_9XMLSchema_6__call__’:</span><br><span class="line"> [error]       src/lxml/etree.c:221095:59: error: passing argument 2 of ‘xmlSchemaSetValidStructuredErrors’ from incompatible pointer type [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       221095 |     xmlSchemaSetValidStructuredErrors(__pyx_v_valid_ctxt, __pyx_f_4lxml_5etree__receiveError, ((void *)__pyx_v_self-&gt;__pyx_base._error_log));</span><br><span class="line"> [error]              |                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |                                                           |</span><br><span class="line"> [error]              |                                                           void (*)(void *, xmlError *) &#123;aka void (*)(void *, struct _xmlError *)&#125;</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/xmlschemas.h:184:65: note: expected ‘xmlStructuredErrorFunc’ &#123;aka ‘void (*)(void *, const struct _xmlError *)’&#125; but argument is of type ‘void (*)(void *, xmlError *)’ &#123;aka ‘void (*)(void *, struct _xmlError *)’&#125;</span><br><span class="line"> [error]         184 |                                          xmlStructuredErrorFunc serror,</span><br><span class="line"> [error]             |                                          ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c:49484:13: note: ‘__pyx_f_4lxml_5etree__receiveError’ declared here</span><br><span class="line"> [error]       49484 | static void __pyx_f_4lxml_5etree__receiveError(void *__pyx_v_c_log_handler, xmlError *__pyx_v_error) &#123;</span><br><span class="line"> [error]             |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/xmlerror.h:953:16: note: ‘xmlStructuredErrorFunc’ declared here</span><br><span class="line"> [error]         953 | typedef void (*xmlStructuredErrorFunc) (void *userData, const xmlError *error);</span><br><span class="line"> [error]             |                ^~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_f_4lxml_5etree_30_ParserSchemaValidationContext_connect’:</span><br><span class="line"> [error]       src/lxml/etree.c:221860:66: error: passing argument 2 of ‘xmlSchemaSetValidStructuredErrors’ from incompatible pointer type [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       221860 |     xmlSchemaSetValidStructuredErrors(__pyx_v_self-&gt;_valid_ctxt, __pyx_f_4lxml_5etree__receiveError, ((void *)__pyx_v_error_log));</span><br><span class="line"> [error]              |                                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |                                                                  |</span><br><span class="line"> [error]              |                                                                  void (*)(void *, xmlError *) &#123;aka void (*)(void *, struct _xmlError *)&#125;</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/xmlschemas.h:184:65: note: expected ‘xmlStructuredErrorFunc’ &#123;aka ‘void (*)(void *, const struct _xmlError *)’&#125; but argument is of type ‘void (*)(void *, xmlError *)’ &#123;aka ‘void (*)(void *, struct _xmlError *)’&#125;</span><br><span class="line"> [error]         184 |                                          xmlStructuredErrorFunc serror,</span><br><span class="line"> [error]             |                                          ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c:49484:13: note: ‘__pyx_f_4lxml_5etree__receiveError’ declared here</span><br><span class="line"> [error]       49484 | static void __pyx_f_4lxml_5etree__receiveError(void *__pyx_v_c_log_handler, xmlError *__pyx_v_error) &#123;</span><br><span class="line"> [error]             |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/xmlerror.h:953:16: note: ‘xmlStructuredErrorFunc’ declared here</span><br><span class="line"> [error]         953 | typedef void (*xmlStructuredErrorFunc) (void *userData, const xmlError *error);</span><br><span class="line"> [error]             |                ^~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_pf_4lxml_5etree_10Schematron_6__call__’:</span><br><span class="line"> [error]       src/lxml/etree.c:223037:63: error: passing argument 2 of ‘xmlSchematronSetValidStructuredErrors’ from incompatible pointer type [-Wincompatible-pointer-types]</span><br><span class="line"> [error]       223037 |     xmlSchematronSetValidStructuredErrors(__pyx_v_valid_ctxt, __pyx_f_4lxml_5etree__receiveError, ((void *)__pyx_v_self-&gt;__pyx_base._error_log));</span><br><span class="line"> [error]              |                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |                                                               |</span><br><span class="line"> [error]              |                                                               void (*)(void *, xmlError *) &#123;aka void (*)(void *, struct _xmlError *)&#125;</span><br><span class="line"> [error]       In file included from src/lxml/etree.c:907:</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/schematron.h:114:66: note: expected ‘xmlStructuredErrorFunc’ &#123;aka ‘void (*)(void *, const struct _xmlError *)’&#125; but argument is of type ‘void (*)(void *, xmlError *)’ &#123;aka ‘void (*)(void *, struct _xmlError *)’&#125;</span><br><span class="line"> [error]         114 |                                           xmlStructuredErrorFunc serror,</span><br><span class="line"> [error]             |                                           ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c:49484:13: note: ‘__pyx_f_4lxml_5etree__receiveError’ declared here</span><br><span class="line"> [error]       49484 | static void __pyx_f_4lxml_5etree__receiveError(void *__pyx_v_c_log_handler, xmlError *__pyx_v_error) &#123;</span><br><span class="line"> [error]             |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/xmlerror.h:953:16: note: ‘xmlStructuredErrorFunc’ declared here</span><br><span class="line"> [error]         953 | typedef void (*xmlStructuredErrorFunc) (void *userData, const xmlError *error);</span><br><span class="line"> [error]             |                ^~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__pyx_pymod_exec_etree’:</span><br><span class="line"> [error]       src/lxml/etree.c:6652:38: error: implicit declaration of function ‘_PyDict_SetItem_KnownHash’; did you mean ‘_PyDict_GetItem_KnownHash’? [-Wimplicit-function-declaration]</span><br><span class="line"> [error]        6652 |     (likely(PyDict_CheckExact(ns)) ? _PyDict_SetItem_KnownHash(ns, name, value, ((PyASCIIObject *) name)-&gt;hash) : PyObject_SetItem(ns, name, value))</span><br><span class="line"> [error]             |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c:255376:7: note: in expansion of macro ‘__Pyx_SetNameInClass’</span><br><span class="line"> [error]       255376 |   if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_getitem, __pyx_t_9) &lt; 0) __PYX_ERR(0, 97, __pyx_L1_error)</span><br><span class="line"> [error]              |       ^~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__Pyx_PyUnicode_Join’:</span><br><span class="line"> [error]       src/lxml/etree.c:264446:13: error: implicit declaration of function ‘_PyUnicode_FastCopyCharacters’; did you mean ‘PyUnicode_CopyCharacters’? [-Wimplicit-function-declaration]</span><br><span class="line"> [error]       264446 |             _PyUnicode_FastCopyCharacters(result_uval, char_pos, uval, 0, ulength);</span><br><span class="line"> [error]              |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |             PyUnicode_CopyCharacters</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__Pyx_PyIter_Next2’:</span><br><span class="line"> [error]       src/lxml/etree.c:265182:35: error: ‘_PyObject_NextNotImplemented’ undeclared (first use in this function); did you mean ‘PyObject_HashNotImplemented’?</span><br><span class="line"> [error]       265182 |         if (unlikely(iternext == &amp;_PyObject_NextNotImplemented))</span><br><span class="line"> [error]              |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c:1096:43: note: in definition of macro ‘unlikely’</span><br><span class="line"> [error]        1096 |   #define unlikely(x) __builtin_expect(!!(x), 0)</span><br><span class="line"> [error]             |                                           ^</span><br><span class="line"> [error]       src/lxml/etree.c:265182:35: note: each undeclared identifier is reported only once for each function it appears in</span><br><span class="line"> [error]       265182 |         if (unlikely(iternext == &amp;_PyObject_NextNotImplemented))</span><br><span class="line"> [error]              |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c:1096:43: note: in definition of macro ‘unlikely’</span><br><span class="line"> [error]        1096 |   #define unlikely(x) __builtin_expect(!!(x), 0)</span><br><span class="line"> [error]             |                                           ^</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__Pyx_PyGen_Send’:</span><br><span class="line"> [error]       src/lxml/etree.c:265973:13: error: implicit declaration of function ‘_PyGen_SetStopIterationValue’; did you mean ‘__Pyx_PyGen__FetchStopIterationValue’? [-Wimplicit-function-declaration]</span><br><span class="line"> [error]       265973 |             _PyGen_SetStopIterationValue(result);</span><br><span class="line"> [error]              |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]              |             __Pyx_PyGen__FetchStopIterationValue</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__Pyx_Coroutine_AwaitableIterError’:</span><br><span class="line"> [error]       src/lxml/etree.c:267806:5: error: implicit declaration of function ‘_PyErr_FormatFromCause’ [-Wimplicit-function-declaration]</span><br><span class="line"> [error]       267806 |     _PyErr_FormatFromCause(</span><br><span class="line"> [error]              |     ^~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__Pyx_set_iter_next’:</span><br><span class="line"> [error]       src/lxml/etree.c:268071:19: error: implicit declaration of function ‘_PySet_NextEntry’ [-Wimplicit-function-declaration]</span><br><span class="line"> [error]       268071 |         int ret = _PySet_NextEntry(iter_obj, ppos, value, &amp;hash);</span><br><span class="line"> [error]              |                   ^~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__Pyx_PyInt_As_int’:</span><br><span class="line"> [error]       src/lxml/etree.c:269066:27: error: too few arguments to function ‘_PyLong_AsByteArray’; expected 6, have 5</span><br><span class="line"> [error]       269066 |                 int ret = _PyLong_AsByteArray((PyLongObject *)v,</span><br><span class="line"> [error]              |                           ^~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       In file included from /usr/include/python3.13/longobject.h:107,</span><br><span class="line"> [error]                        from /usr/include/python3.13/Python.h:82,</span><br><span class="line"> [error]                        from src/lxml/etree.c:96:</span><br><span class="line"> [error]       /usr/include/python3.13/cpython/longobject.h:111:17: note: declared here</span><br><span class="line"> [error]         111 | PyAPI_FUNC(int) _PyLong_AsByteArray(PyLongObject* v,</span><br><span class="line"> [error]             |                 ^~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__Pyx_PyInt_As_size_t’:</span><br><span class="line"> [error]       src/lxml/etree.c:269375:27: error: too few arguments to function ‘_PyLong_AsByteArray’; expected 6, have 5</span><br><span class="line"> [error]       269375 |                 int ret = _PyLong_AsByteArray((PyLongObject *)v,</span><br><span class="line"> [error]              |                           ^~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       /usr/include/python3.13/cpython/longobject.h:111:17: note: declared here</span><br><span class="line"> [error]         111 | PyAPI_FUNC(int) _PyLong_AsByteArray(PyLongObject* v,</span><br><span class="line"> [error]             |                 ^~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__Pyx_PyInt_As_unsigned_int’:</span><br><span class="line"> [error]       src/lxml/etree.c:269571:27: error: too few arguments to function ‘_PyLong_AsByteArray’; expected 6, have 5</span><br><span class="line"> [error]       269571 |                 int ret = _PyLong_AsByteArray((PyLongObject *)v,</span><br><span class="line"> [error]              |                           ^~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       /usr/include/python3.13/cpython/longobject.h:111:17: note: declared here</span><br><span class="line"> [error]         111 | PyAPI_FUNC(int) _PyLong_AsByteArray(PyLongObject* v,</span><br><span class="line"> [error]             |                 ^~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__Pyx_PyInt_As_signed__char’:</span><br><span class="line"> [error]       src/lxml/etree.c:269767:27: error: too few arguments to function ‘_PyLong_AsByteArray’; expected 6, have 5</span><br><span class="line"> [error]       269767 |                 int ret = _PyLong_AsByteArray((PyLongObject *)v,</span><br><span class="line"> [error]              |                           ^~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       /usr/include/python3.13/cpython/longobject.h:111:17: note: declared here</span><br><span class="line"> [error]         111 | PyAPI_FUNC(int) _PyLong_AsByteArray(PyLongObject* v,</span><br><span class="line"> [error]             |                 ^~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__Pyx_PyInt_As_unsigned_short’:</span><br><span class="line"> [error]       src/lxml/etree.c:270001:27: error: too few arguments to function ‘_PyLong_AsByteArray’; expected 6, have 5</span><br><span class="line"> [error]       270001 |                 int ret = _PyLong_AsByteArray((PyLongObject *)v,</span><br><span class="line"> [error]              |                           ^~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       /usr/include/python3.13/cpython/longobject.h:111:17: note: declared here</span><br><span class="line"> [error]         111 | PyAPI_FUNC(int) _PyLong_AsByteArray(PyLongObject* v,</span><br><span class="line"> [error]             |                 ^~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__Pyx_PyInt_As_xmlChar’:</span><br><span class="line"> [error]       src/lxml/etree.c:270235:27: error: too few arguments to function ‘_PyLong_AsByteArray’; expected 6, have 5</span><br><span class="line"> [error]       270235 |                 int ret = _PyLong_AsByteArray((PyLongObject *)v,</span><br><span class="line"> [error]              |                           ^~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       /usr/include/python3.13/cpython/longobject.h:111:17: note: declared here</span><br><span class="line"> [error]         111 | PyAPI_FUNC(int) _PyLong_AsByteArray(PyLongObject* v,</span><br><span class="line"> [error]             |                 ^~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       src/lxml/etree.c: In function ‘__Pyx_PyInt_As_long’:</span><br><span class="line"> [error]       src/lxml/etree.c:270438:27: error: too few arguments to function ‘_PyLong_AsByteArray’; expected 6, have 5</span><br><span class="line"> [error]       270438 |                 int ret = _PyLong_AsByteArray((PyLongObject *)v,</span><br><span class="line"> [error]              |                           ^~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       /usr/include/python3.13/cpython/longobject.h:111:17: note: declared here</span><br><span class="line"> [error]         111 | PyAPI_FUNC(int) _PyLong_AsByteArray(PyLongObject* v,</span><br><span class="line"> [error]             |                 ^~~~~~~~~~~~~~~~~~~</span><br><span class="line"> [error]       Compile failed: command '/usr/bin/gcc' failed with exit code 1</span><br><span class="line"> [error]       creating tmp</span><br><span class="line"> [error]       cc -I/usr/include/libxml2 -I/usr/include/libxml2 -c /tmp/xmlXPathInithkbvx1aj.c -o tmp/xmlXPathInithkbvx1aj.o</span><br><span class="line"> [error]       /tmp/xmlXPathInithkbvx1aj.c: In function ‘main’:</span><br><span class="line"> [error]       /tmp/xmlXPathInithkbvx1aj.c:3:5: warning: ‘xmlXPathInit’ is deprecated: See https://gnome.pages.gitlab.gnome.org/libxml2/html/deprecated.html [-Wdeprecated-declarations]</span><br><span class="line"> [error]           3 |     xmlXPathInit();</span><br><span class="line"> [error]             |     ^~~~~~~~~~~~</span><br><span class="line"> [error]       In file included from /tmp/xmlXPathInithkbvx1aj.c:1:</span><br><span class="line"> [error]       /usr/include/libxml2/libxml/xpath.h:561:21: note: declared here</span><br><span class="line"> [error]         561 |                     xmlXPathInit                (void);</span><br><span class="line"> [error]             |                     ^~~~~~~~~~~~</span><br><span class="line"> [error]       cc tmp/xmlXPathInithkbvx1aj.o -lxml2 -o a.out</span><br><span class="line"> [error]       error: command '/usr/bin/gcc' failed with exit code 1</span><br><span class="line"> [error]       [end of output]</span><br><span class="line"> [error]   </span><br><span class="line"> [error]   note: This error originates from a subprocess, and is likely not a problem with pip.</span><br><span class="line"> [error]   ERROR: Failed building wheel for lxml</span><br><span class="line"> [error] </span><br><span class="line"> [error] [notice] A new release of pip is available: 24.3.1 -&gt; 25.3</span><br><span class="line"> [error] [notice] To update, run: python -m pip install --upgrade pip</span><br><span class="line"> [error] ERROR: ERROR: Failed to build installable wheels for some pyproject.toml based projects (lxml)</span><br><span class="line">  [exit] 1</span><br></pre></td></tr></table></figure><br>解决，通过pcman安装<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S python-lxml</span><br></pre></td></tr></table></figure><br>安装后，最新版本大于我的4.9.7，然后把requirements.txt中lxml的版本修改为&gt;=4.9.7即可</p>
+<p>安装过程种报timeout，添加国内源<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -m pip install "lxml&gt;=4.9.4" -i https://pypi.tuna.tsinghua.edu.cn/simple --timeout 120 --retries 10 --no-cache-dir</span><br></pre></td></tr></table></figure></p>
+<p>安装成功</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2026/01/13/how-to-install-lxml-on-manjaro/" data-id="cmkffwwjj003qqm2c1kov9mld" data-title="manjaro安装lxml报错解决" class="article-share-link">分享</a>
+      
+      
+        <a href="/2026/01/13/how-to-install-lxml-on-manjaro/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2026/01/13/how-to-install-lxml-on-manjaro/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lxml/" rel="tag">lxml</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Free-Markets-Are-Intrinsic-to-Humans" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/12/31/Free-Markets-Are-Intrinsic-to-Humans/" class="article-date">
+  <time class="dt-published" datetime="2025-12-31T03:41:10.000Z" itemprop="datePublished">2025-12-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Rich/">Rich</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/12/31/Free-Markets-Are-Intrinsic-to-Humans/">Free Markets Are Intrinsic to Humans(自由市场是人类本性)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我们通过信用与债务体系实现跨基因合作</p>
+<h3 id="自由市场是人类与生俱来的属性"><a href="#自由市场是人类与生俱来的属性" class="headerlink" title="自由市场是人类与生俱来的属性"></a>自由市场是人类与生俱来的属性</h3><p>纳瓦尔：整体而言，资本主义（即自由市场）内在于人类物种。资本主义并非我们的发明，甚至不是我们的发现——它存在于我们每一次的交换行为中。</p>
+<p>当你我交流信息时，我希望从你那里获得信息反馈。我给你信息，你也给我信息。若信息交换不畅，你自然会转向他人。这种交换意识与信用债务的追踪机制，正是我们作为社会化柔性动物与生俱来的本能。</p>
+<p>人类是动物界中唯一能跨基因边界合作的物种。多数动物甚至不存在合作行为，即使存在，也仅限于共同进化、血脉相连的族群内部，因利益共享而协作。</p>
+<p>人类则不同。我可以与你们合作——你们中一位是塞尔维亚裔，另一位是波斯裔，而我是印度裔。我们基本没有血缘联系，却依然能协作。</p>
+<p>是什么让我们实现合作？正是我们记录债务与信用的能力：谁付出了多少劳动？谁贡献了多少价值？这就是自由市场资本主义的全部内涵。</p>
+<p>因此我深信，这是人类物种的内在属性。我们将为所有人创造愈来愈多的财富与丰足。</p>
+<p>人人皆可富足，人人皆可“退休”，人人皆可成功。这仅是教育与意愿的问题——你必须心向往之。若无意于此，选择退出这场游戏也无妨。</p>
+<p>但请不要贬低那些积极参与游戏的人。正是这场游戏让你夜晚安卧温床，头顶有檐遮风挡雨，超市货架充盈，口袋里的iPhone嗡鸣不息。</p>
+<p>对人类而言，这是一场值得以伦理、理性、道德与社会责任感投入的美好游戏。它将继续让我们日益富足，直到为所有渴望者创造巨量财富。</p>
+<h3 id="索取者过多而创造者不足，社会必将走向崩溃"><a href="#索取者过多而创造者不足，社会必将走向崩溃" class="headerlink" title="索取者过多而创造者不足，社会必将走向崩溃"></a>索取者过多而创造者不足，社会必将走向崩溃</h3><p>尼维：不仅有个体暗中鄙视财富，某些国家、团体或政党也公开蔑视财富，至少表面如此。</p>
+<p>纳瓦尔：没错。这些国家、政党与团体最终都陷入了地位的零和游戏。在摧毁财富创造的过程中，他们将所有人拖拽至同一低水平线。</p>
+<p>这正是美国因”美国梦”而深受移民欢迎的原因——任何人都可以来到这里，从贫穷起步，通过辛勤工作赚钱致富，或至少获得基本生活保障。</p>
+<p>显然，财富的定义因人而异。发达国家公民可能认为”必须赚够数百万美元才算圆满”，而对刚入境的第三世界贫困移民而言（我幼时也是来美的贫困移民），财富的标准可能低得多——或许仅仅是”余生不必从事不愿做的体力劳动”。</p>
+<p>但那些蔑视财富创造的团体，终将把整个群体拉低至同一水平。当索取者过多而创造者不足时，社会便会分崩离析，最终沦为委内瑞拉般的共产主义国家——人们忙于索取、分配与再分配，导致民众街头饿殍遍野，每年因饥饿消瘦数公斤。</p>
+<p>不妨将此想象为寄生生物过多的有机体：少量寄生或能维持健康，但我们需要大量共生体（如细胞中线粒体助我们呼吸耗氧），这些共生伙伴是维持生命不可或缺的财富创造者。但若体内充满纯粹寄生的蠕虫、病毒或细菌，机体必将死亡。任何有机体只能承受少量寄生，当寄生要素失控，毁灭便接踵而至。</p>
+<p>再次强调，我探讨的是符合道德的财富创造——而非垄断、裙带资本主义或环境代价误判等行为。我指的是自由意志与自由市场，是人类间自愿进行、不对他人产生过度影响的小规模交换。</p>
+<p>我认为，若社会或群体不尊重这种财富创造模式，终将陷入毁灭与黑暗的深渊</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2025/12/31/Free-Markets-Are-Intrinsic-to-Humans/" data-id="cmkffwwi00007qm2c2dcm555f" data-title="Free Markets Are Intrinsic to Humans(自由市场是人类本性)" class="article-share-link">分享</a>
+      
+      
+        <a href="/2025/12/31/Free-Markets-Are-Intrinsic-to-Humans/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2025/12/31/Free-Markets-Are-Intrinsic-to-Humans/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/How-to-Get-Rich/" rel="tag">How to Get Rich</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Naval/" rel="tag">Naval</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-install-BCM4331-driver-on-manjaro" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/12/31/install-BCM4331-driver-on-manjaro/" class="article-date">
+  <time class="dt-published" datetime="2025-12-31T00:59:56.000Z" itemprop="datePublished">2025-12-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Other/">Other</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/12/31/install-BCM4331-driver-on-manjaro/">install-BCM4331-driver-on-manjaro</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>2012款MacBook Pro安装Manjaro xfce后使用无线网卡无法上网</p>
+<h3 id="查看网卡型号"><a href="#查看网卡型号" class="headerlink" title="查看网卡型号"></a>查看网卡型号</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lspci -nnk | grep -iA3 'network'</span><br><span class="line">02:00.0 Network controller [0280]: Broadcom Inc. and subsidiaries BCM4331 802.11a/b/g/n [14e4:4331] (rev 02)</span><br><span class="line">	Subsystem: Apple Inc. AirPort Extreme [106b:00f5]</span><br><span class="line">	Kernel driver in use: bcma-pci-bridge</span><br><span class="line">	Kernel modules: bcma</span><br></pre></td></tr></table></figure>
+<h3 id="安装网卡驱动"><a href="#安装网卡驱动" class="headerlink" title="安装网卡驱动"></a>安装网卡驱动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yay -S noconfirm b43-firmware</span><br></pre></td></tr></table></figure>
+<h3 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo reboot</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2025/12/31/install-BCM4331-driver-on-manjaro/" data-id="cmkffwwjn0043qm2cfggohovj" data-title="install-BCM4331-driver-on-manjaro" class="article-share-link">分享</a>
+      
+      
+        <a href="/2025/12/31/install-BCM4331-driver-on-manjaro/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2025/12/31/install-BCM4331-driver-on-manjaro/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BCM4331/" rel="tag">BCM4331</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/" rel="tag">Mac</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/manjaro/" rel="tag">manjaro</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Make-Abundance-for-the-World" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/12/30/Make-Abundance-for-the-World/" class="article-date">
+  <time class="dt-published" datetime="2025-12-30T12:38:52.000Z" itemprop="datePublished">2025-12-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Rich/">Rich</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/12/30/Make-Abundance-for-the-World/">Make Abundance for the World(为世界创造富足)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>创造财富并非从他人处掠夺资源</p>
+<h3 id="符合道德规范的财富创造能为世界带来富足"><a href="#符合道德规范的财富创造能为世界带来富足" class="headerlink" title="符合道德规范的财富创造能为世界带来富足"></a>符合道德规范的财富创造能为世界带来富足</h3><p>纳瓦尔：有一种观念，认为赚钱是邪恶的。这种观念根植于”金钱是万恶之源”的说法。人们认为银行家窃取我们的钱财。这在某种程度上是事实——世界上很多地方确实持续存在大量掠夺行为。</p>
+<p>从某种意义上看，世界历史就是创造者与索取者之间的掠食关系史。有些人外出创造、建设、为此辛勤付出；</p>
+<p>而另一些人则带着刀剑枪支、苛捐杂税、裙带资本主义或共产主义等各类手段进行掠夺。</p>
+<p>即使在自然界，寄生生物的数量也远超过非寄生生物。你体内就存在大量以你为生的寄生体，其中较优者是互利共生——它们会给予回报，但多数只是索取。这正是任何复杂系统构建的天然模式。</p>
+<p>我所关注的是真正的财富创造。这无关攫取金钱，也非从他人处掠夺资源，而是创造富足。</p>
+<p>显然，工作岗位数量并非固定不变，财富总量也非恒定值。若非如此，我们现在仍会围坐在洞穴里，盘算如何分配柴火和偶尔猎获的死鹿。</p>
+<p>事实上，人类文明中的绝大多数财富——甚至全部财富——都是被创造出来的。它们源于人类的智慧、技术的革新、生产力的提升以及辛勤的劳动。那种将财富视为掠夺产物的观念，正是那些追求地位者所鼓吹的可怕零和游戏。</p>
+<h3 id="人人皆可富足"><a href="#人人皆可富足" class="headerlink" title="人人皆可富足"></a>人人皆可富足</h3><p>但现实是每个人都能获得富足。我们观察发达国家现状即可印证：如今每个人的生活水准，几乎都超越了200年前的最高水平。</p>
+<p>200年前，没有人拥有抗生素、汽车、电力或iPhone。所有这些发明都使我们这个物种变得更加富足。如今我宁愿成为发达国家的穷人，也不愿做路易十四时代法国的富人；我宁愿成为今日的普通人，也不愿成为昔日的贵族——这正是财富创造带来的转变。</p>
+<p>技术的引擎是科学，而科学的应用旨在创造富足。因此我认为从根本上说，每个人都能获得富足。</p>
+<p>请思考这个思想实验：假设每个人都具备优秀软硬件工程师的知识储备，能够建造机器人、计算机、桥梁并进行编程。如果全人类都掌握这些技能，你认为20年后社会将呈现出什么面貌？</p>
+<p>我的推测是：我们将建造能够完成所有工作的机器人、机器、软件和硬件系统。人类将生活在大规模富足之中。从基本需求层面看，我们实质上都将进入”退休”状态——没有人需要为生存必需品工作。我们将拥有机器人护士、自动化医院、自动驾驶汽车、全自动化农场和清洁能源。</p>
+<p>届时，我们将通过技术突破获得所需的一切。若仍有人选择工作，那将是他们表达创造力的方式——工作源于内心的贡献渴望，源于建设与设计的本能驱动。</p>
+<h3 id="资本主义并非罪恶"><a href="#资本主义并非罪恶" class="headerlink" title="资本主义并非罪恶"></a>资本主义并非罪恶</h3><p>我不认为资本主义是邪恶的。资本主义本质是好的，只是常被劫持：被外部性定价不当，腐败垄断所劫持</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2025/12/30/Make-Abundance-for-the-World/" data-id="cmkffwwi3000cqm2ceanw54wk" data-title="Make Abundance for the World(为世界创造富足)" class="article-share-link">分享</a>
+      
+      
+        <a href="/2025/12/30/Make-Abundance-for-the-World/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2025/12/30/Make-Abundance-for-the-World/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/How-to-Get-Rich/" rel="tag">How to Get Rich</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Naval/" rel="tag">Naval</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-access-google-on-manjaro-chrome" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/12/27/access-google-on-manjaro-chrome/" class="article-date">
+  <time class="dt-published" datetime="2025-12-27T13:23:04.000Z" itemprop="datePublished">2025-12-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Other/">Other</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/12/27/access-google-on-manjaro-chrome/">在manjaro下使用Chrome科学上网</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>安装完Manjaro之后迫不及待安装上clash-verge、Chrome，然后发现自带的Firefox可以科学上网，Chrome访问不上<br>原因是这个版本的Chrome中不支持代理设置，需要手动设置<br>将Clash Verge的代理端口设置给Chrome就可以了<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.config</span><br><span class="line">vi chrome-configs.flag # 插入内容</span><br><span class="line">-proxy-server=127.0.0.1:port # 替换成你clash代理的端口，保存 重启chrome就可以了</span><br></pre></td></tr></table></figure><br>以上方法亲测可用，还有同学说可以如下设置的，没有尝试<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/opt/google/chrome/chrome --proxy-server="[http://127.0.0.1:7890](http://127.0.0.1:7890/)"</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2025/12/27/access-google-on-manjaro-chrome/" data-id="cmkffwwio0018qm2ccrfjcwwo" data-title="在manjaro下使用Chrome科学上网" class="article-share-link">分享</a>
+      
+      
+        <a href="/2025/12/27/access-google-on-manjaro-chrome/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2025/12/27/access-google-on-manjaro-chrome/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Manjaro/" rel="tag">Manjaro</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Seek-Wealth-Not-Money-or-Status" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/06/26/Seek-Wealth-Not-Money-or-Status/" class="article-date">
+  <time class="dt-published" datetime="2025-06-26T21:04:17.000Z" itemprop="datePublished">2025-06-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Rich/">Rich</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/06/26/Seek-Wealth-Not-Money-or-Status/">Seek-Wealth-Not-Money-or-Status（去寻找财富，而非金钱和地位）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Seek-Wealth-Not-Money-or-Status"><a href="#Seek-Wealth-Not-Money-or-Status" class="headerlink" title="Seek Wealth, Not Money or Status"></a>Seek Wealth, Not Money or Status</h2><p>去寻找财富，而非金钱和地位<br>Wealth is assets that earn while you sleep<br>财富是资产，资产在你你睡觉时也能一直为你赚钱</p>
+<h3 id="Naval-is-a-prolific-tech-investor-and-founder-of-AngelList"><a href="#Naval-is-a-prolific-tech-investor-and-founder-of-AngelList" class="headerlink" title="Naval is a prolific tech investor and founder of AngelList"></a>Naval is a prolific tech investor and founder of AngelList</h3><p>财富是资产，资产在你你睡觉时也能一直为你赚钱</p>
+<p><strong>Nivi:</strong> You probably know Naval from his <a href="https://twitter.com/naval" target="_blank" rel="noopener">Twitter</a> account.<br><strong>Nivi:</strong> 你可能通过Naval的<a href="https://twitter.com/naval" target="_blank" rel="noopener">Twitter</a>账号认识他。  </p>
+<p>We’re going to talk about his tweetstorm, “<a href="https://twitter.com/naval/status/1002103360646823936" target="_blank" rel="noopener">How To Get Rich (without getting lucky)</a>.” We’ll go through most of the tweets in detail, give Naval a chance to expand on them and generally riff on the topic. He’ll probably throw in ideas he hasn’t published before.<br>我们将会讨论他的推文“<a href="https://twitter.com/naval/status/1002103360646823936" target="_blank" rel="noopener">How To Get Rich (without getting lucky)</a>”如何致富（不靠运气）。我们将通过详细讨论大部分推文，让Naval有机会进一步阐述概括这个主题。他也有可能抛出新的想法。</p>
+<p>Naval’s the co-founder of <a href="http://angel.co/" target="_blank" rel="noopener">AngelList</a> and Epinions. He’s also a prolific tech investor in companies like Twitter, Uber and many more.<br>Naval是<a href="http://angel.co/" target="_blank" rel="noopener">AngelList</a>和Epinions的联合创始人。他是一名丰富的科技投资人，投资过Twitter、Uber等公司。</p>
+<p><a href="http://twitter.com/nivi" target="_blank" rel="noopener">I’m</a> the co-founder of AngelList with Naval. And I co-authored the <a href="http://venturehacks.com/" target="_blank" rel="noopener">Venture Hacks</a> blog with him back in the day.<br><a href="http://twitter.com/nivi" target="_blank" rel="noopener">我</a>和Naval共同创立了AngelList。也曾经一起撰写过<a href="http://venturehacks.com/" target="_blank" rel="noopener">Venture Hacks</a>博客。</p>
+<p><strong>Naval:</strong> The “How to Get Rich” tweetstorm definitely hit a nerve and went viral. A lot of people say it was helpful and reached across aisles.<br>Naval:“How to Get Rich”（如何致富）这篇推文显然戳中了很多人的痛点，并迅速走红。很多人说它非常有帮助，而且打破了圈层，引发了不同群体的共鸣。</p>
+<p>People outside of the tech industry—people in all walks of life—want to know how to solve their money problems. Everyone vaguely knows they want to be wealthy, but they don’t have a good set of principles to do it by.<br>不只是科技圈的人，几乎各行各业的人都想知道怎么解决财务上的困扰。大家都知道自己想变有钱，但很多人其实并没有一套靠谱的方法或原则去实现它。</p>
+<h3 id="Wealth-is-assets-that-earn-while-you-sleep"><a href="#Wealth-is-assets-that-earn-while-you-sleep" class="headerlink" title="Wealth is assets that earn while you sleep"></a>Wealth is assets that earn while you sleep</h3><p>财富是资产，资产在你睡觉时也能一直为你赚钱</p>
+<p><strong>Nivi:</strong> What’s the difference between wealth, money and status?<br><strong>Nivi:</strong> 财富、金钱、地位有什么不同？</p>
+<p><strong>Naval:</strong> Wealth is the thing you want. Wealth is assets that earn while you sleep; it’s the factory of robots cranking out things. Wealth is the computer program running at night that’s serving other customers. Wealth is money in the bank that is reinvested into other assets and businesses.<br><strong>Naval:</strong> 财富是你想要的。财富是资产，资产在你睡觉时也能一直为你赚钱；它可以是工厂里的机器人为你生产东西。也可以是晚上也能一直服务客户的电脑程序。财富是银行里的钱，可以再投资到其他资产或生意当中。</p>
+<p>A house can be a form of wealth, because you can rent it out; although that’s a less productive use of land than running a commercial enterprise.<br>房子也可以是一种财富，因为你可以将它出租出去。尽管这与经营企业比，是一种生产力较低的一种利用土地的方式。</p>
+<p>My definition of wealth is oriented toward businesses and assets that can earn while you sleep.<br>我对财富的定义是在你睡觉时能为你赚钱的企业和资产。</p>
+<h3 id="Wealth-buys-your-freedom"><a href="#Wealth-buys-your-freedom" class="headerlink" title="Wealth buys your freedom"></a>Wealth buys your freedom</h3><p>财富买来的是自由</p>
+<p>You want wealth because it buys you freedom—so you don’t have to wear a tie like a collar around your neck; so you don’t have to wake up at 7:00 a.m. to rush to work and sit in commute traffic; so you don’t have to waste your life grinding productive hours away into a soulless job that doesn’t fulfill you.<br>你想要财富，是因为财富能为你买来自由——让你不必每天戴着像狗链一样的领带，不必早上七点起床赶去上班、堵在通勤的车流中，不必把自己最有生产力的人生时光，浪费在一份毫无灵魂、不带来任何满足感的工作上。</p>
+<p>The purpose of wealth is freedom; it’s nothing more than that. It’s not to buy fur coats, or to drive Ferraris, or to sail yachts, or to jet around the world in a Gulf Stream. That stuff gets really boring and stupid, really fast. It’s about being your own sovereign individual.<br>财富的真正目的就是自由，仅此而已。它不是为了买貂皮大衣、法拉利、游艇，也不是为了坐湾流私人飞机环球旅行。那些东西很快就会变得无聊甚至愚蠢。真正重要的是：成为一个完全自主、独立的人。</p>
+<p>You’re not going to get that unless you really want it. The entire world wants it, and the entire world is working hard at it.<br>但你必须真正渴望这种自由，你才可能得到它。全世界的人都想要这种自由，也都在努力争取。</p>
+<p>It is competitive to some extent. It’s a positive sum game—but there are competitive elements to it, because there’s a finite amount of resources right now in society. To get the resources to do what you want, you have to stand out.<br>在某种程度上，这是一场竞争。虽然它是一个正和游戏，但仍然有竞争的部分，因为当前社会的资源是有限的。如果你想获得资源、去实现你想做的事，你就必须脱颖而出。</p>
+<h3 id="Money-is-how-we-transfer-wealth"><a href="#Money-is-how-we-transfer-wealth" class="headerlink" title="Money is how we transfer wealth"></a>Money is how we transfer wealth</h3><p>金钱是如何交换财富的具现</p>
+<p>Money is how we transfer wealth. Money is social credits; it’s the ability to have credits and debits of other people’s time.<br>金钱是社会信用。它代表你拥有他人时间借贷的能力。</p>
+<p>If I do my job right and create value for society, society says, “Oh, thank you. We owe you something in the future for the work that you did. Here’s a little IOU. Let’s call that money.”<br>如果我做好了我的工作并对社会产生了价值，社会会说，“谢谢你！我们欠你一点什么，以后会补偿你过去做的这些事。给你一张欠条，我们把它叫做‘钱’。”</p>
+<p>That money gets debased because people steal the IOUs; the government prints extra IOUs; and people renege on their IOUs. But money tries to be a reliable IOU from society that you are owed something for something you did in the past.<br>这种钱会被稀释，因为有人偷走了这些欠条；政府印了更多的欠条；也有人赖账不还。但钱本质上是在努力成为一个可靠的社会欠条，是社会对你过去行为的回报。</p>
+<p>We transfer these IOUs around; money is how we transfer wealth.<br>我们在人与人之间交换这些欠条；金钱就是我们如何交换财富的具现。</p>
+<h3 id="Status-is-your-rank-in-the-social-hierarchy"><a href="#Status-is-your-rank-in-the-social-hierarchy" class="headerlink" title="Status is your rank in the social hierarchy"></a>Status is your rank in the social hierarchy</h3><p>地位是你在社会体系中的排名</p>
+<p>There are fundamentally two huge games in life that people play. One is the money game. Money is not going to solve all of your problems; but it’s going to solve all of your money problems. I think people know that. They realize that, so they want to make money.<br>从根本上说，人们在生活中玩着两种巨大的游戏。一个是金钱游戏。金钱并不能解决你所有的问题；但它却能解决你所有需要钱的问题。我认为人们知道这一点。他们意识到了这一点，所以他们想赚钱。</p>
+<p>At the same time, deep down many people believe they can’t make it; so they don’t want any wealth creation to happen. They virtue signal by attacking the whole enterprise, saying, “Well, making money is evil. You shouldn’t do it.”<br>与此同时，许多人内心深处认为自己赚不到钱，所以他们不希望财富创造发生。他们通过攻击整个行业来发出道德信号，说：”赚钱是邪恶的。你不应该这么做”。</p>
+<p>But they’re actually playing the other game, which is the status game. They’re trying to be high status in the eyes of others by saying, “Well, I don’t need money. We don’t want money.”<br>但实际上，他们在玩另一种游戏，即地位游戏。他们试图通过说 “我不需要钱” ，“我也不想要赚钱 ”来提高自己在别人心目中的地位。</p>
+<p>Status is your ranking in the social hierarchy.<br>地位是你在社会体系中的排名。</p>
+<p>Wealth is not a zero-sum game. Everybody in the world can have a house. Because you have a house doesn’t take away from my ability to have a house. If anything, the more houses that are built, the easier it becomes to build houses, the more we know about building houses, and the more people can have houses.<br>财富不是零和游戏。世界上每个人都可以有房子。你有房子并不会剥夺我有房子的能力。相反，房子建得越多，建房就越容易，我们对建房的了解就越多，就有越多的人可以拥有房子。</p>
+<p>Wealth is a very positive-sum game. We create things together. We’re starting this endeavor to create a piece of art that explains what we’re doing. At the end of it, something brand new will be created. It’s a positive-sum game.<br>财富是一个正和的游戏。我们共同创造财富。我们正在努力创造一件艺术品，来解释我们正在做的事情。最后，我们会创造出全新的东西。这是一个正和游戏。</p>
+<h3 id="Status-is-a-very-old-game"><a href="#Status-is-a-very-old-game" class="headerlink" title="Status is a very old game"></a>Status is a very old game</h3><p>地位是一个非常古老的游戏</p>
+<p>Status, on the other hand, is a zero-sum game. It’s a very old game. We’ve been playing it since monkey tribes. It’s hierarchical. Who’s number one? Who’s number two? Who’s number three? And for number three to move to number two, number two has to move out of that slot. So, status is a zero-sum game.<br>另一方面，地位是一种零和游戏。这是一种非常古老的游戏。从猴群时代开始，我们就一直在玩。它是等级制的：谁是第一？谁是第二？谁是第三？而要从第三升到第二，第二就必须让出那个位置。所以，地位是一种零和游戏。</p>
+<p>Politics is an example of a status game. Even sports is an example of a status game. To be the winner, there must be a loser. Fundamentally, I don’t like status games. They play an important role in our society, so we can figure out who’s in charge. But you play them because they’re a necessary evil.<br>政治就是一种地位游戏的例子。甚至体育比赛也是一种地位游戏。要有赢家，就必须有输家。我本质上不喜欢这种地位游戏。它们在社会中确实扮演着重要角色——帮助我们弄清谁是领导者。但你之所以参与，是因为它们是一种“必要的恶”。</p>
+<p>On an evolutionary basis—if you go back thousands of years—status is a much better predictor of survival than wealth. You couldn’t have wealth before the farming age because you couldn’t store things. Hunter-gatherers carried everything on their backs.<br>从进化的角度来看——如果你回顾几千年前——地位比财富更能预测一个人的生存能力。在农业出现之前，人们是无法拥有财富的，因为他们无法储存东西。狩猎采集者把一切都背在身上生活。</p>
+<p>Hunter-gatherers lived in entirely status-based societies. Farmers started going to wealth-based societies. The modern industrial economies are much more heavily wealth-based societies.<br>狩猎采集者生活在完全基于地位的社会中。而农耕者开始向基于财富的社会转变。现代工业经济体则更多是基于财富的社会。</p>
+<h3 id="People-creating-wealth-will-always-be-attacked-by-people-playing-status-games"><a href="#People-creating-wealth-will-always-be-attacked-by-people-playing-status-games" class="headerlink" title="People creating wealth will always be attacked by people playing status games"></a>People creating wealth will always be attacked by people playing status games</h3><p>创造财富的人，总会受到玩地位游戏的人的攻击</p>
+<p>There’s always a subtle competition going on between status and wealth. For example, when journalists attack rich people or the tech industry, they’re really bidding for status. They’re saying, “No, the people are more important. And I, the journalist, represent the people, and therefore I am more important.”<br>地位和财富之间，总存在着一种微妙的竞争。比如，当记者抨击富人或科技行业时，其实是在争夺地位。他们是在表达：“人民才是最重要的，而我，作为记者，是人民的代表，所以我更重要。”</p>
+<p>The problem is, to win at a status game you have to put somebody else down. That’s why you should avoid status games in your life—because they make you into an angry combative person. You’re always fighting to put other people down and elevate yourself and the people you like.<br>问题在于：想要在地位游戏中获胜，就必须贬低别人。这也是为什么你应该避免参与地位游戏——因为它会让你变得愤怒、好斗。你会不停地打压他人、抬高自己或你所支持的人。</p>
+<p>Status games are always going to exist; there’s no way around it. Realize that most of the time when you’re trying to create wealth, you’re getting attacked by someone else and they’re trying to look like a goody-two shoes. They’re trying to up their own status at your expense.<br>地位游戏永远都会存在，这是无法避免的。你需要明白，大多数时候，当你试图创造财富时，攻击你的人，其实是在假装正义。他们想让自己看起来像是“正人君子”，但本质上是在踩着你来提高自己的地位。</p>
+<p>They’re playing a different game. And it’s a worse game. It’s a zero-sum game, instead of a positive-sum game.<br>他们玩的是另一种游戏——一种更糟糕的游戏。地位游戏是零和游戏，而财富游戏则是正和游戏。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2025/06/26/Seek-Wealth-Not-Money-or-Status/" data-id="cmkffwwi9000mqm2c4ub8gsty" data-title="Seek-Wealth-Not-Money-or-Status（去寻找财富，而非金钱和地位）" class="article-share-link">分享</a>
+      
+      
+        <a href="/2025/06/26/Seek-Wealth-Not-Money-or-Status/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2025/06/26/Seek-Wealth-Not-Money-or-Status/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/How-to-Get-Rich/" rel="tag">How to Get Rich</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Naval/" rel="tag">Naval</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-how-to-resolve-communications-link-failure" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/02/14/how-to-resolve-communications-link-failure/" class="article-date">
+  <time class="dt-published" datetime="2025-02-14T08:43:11.000Z" itemprop="datePublished">2025-02-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Data/">Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/02/14/how-to-resolve-communications-link-failure/">如何排查解决Communications link failure</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>项目启动运行几小时后数据库连接异常，重启正常使用</li>
+<li>偶发数据库连接异常，重启正常使用</li>
+<li>偶发事物数据丢失</li>
+</ul>
+<p>怎么办，网上搜索，druid issue搜索，一会儿让改一下这个参数，一会儿改一下那个参数。各种改了重启，观察。然后报错依然复现存在。没想到我们也有资格成为调参工程师。</p>
+<h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><ul>
+<li>MySQL：8.0.32</li>
+<li>Druid: 1.1.24</li>
+<li>Driver：mysql-connector 8.0.27</li>
+</ul>
+<h3 id="错误异常"><a href="#错误异常" class="headerlink" title="错误异常"></a>错误异常</h3><p>通常错误有以下几种<br><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java.net.SocketException: Connection reset</span><br><span class="line"></span><br><span class="line">Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure</span><br><span class="line">The last packet successfully received <span class="keyword">from</span> the server was <span class="number">1</span>,<span class="number">254</span>,<span class="number">739</span> milliseconds ago. The last packet sent successfully to the server was <span class="number">1</span>,<span class="number">254</span>,<span class="number">740</span> millisecond ago.s ago.</span><br><span class="line"></span><br><span class="line">Caused by: java.sql.SQLException: connection disabled</span><br><span class="line">at com.alibaba.druid.pool.DruidPooledConnection.checkStateInternal(DruidPooledConnection.java:<span class="number">1169</span>)</span><br><span class="line"></span><br><span class="line">org.springframework.jdbc.UncategorizedSQLException:</span><br><span class="line">### Error querying database. Cause: java.sql.SQLException: connection disabled</span><br><span class="line"></span><br><span class="line">Cause: java.sql.SQLException: connection disabled</span><br><span class="line">; uncategorized SQLException <span class="keyword">for</span> SQL []; SQL state [<span class="literal">null</span>]; error code [<span class="number">0</span>]; connection disabled; nested exception <span class="keyword">is</span> java.sql.SQLException: connection disabled</span><br><span class="line"></span><br><span class="line"><span class="number">2025</span><span class="number">-02</span><span class="number">-11</span> <span class="number">04</span>:<span class="number">46</span>:<span class="number">31.300</span> ERROR <span class="number">1</span> --- [http-nio<span class="number">-8080</span>-exec<span class="number">-7</span>] [c.a.druid.pool.DruidPooledStatement :<span class="number">368</span>] : CommunicationsException, druid version <span class="number">1.1</span><span class="number">.24</span>, jdbcUrl : jdbc:mysql:<span class="comment">//host:3306/db?useUnicode=true&amp;characterEncoding=UTF8&amp;zroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;maxReconnects=10&amp;useSSL=false&amp;connectTimeout=10000&amp;socketTimeout=120000, testWhileIle true, idle millis 6403958, minIdle 5, poolingCount 2, timeBetweenEvictionRunsMillis 60000, lastValidIdleMillis 6403958, driver com.mysql.cj.jdbc.Driver, exeptionSorter com.alibaba.druid.pool.vendor.MySqlExceptionSorter</span></span><br><span class="line"><span class="number">2025</span><span class="number">-02</span><span class="number">-11</span> <span class="number">04</span>:<span class="number">46</span>:<span class="number">31.302</span> ERROR <span class="number">1</span> --- [http-nio<span class="number">-8080</span>-exec<span class="number">-7</span>] [com.alibaba.druid.util.JdbcUtils :<span class="number">96</span>] : close connection error</span><br><span class="line"></span><br><span class="line">java.sql.SQLNonTransientConnectionException: Communications link failure during rollback(). Transaction resolution unknown.</span><br></pre></td></tr></table></figure></p>
+<h3 id="排查步骤"><a href="#排查步骤" class="headerlink" title="排查步骤"></a>排查步骤</h3><p>以上所有的错误都是指向连接异常。需要我们抽丝剥茧。杀人是个罪恶的行径，查出真相是我的责任。</p>
+<ul>
+<li><p>网络问题<br>作为程序员首先想到的不是程序有问题出，而是环境有问题。是否有防火墙杀死应用到数据库的连接</p>
+</li>
+<li><p>数据库超时时间设置问题<br>查看数据库设置超时时间是否和druid配置不匹配<br>查看数据库设置</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'%timeout%'</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="/2025/02/14/how-to-resolve-communications-link-failure/mysql_timeout.jpeg" alt="MySQL timeout"><br>其中wait_timeout和interactive_timeout是设置MySQL在连接不操作多少秒后断开连接。<br>如：客户端连接到MySQL超过8小时没有任何操作，则MySQL将主动断开连接。其中wait_timeout为非交互的连接，我们应用程序连接使用的就是这个。<br>如果wait_timeout过小和druid配置连接检查间隔时间不合理，则有可能出现d以为该连接没关闭，但是MySQL已经主动关闭连接，导致连接异常的问题。但是这种情况较少，因为我们校验连接通常都是多少秒校验一次。<br>另外MySQL参数中也有事务时间，应用程序有长事务，导致超过MySQL设置事务时间，会导致事务不成功  </p>
+<p>另外我们可以通过查询MySQL的连接来等待判断时间<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> information_schema.processlist <span class="keyword">where</span> db = <span class="string">'mydb'</span></span><br></pre></td></tr></table></figure><br><img src="/2025/02/14/how-to-resolve-communications-link-failure/mysql_processlist.jpeg" alt="MySQL processlist"></p>
+<ul>
+<li>druid配置不合理<br>外部原因排查完后，就只剩下排查自己问题了。不对，也可以是druid提示不明显。<br>我们通常将连接池托管给三方库，我们只需要按其提供建议配置就好。druid就是其中一种。各版本配置有些许变化，<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">shardingsphere:</span></span><br><span class="line"><span class="attr">props:</span></span><br><span class="line"><span class="attr">sql-show:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">query-with-cipher-column:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">datasource:</span></span><br><span class="line"><span class="attr">names:</span> <span class="string">salve,master</span></span><br><span class="line"><span class="attr">master:</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">com.alibaba.druid.pool.DruidDataSource</span></span><br><span class="line"><span class="attr">driverClassName:</span> <span class="string">com.mysql.jdbc.Driver</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">jdbc:mysql://$&#123;db.host&#125;:$&#123;db.port&#125;/$&#123;db.database&#125;?useUnicode=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;maxReconnects=10&amp;useSSL=false&amp;connectTimeout=10000&amp;socketTimeout=60000</span></span><br><span class="line"><span class="attr">username:</span> <span class="string">$&#123;db.username&#125;</span></span><br><span class="line"><span class="attr">password:</span> <span class="string">$&#123;db.password&#125;</span></span><br><span class="line"><span class="attr">maxActive:</span> <span class="string">$&#123;db.maxActive:100&#125;</span></span><br><span class="line"><span class="attr">minIdle:</span> <span class="string">$&#123;db.minIdle:5&#125;</span></span><br><span class="line"><span class="attr">initialSize:</span> <span class="string">$&#123;db.minIdle:5&#125;</span></span><br><span class="line"><span class="attr">minEvictableIdleTimeMillis:</span> <span class="string">$&#123;db.minEvictableIdleTimeMillis:180000&#125;</span></span><br><span class="line"><span class="attr">maxEvictableIdleTimeMillis:</span> <span class="string">$&#123;db.maxEvictableIdleTimeMillis:300000&#125;</span></span><br><span class="line"><span class="attr">maxWait:</span> <span class="string">$&#123;db.maxWait:10000&#125;</span></span><br><span class="line"><span class="attr">maxWaitThreadCount:</span> <span class="string">$&#123;db.maxWaitThreadCount:1000&#125;</span></span><br><span class="line"><span class="attr">testOnBorrow:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">testOnReturn:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">testWhileIdle:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">keepAlive:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">timeBetweenEvictionRunsMillis:</span> <span class="number">20000</span></span><br><span class="line"><span class="attr">validationQueryTimeout:</span> <span class="number">10</span></span><br><span class="line"><span class="attr">validationQuery:</span> <span class="string">SELECT</span> <span class="number">1</span></span><br><span class="line"><span class="comment">## TRANSACTION_READ_COMMITTED</span></span><br><span class="line"><span class="attr">default-transaction-isolation:</span> <span class="number">2</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>加入配置druid.mysql.usePingMethod=false<br>在检查有效连接的时候才不会使用ping而使用validationQuery sql来检查<br>另外可以查看<a href="https://github.com/alibaba/druid/wiki/DruidDataSource%E9%85%8D%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%88%97%E8%A1%A8" target="_blank" rel="noopener">DruidDataSource配置属性列表</a></p>
+<ul>
+<li>事务未正确关闭<br>在排除了非程序问题，非配置问题后，还没有找到原因。就要想是不是druid的源码问题，还是MySQL源码问题。或者可能是自己程序哪里有问题。在看了一阵druid的源码和issue后发现有跟程序未正确结束事务（commit or rollback），会导致这个事务持有数据库连接无法正常归还到连接池，从而导致连接池中可用连接变少。<br>我的问题就是这个，修改后，解决了这个连接异常问题<br><a href="https://github.com/alibaba/druid/issues/5889" target="_blank" rel="noopener">issue</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2025/02/14/how-to-resolve-communications-link-failure/" data-id="cmkffwwjk003wqm2c7xufg7x8" data-title="如何排查解决Communications link failure" class="article-share-link">分享</a>
+      
+      
+        <a href="/2025/02/14/how-to-resolve-communications-link-failure/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2025/02/14/how-to-resolve-communications-link-failure/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CJCommunicationsException/" rel="tag">CJCommunicationsException</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/druid/" rel="tag">druid</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-what-is-group-replication-in-mysql" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/29/what-is-group-replication-in-mysql/" class="article-date">
+  <time class="dt-published" datetime="2024-05-29T12:57:05.000Z" itemprop="datePublished">2024-05-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Data/">Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/05/29/what-is-group-replication-in-mysql/">MySQL MGR是什么？</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h4 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h4><ul>
+<li>MGR：MySQL Group Replication，即MySQL组复制</li>
+<li>RPO：Recovery Point Objective恢复点目标</li>
+<li>RTO：Recovery Time Objective恢复时间目标</li>
+</ul>
+<h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>公司核心应用A为公司核心应用，对数据库RPO、RTO都有较高要求。一次数据库主库磁盘expender背板坏了，影响磁盘IO通道，数据库层面出现大面积超时和错误。由于机器未完全坏掉，数据库可以连接，SQL可以执行，导致主从未能自动切换，手动切换时准备脚本，校验数据同步等问题耗时过长，导致公司业务出现重大损失。(原有方案为MHA高可用，半同步复制)<br>由此改为MGR集群技术方案，以期降低主从切换时效，降低损失。</p>
+<h4 id="MGR"><a href="#MGR" class="headerlink" title="MGR"></a>MGR</h4><p>MGR高可用方案中的RPO、RTO<br>RPO：架构模型保障了数据一致性，无需人为干预和检测<br>RTO：因其本身RPO的自动保障，无数据差异，准备耗时短，</p>
+<p>MGR具备以下几个特点：</p>
+<p>基于shared-nothing模式，所有节点都有一份完整数据，发生故障时可以直接切换。<br>MGR提供了数据一致性保障，默认是最终一致性，可根据业务特征需要自行调整一致性级别。<br>支持在线添加、删除节点，节点管理更方便。<br>支持故障自动检测及自动切换，发生故障时能自动切换到新的主节点，再配合MySQL Router中间件，应用层无需干预或调整。<br>支持单节点、多节点写入两种模式，可根据架构或业务需要选择哪种方案，不过强烈建议选用单主模式。</p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a href="https://dev.mysql.com/doc/refman/8.4/en/group-replication.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.4/en/group-replication.html</a></p>
+<p><a href="https://greatsql.cn/blog-10-9.html" target="_blank" rel="noopener">https://greatsql.cn/blog-10-9.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2024/05/29/what-is-group-replication-in-mysql/" data-id="cmkffwwkf006eqm2cbgv89lfl" data-title="MySQL MGR是什么？" class="article-share-link">分享</a>
+      
+      
+        <a href="/2024/05/29/what-is-group-replication-in-mysql/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2024/05/29/what-is-group-replication-in-mysql/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MGR/" rel="tag">MGR</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-how-to-estimate-size-of-table-in-mysql" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/29/how-to-estimate-size-of-table-in-mysql/" class="article-date">
+  <time class="dt-published" datetime="2024-05-29T12:37:39.000Z" itemprop="datePublished">2024-05-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Data/">Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/05/29/how-to-estimate-size-of-table-in-mysql/">如何预估MySQL表空间占用大小</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我们经常需要知道表空间大小，在修改表结构的时候需要知道表空间大小以预估影响时间；在设计表的时候需要预估表的数据量，预估磁盘空间等。</p>
+<h4 id="查看已存在的表空间大小"><a href="#查看已存在的表空间大小" class="headerlink" title="查看已存在的表空间大小"></a>查看已存在的表空间大小</h4><p>MySQL中information_schema有记录<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">concat</span>(<span class="keyword">round</span>(<span class="keyword">sum</span>((data_length+index_length)/<span class="number">1024</span>/<span class="number">1024</span>),<span class="number">2</span>),<span class="string">'MB'</span> <span class="keyword">as</span> <span class="keyword">data</span></span><br><span class="line"><span class="keyword">FROM</span> information_schema.tables</span><br><span class="line"><span class="keyword">WHERE</span> table_schema=<span class="string">'mydb'</span> <span class="keyword">and</span> table_name=<span class="string">'mytable'</span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="新建表空间大小测算"><a href="#新建表空间大小测算" class="headerlink" title="新建表空间大小测算"></a>新建表空间大小测算</h4><p>从上面可以看到表空间大小由数据大小+索引大小两部分组成<br>下面通过一个例子来实际测算一下<br>DDL<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc City;</span><br><span class="line">+<span class="comment">-------------+----------+------+-----+---------+----------------+</span></span><br><span class="line">| Field       | Type     | Null | Key | Default | Extra          |</span><br><span class="line">+<span class="comment">-------------+----------+------+-----+---------+----------------+</span></span><br><span class="line">| ID          | int(11)  | NO   | PRI | NULL    | auto_increment |</span><br><span class="line">| Name        | char(35) | NO   |     |         |                |</span><br><span class="line">| CountryCode | char(3)  | NO   | MUL |         |                |</span><br><span class="line">| District    | char(20) | NO   |     |         |                |</span><br><span class="line">| Population  | int(11)  | NO   |     | 0       |                |</span><br><span class="line">+<span class="comment">-------------+----------+------+-----+---------+----------------+</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>数据大小测算<br>根据表结构中字段大小来测算<br>66 bytes per row of data（4+35+3+20+4）</p>
+</li>
+<li><p>索引大小测算<br>4 bytes per row for the primary key<br>7 bytes per row for country code index</p>
+<ul>
+<li>3 bytes for the country</li>
+<li>4 bytes for Clustered Key attached to the country code</li>
+</ul>
+</li>
+</ul>
+<p>这不考虑BTREE或表空间碎片的内务管理<br>对于一百万行，这将是77000000字节（73.43 MB）</p>
+<p>参考<br><a href="https://dba.stackexchange.com/questions/46069/how-to-estimate-predict-data-size-and-index-size-of-a-table-in-mysql" target="_blank" rel="noopener">How to estimate/predict data size and index size of a table in MySQL</a></p>
+<p>更详细的还需要看<a href="https://dev.mysql.com/blog-archive/innodb-tablespace-space-management/" target="_blank" rel="noopener">InnoDB : Tablespace Space Management</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2024/05/29/how-to-estimate-size-of-table-in-mysql/" data-id="cmkffwwjc003aqm2c489ahf4b" data-title="如何预估MySQL表空间占用大小" class="article-share-link">分享</a>
+      
+      
+        <a href="/2024/05/29/how-to-estimate-size-of-table-in-mysql/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2024/05/29/how-to-estimate-size-of-table-in-mysql/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data/">Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Other/">Other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Rich/">Rich</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/02-00-00-00-00-00/" rel="tag">02:00:00:00:00:00</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/0kb/" rel="tag">0kb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/301/" rel="tag">301</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/302/" rel="tag">302</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/APKParser/" rel="tag">APKParser</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AXMLPrinter2/" rel="tag">AXMLPrinter2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Activity/" rel="tag">Activity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-TV/" rel="tag">Android TV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AndroidStudio/" rel="tag">AndroidStudio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Aviator/" rel="tag">Aviator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BCM4331/" rel="tag">BCM4331</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bean/" rel="tag">Bean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CJCommunicationsException/" rel="tag">CJCommunicationsException</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compiler/" rel="tag">Compiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DataBinding/" rel="tag">DataBinding</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DataX/" rel="tag">DataX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DateFormat/" rel="tag">DateFormat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DebugNativeLibs/" rel="tag">DebugNativeLibs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Debugger/" rel="tag">Debugger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Deferred-Deep-Link/" rel="tag">Deferred Deep Link</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DownloadManager/" rel="tag">DownloadManager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Links/" rel="tag">Dynamic Links</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EPASV/" rel="tag">EPASV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Excel/" rel="tag">Excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FTP/" rel="tag">FTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FeignClient/" rel="tag">FeignClient</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/" rel="tag">Gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gson/" rel="tag">Gson</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HBase/" rel="tag">HBase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hibernate/" rel="tag">Hibernate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/How-to-Get-Rich/" rel="tag">How to Get Rich</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Http-Status-Code/" rel="tag">Http Status Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HttpClient/" rel="tag">HttpClient</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Interview/" rel="tag">Interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JNI/" rel="tag">JNI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JitPack/" rel="tag">JitPack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kids/" rel="tag">Kids</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MGR/" rel="tag">MGR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/" rel="tag">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Makefile/" rel="tag">Makefile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Manjaro/" rel="tag">Manjaro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mock/" rel="tag">Mock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NDK/" rel="tag">NDK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NODE-ENV/" rel="tag">NODE_ENV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Native/" rel="tag">Native</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Naval/" rel="tag">Naval</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js%E7%89%88%E6%9C%AC/" rel="tag">Node.js版本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSS/" rel="tag">OSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Override/" rel="tag">Override</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Phoenix-Query-Server-6-0-0/" rel="tag">Phoenix Query Server 6.0.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qualifier/" rel="tag">Qualifier</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RestTemplate/" rel="tag">RestTemplate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RestoreInstance/" rel="tag">RestoreInstance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK/" rel="tag">SDK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK%E6%9B%B4%E6%96%B0%E7%BB%99%E5%BC%80%E5%8F%91%E8%80%85/" rel="tag">SDK更新给开发者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SPI/" rel="tag">SPI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ShardingSphere/" rel="tag">ShardingSphere</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SimpleDateFormat/" rel="tag">SimpleDateFormat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Singleton/" rel="tag">Singleton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBatch/" rel="tag">SpringBatch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/StepScope/" rel="tag">StepScope</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadPoolExecutor/" rel="tag">ThreadPoolExecutor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Time-Zone/" rel="tag">Time Zone</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WEBGL-debug-renderer-info/" rel="tag">WEBGL_debug_renderer_info</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WIFI/" rel="tag">WIFI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebGL/" rel="tag">WebGL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/" rel="tag">WebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XML/" rel="tag">XML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/YYYY/" rel="tag">YYYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/In/" rel="tag">_In_</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Out/" rel="tag">_Out_</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/antd/" rel="tag">antd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/brew/" rel="tag">brew</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/" rel="tag">chrome</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cross-env/" rel="tag">cross-env</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dom4j/" rel="tag">dom4j</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/druid/" rel="tag">druid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experimental-webgl/" rel="tag">experimental-webgl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fit/" rel="tag">fit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flavor/" rel="tag">flavor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fullgc/" rel="tag">fullgc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github-api/" rel="tag">github api</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ip/" rel="tag">ip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libjpeg-turbo/" rel="tag">libjpeg-turbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lxml/" rel="tag">lxml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/manifest/" rel="tag">manifest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/manjaro/" rel="tag">manjaro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mockjs/" rel="tag">mockjs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/module/" rel="tag">module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nvm/" rel="tag">nvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/onActivityForResult/" rel="tag">onActivityForResult</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/onPageFinished/" rel="tag">onPageFinished</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scope/" rel="tag">scope</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/so/" rel="tag">so</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spawn/" rel="tag">spawn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/v36/" rel="tag">v36</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/versionCode/" rel="tag">versionCode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E4%BD%8D%E6%95%B0/" rel="tag">中位数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%A8%8B%E6%95%B0/" rel="tag">中程数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E5%8A%A8push/" rel="tag">主动push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E8%84%B8%E6%94%AF%E4%BB%98/" rel="tag">人脸支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BC%97%E6%95%B0/" rel="tag">众数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%BC%E5%AE%B9%E9%97%AE%E9%A2%98/" rel="tag">兼容问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%8F%82%E6%95%B0/" rel="tag">动态参数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8C%E6%AD%A5%E6%94%AF%E4%BB%98/" rel="tag">同步支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/" rel="tag">命名空间</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9D%87%E5%80%BC/" rel="tag">均值</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E5%BD%A2%E5%8F%82/" rel="tag">多形参</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%B4%E6%96%87%E4%BB%B6/" rel="tag">头文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A6%82%E4%BD%95%E4%B8%BB%E5%8A%A8PUSH/" rel="tag">如何主动PUSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%BD%E8%A1%A8/" rel="tag">宽表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E6%94%AF%E4%BB%98/" rel="tag">异步支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%95%E6%B5%81/" rel="tag">引流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%AF%E4%BB%98/" rel="tag">支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%86%B3%E7%AD%96/" rel="tag">数据决策</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%98%A5%E8%BF%90%E4%BA%A4%E9%80%9A%E6%83%85%E5%86%B5/" rel="tag">春运交通情况</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/" rel="tag">智能硬件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%89%E7%BC%BA%E9%99%B7%E7%9A%84OpenSSL%E7%89%88%E6%9C%AC/" rel="tag">有缺陷的OpenSSL版本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%81%E5%B7%AE/" rel="tag">极差</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/" rel="tag">构造函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%AA%E8%A1%A8/" rel="tag">横表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B0%B4%E5%8D%B0/" rel="tag">水印</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C/" rel="tag">用户体验</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AA%84%E8%A1%A8/" rel="tag">窄表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AB%96%E8%A1%A8/" rel="tag">竖表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%B5%E8%A1%A8/" rel="tag">纵表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%93%9D%E7%89%99/" rel="tag">蓝牙</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E8%B4%B9%E5%A5%97%E9%A4%90/" rel="tag">资费套餐</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A6%99%E6%B8%AF%E5%8D%A1/" rel="tag">香港卡</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/02-00-00-00-00-00/" style="font-size: 10px;">02:00:00:00:00:00</a> <a href="/tags/0kb/" style="font-size: 10px;">0kb</a> <a href="/tags/301/" style="font-size: 10px;">301</a> <a href="/tags/302/" style="font-size: 10px;">302</a> <a href="/tags/APKParser/" style="font-size: 10px;">APKParser</a> <a href="/tags/AXMLPrinter2/" style="font-size: 10px;">AXMLPrinter2</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android-TV/" style="font-size: 10px;">Android TV</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Aviator/" style="font-size: 10px;">Aviator</a> <a href="/tags/BCM4331/" style="font-size: 10px;">BCM4331</a> <a href="/tags/Bean/" style="font-size: 10px;">Bean</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/CJCommunicationsException/" style="font-size: 10px;">CJCommunicationsException</a> <a href="/tags/Compiler/" style="font-size: 10px;">Compiler</a> <a href="/tags/DataBinding/" style="font-size: 10px;">DataBinding</a> <a href="/tags/DataX/" style="font-size: 10px;">DataX</a> <a href="/tags/DateFormat/" style="font-size: 10px;">DateFormat</a> <a href="/tags/DebugNativeLibs/" style="font-size: 10px;">DebugNativeLibs</a> <a href="/tags/Debugger/" style="font-size: 10px;">Debugger</a> <a href="/tags/Deferred-Deep-Link/" style="font-size: 10px;">Deferred Deep Link</a> <a href="/tags/DownloadManager/" style="font-size: 10px;">DownloadManager</a> <a href="/tags/Dynamic-Links/" style="font-size: 10px;">Dynamic Links</a> <a href="/tags/EPASV/" style="font-size: 10px;">EPASV</a> <a href="/tags/Excel/" style="font-size: 10px;">Excel</a> <a href="/tags/FTP/" style="font-size: 10px;">FTP</a> <a href="/tags/FeignClient/" style="font-size: 10px;">FeignClient</a> <a href="/tags/Gradle/" style="font-size: 16.67px;">Gradle</a> <a href="/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/tags/HBase/" style="font-size: 10px;">HBase</a> <a href="/tags/Hibernate/" style="font-size: 10px;">Hibernate</a> <a href="/tags/How-to-Get-Rich/" style="font-size: 16.67px;">How to Get Rich</a> <a href="/tags/Http-Status-Code/" style="font-size: 10px;">Http Status Code</a> <a href="/tags/HttpClient/" style="font-size: 10px;">HttpClient</a> <a href="/tags/Interview/" style="font-size: 10px;">Interview</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/JitPack/" style="font-size: 10px;">JitPack</a> <a href="/tags/Kids/" style="font-size: 10px;">Kids</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MGR/" style="font-size: 10px;">MGR</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/Makefile/" style="font-size: 10px;">Makefile</a> <a href="/tags/Manjaro/" style="font-size: 13.33px;">Manjaro</a> <a href="/tags/Mock/" style="font-size: 10px;">Mock</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/NDK/" style="font-size: 10px;">NDK</a> <a href="/tags/NODE-ENV/" style="font-size: 10px;">NODE_ENV</a> <a href="/tags/Native/" style="font-size: 10px;">Native</a> <a href="/tags/Naval/" style="font-size: 16.67px;">Naval</a> <a href="/tags/Node-js%E7%89%88%E6%9C%AC/" style="font-size: 10px;">Node.js版本</a> <a href="/tags/OSS/" style="font-size: 10px;">OSS</a> <a href="/tags/Override/" style="font-size: 10px;">Override</a> <a href="/tags/Phoenix-Query-Server-6-0-0/" style="font-size: 10px;">Phoenix Query Server 6.0.0</a> <a href="/tags/Qualifier/" style="font-size: 10px;">Qualifier</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/RestTemplate/" style="font-size: 10px;">RestTemplate</a> <a href="/tags/RestoreInstance/" style="font-size: 10px;">RestoreInstance</a> <a href="/tags/SDK/" style="font-size: 10px;">SDK</a> <a href="/tags/SDK%E6%9B%B4%E6%96%B0%E7%BB%99%E5%BC%80%E5%8F%91%E8%80%85/" style="font-size: 10px;">SDK更新给开发者</a> <a href="/tags/SPI/" style="font-size: 10px;">SPI</a> <a href="/tags/ShardingSphere/" style="font-size: 10px;">ShardingSphere</a> <a href="/tags/SimpleDateFormat/" style="font-size: 10px;">SimpleDateFormat</a> <a href="/tags/Singleton/" style="font-size: 10px;">Singleton</a> <a href="/tags/Spring/" style="font-size: 13.33px;">Spring</a> <a href="/tags/SpringBatch/" style="font-size: 10px;">SpringBatch</a> <a href="/tags/StepScope/" style="font-size: 10px;">StepScope</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 10px;">ThreadPoolExecutor</a> <a href="/tags/Time-Zone/" style="font-size: 10px;">Time Zone</a> <a href="/tags/WEBGL-debug-renderer-info/" style="font-size: 10px;">WEBGL_debug_renderer_info</a> <a href="/tags/WIFI/" style="font-size: 10px;">WIFI</a> <a href="/tags/WebGL/" style="font-size: 10px;">WebGL</a> <a href="/tags/WebView/" style="font-size: 13.33px;">WebView</a> <a href="/tags/XML/" style="font-size: 10px;">XML</a> <a href="/tags/YYYY/" style="font-size: 10px;">YYYY</a> <a href="/tags/In/" style="font-size: 10px;">_In_</a> <a href="/tags/Out/" style="font-size: 10px;">_Out_</a> <a href="/tags/antd/" style="font-size: 10px;">antd</a> <a href="/tags/brew/" style="font-size: 10px;">brew</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/cross-env/" style="font-size: 10px;">cross-env</a> <a href="/tags/dom4j/" style="font-size: 10px;">dom4j</a> <a href="/tags/druid/" style="font-size: 10px;">druid</a> <a href="/tags/experimental-webgl/" style="font-size: 10px;">experimental-webgl</a> <a href="/tags/fit/" style="font-size: 10px;">fit</a> <a href="/tags/flavor/" style="font-size: 10px;">flavor</a> <a href="/tags/fullgc/" style="font-size: 13.33px;">fullgc</a> <a href="/tags/github-api/" style="font-size: 10px;">github api</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/ip/" style="font-size: 10px;">ip</a> <a href="/tags/libjpeg-turbo/" style="font-size: 10px;">libjpeg-turbo</a> <a href="/tags/lxml/" style="font-size: 10px;">lxml</a> <a href="/tags/manifest/" style="font-size: 10px;">manifest</a> <a href="/tags/manjaro/" style="font-size: 10px;">manjaro</a> <a href="/tags/mockjs/" style="font-size: 10px;">mockjs</a> <a href="/tags/module/" style="font-size: 10px;">module</a> <a href="/tags/nvm/" style="font-size: 10px;">nvm</a> <a href="/tags/onActivityForResult/" style="font-size: 10px;">onActivityForResult</a> <a href="/tags/onPageFinished/" style="font-size: 10px;">onPageFinished</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/scope/" style="font-size: 10px;">scope</a> <a href="/tags/so/" style="font-size: 10px;">so</a> <a href="/tags/spawn/" style="font-size: 10px;">spawn</a> <a href="/tags/v36/" style="font-size: 10px;">v36</a> <a href="/tags/versionCode/" style="font-size: 10px;">versionCode</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/%E4%B8%AD%E4%BD%8D%E6%95%B0/" style="font-size: 10px;">中位数</a> <a href="/tags/%E4%B8%AD%E7%A8%8B%E6%95%B0/" style="font-size: 10px;">中程数</a> <a href="/tags/%E4%B8%BB%E5%8A%A8push/" style="font-size: 10px;">主动push</a> <a href="/tags/%E4%BA%BA%E8%84%B8%E6%94%AF%E4%BB%98/" style="font-size: 16.67px;">人脸支付</a> <a href="/tags/%E4%BC%97%E6%95%B0/" style="font-size: 10px;">众数</a> <a href="/tags/%E5%85%BC%E5%AE%B9%E9%97%AE%E9%A2%98/" style="font-size: 10px;">兼容问题</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8F%82%E6%95%B0/" style="font-size: 10px;">动态参数</a> <a href="/tags/%E5%90%8C%E6%AD%A5%E6%94%AF%E4%BB%98/" style="font-size: 10px;">同步支付</a> <a href="/tags/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/" style="font-size: 10px;">命名空间</a> <a href="/tags/%E5%9D%87%E5%80%BC/" style="font-size: 10px;">均值</a> <a href="/tags/%E5%A4%9A%E5%BD%A2%E5%8F%82/" style="font-size: 10px;">多形参</a> <a href="/tags/%E5%A4%B4%E6%96%87%E4%BB%B6/" style="font-size: 10px;">头文件</a> <a href="/tags/%E5%A6%82%E4%BD%95%E4%B8%BB%E5%8A%A8PUSH/" style="font-size: 10px;">如何主动PUSH</a> <a href="/tags/%E5%AE%BD%E8%A1%A8/" style="font-size: 10px;">宽表</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E6%94%AF%E4%BB%98/" style="font-size: 10px;">异步支付</a> <a href="/tags/%E5%BC%95%E6%B5%81/" style="font-size: 10px;">引流</a> <a href="/tags/%E6%94%AF%E4%BB%98/" style="font-size: 10px;">支付</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%86%B3%E7%AD%96/" style="font-size: 10px;">数据决策</a> <a href="/tags/%E6%98%A5%E8%BF%90%E4%BA%A4%E9%80%9A%E6%83%85%E5%86%B5/" style="font-size: 10px;">春运交通情况</a> <a href="/tags/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/" style="font-size: 10px;">智能硬件</a> <a href="/tags/%E6%9C%89%E7%BC%BA%E9%99%B7%E7%9A%84OpenSSL%E7%89%88%E6%9C%AC/" style="font-size: 10px;">有缺陷的OpenSSL版本</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 10px;">权限</a> <a href="/tags/%E6%9E%81%E5%B7%AE/" style="font-size: 10px;">极差</a> <a href="/tags/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/" style="font-size: 10px;">构造函数</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%A8%AA%E8%A1%A8/" style="font-size: 13.33px;">横表</a> <a href="/tags/%E6%B0%B4%E5%8D%B0/" style="font-size: 10px;">水印</a> <a href="/tags/%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C/" style="font-size: 10px;">用户体验</a> <a href="/tags/%E7%AA%84%E8%A1%A8/" style="font-size: 10px;">窄表</a> <a href="/tags/%E7%AB%96%E8%A1%A8/" style="font-size: 10px;">竖表</a> <a href="/tags/%E7%BA%B5%E8%A1%A8/" style="font-size: 13.33px;">纵表</a> <a href="/tags/%E8%93%9D%E7%89%99/" style="font-size: 10px;">蓝牙</a> <a href="/tags/%E8%B5%84%E8%B4%B9%E5%A5%97%E9%A4%90/" style="font-size: 10px;">资费套餐</a> <a href="/tags/%E9%A6%99%E6%B8%AF%E5%8D%A1/" style="font-size: 10px;">香港卡</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">十二月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">六月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/02/">二月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">四月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/01/15/how-to-search-application-on-manjaro/">Manjaro怎么把安装的程序放到Applications</a>
+          </li>
+        
+          <li>
+            <a href="/2026/01/13/how-to-install-lxml-on-manjaro/">manjaro安装lxml报错解决</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/31/Free-Markets-Are-Intrinsic-to-Humans/">Free Markets Are Intrinsic to Humans(自由市场是人类本性)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/31/install-BCM4331-driver-on-manjaro/">install-BCM4331-driver-on-manjaro</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/30/Make-Abundance-for-the-World/">Make Abundance for the World(为世界创造富足)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 2Tu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+<script>
+    var GUEST_INFO = ['nick','mail','link'];
+    var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+        return GUEST_INFO.indexOf(item) > -1
+    });
+    var notify = 'false' == true;
+    var verify = 'false' == true;
+    new Valine({
+        el: '.vcomment',
+        notify: notify,
+        verify: verify,
+        appId: "QAEjRRlPjwiwbrf8CnJ2KpP7-gzGzoHsz",
+        appKey: "2mDCN9Rgxlu7Jzcfg8HkJmy6",
+        placeholder: "Just go go",
+        pageSize:'10',
+        avatar:'mm',
+        lang:'zh-cn'
+    });
+</script>
+
+  </div>
+</body>
+</html>

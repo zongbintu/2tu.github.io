@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>使用Java、Excel数据分析如何有效投资房产 | 程序猜想</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="写在前面的话2017年IT业中多起猝死、自杀，创业的九死一生，各大公司清算、裁员等。年底也总是充斥着各种活动刷屏，年终总结、账单等。30岁的程序猿什么的，不幸我们可能也是其中之一。要改变现状，离不开钱与投资，提到投资就不得不提房。过去数十年的房价颠覆了努力工作改变生活的思维。作为程序猿比他人多的优势在于可以利用互联网数据进行数据分析决策，接下来看看基于链家中重庆渝北区人和二手房及国家全国商品房销售">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Java、Excel数据分析如何有效投资房产">
+<meta property="og:url" content="https://2tu.github.io/2018/01/27/data-analysis-house-price/index.html">
+<meta property="og:site_name" content="程序猜想">
+<meta property="og:description" content="写在前面的话2017年IT业中多起猝死、自杀，创业的九死一生，各大公司清算、裁员等。年底也总是充斥着各种活动刷屏，年终总结、账单等。30岁的程序猿什么的，不幸我们可能也是其中之一。要改变现状，离不开钱与投资，提到投资就不得不提房。过去数十年的房价颠覆了努力工作改变生活的思维。作为程序猿比他人多的优势在于可以利用互联网数据进行数据分析决策，接下来看看基于链家中重庆渝北区人和二手房及国家全国商品房销售">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://2tu.github.io/css/images/20180127_village_unitprice_histogram.png">
+<meta property="og:image" content="https://2tu.github.io/css/images/20180127_village_sum_pie_chat.png">
+<meta property="og:image" content="https://2tu.github.io/css/images/20180127_structure_pie_chart.png">
+<meta property="og:image" content="https://2tu.github.io/css/images/20180127_acreage_china_line_chart.png">
+<meta property="og:image" content="https://2tu.github.io/css/images/20180127_acreage_cq_line_chart.png">
+<meta property="article:published_time" content="2018-01-27T13:47:06.000Z">
+<meta property="article:modified_time" content="2026-01-15T12:42:41.727Z">
+<meta property="article:author" content="2Tu">
+<meta property="article:tag" content="Excel">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://2tu.github.io/css/images/20180127_village_unitprice_histogram.png">
+  
+    <link rel="alternate" href="/" title="程序猜想">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="程序猜想" type="application/atom+xml">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">程序猜想</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">瞎写的程序员</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://2tu.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-data-analysis-house-price" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/27/data-analysis-house-price/" class="article-date">
+  <time class="dt-published" datetime="2018-01-27T13:47:06.000Z" itemprop="datePublished">2018-01-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Data/">Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      使用Java、Excel数据分析如何有效投资房产
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h4 id="写在前面的话"><a href="#写在前面的话" class="headerlink" title="写在前面的话"></a>写在前面的话</h4><p>2017年IT业中多起猝死、自杀，创业的九死一生，各大公司清算、裁员等。年底也总是充斥着各种活动刷屏，年终总结、账单等。30岁的程序猿什么的，不幸我们可能也是其中之一。要改变现状，离不开钱与投资，提到投资就不得不提房。过去数十年的房价颠覆了努力工作改变生活的思维。作为程序猿比他人多的优势在于可以利用互联网数据进行数据分析决策，接下来看看<font color="red">基于链家中重庆渝北区人和二手房及国家全国商品房销售面积统计的简单数据分析</font>。<br><a id="more"></a></p>
+<h4 id="数据收集"><a href="#数据收集" class="headerlink" title="数据收集"></a>数据收集</h4><h5 id="链家公共数据"><a href="#链家公共数据" class="headerlink" title="链家公共数据"></a>链家公共数据</h5><p>链家的url很标准，我们要获取的数据如下<a href="https://cq.lianjia.com/ershoufang/renhe/" target="_blank" rel="noopener">【人和二手房_重庆人和二手房出售】(重庆链家网)</a>，2018年1月27日数据为472条，共16页，url格式为<br><a href="https://cq.lianjia.com/ershoufang/renhe/pg1/" target="_blank" rel="noopener">https://cq.lianjia.com/ershoufang/renhe/pg1/</a><br>…<br><a href="https://cq.lianjia.com/ershoufang/renhe/pg16/" target="_blank" rel="noopener">https://cq.lianjia.com/ershoufang/renhe/pg16/</a>  </p>
+<h5 id="Java-Jsoup爬虫"><a href="#Java-Jsoup爬虫" class="headerlink" title="Java Jsoup爬虫"></a>Java Jsoup爬虫</h5><p>现在全职Java，且为了快速实现采用Jsoup获取Html数据，代码非常简单</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Document document = Jsoup.<span class="keyword">connect</span>(<span class="keyword">domain</span> + uri)</span><br><span class="line">   .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36")</span><br><span class="line">   .timeout(<span class="number">30000</span>).<span class="keyword">get</span>();</span><br></pre></td></tr></table></figure>
+<h5 id="保存Html数据至本地文件"><a href="#保存Html数据至本地文件" class="headerlink" title="保存Html数据至本地文件"></a>保存Html数据至本地文件</h5><p>厚道的链家并未做防爬虫，也有可能是为了对搜索引擎友好，提高曝光率。数据获取后要保存至本地文件就简单了，合并后代码如下</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">public String save<span class="constructor">Html(String <span class="params">domain</span>, String <span class="params">uri</span>)</span> &#123;</span><br><span class="line">  FileOutputStream out = null;</span><br><span class="line">  File dest = <span class="keyword">new</span> <span class="constructor">File(<span class="string">"src/temp_html/"</span> + (<span class="params">uri</span>.<span class="params">endsWith</span>(<span class="string">"/"</span>)</span> ? uri.substring(<span class="number">0</span>, uri.length<span class="literal">()</span> - <span class="number">1</span>) : uri) + <span class="string">".html"</span>);</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    Document document = <span class="module-access"><span class="module"><span class="identifier">Jsoup</span>.</span></span>connect(domain + uri)</span><br><span class="line">        .user<span class="constructor">Agent(<span class="string">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"</span>)</span></span><br><span class="line">        .timeout(<span class="number">30000</span>).get<span class="literal">()</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!dest.get<span class="constructor">ParentFile()</span>.exists<span class="literal">()</span>) &#123;</span><br><span class="line">      dest.get<span class="constructor">ParentFile()</span>.mkdirs<span class="literal">()</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!dest.exists<span class="literal">()</span>) &#123;</span><br><span class="line">      dest.create<span class="constructor">NewFile()</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    out = <span class="keyword">new</span> <span class="constructor">FileOutputStream(<span class="params">dest</span>, <span class="params">false</span>)</span>;</span><br><span class="line">    out.write(document.<span class="keyword">to</span><span class="constructor">String()</span>.get<span class="constructor">Bytes(<span class="string">"UTF-8"</span>)</span>);</span><br><span class="line">    out.close<span class="literal">()</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#125; catch (IOException e) &#123;</span><br><span class="line">    e.print<span class="constructor">StackTrace()</span>;</span><br><span class="line">    return null;</span><br><span class="line">  &#125; finally &#123;</span><br><span class="line">    <span class="module-access"><span class="module"><span class="identifier">IOUtils</span>.</span></span>close<span class="constructor">Quietly(<span class="params">out</span>)</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return dest.get<span class="constructor">Path()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="通过Jsoup解析数据至Excel"><a href="#通过Jsoup解析数据至Excel" class="headerlink" title="通过Jsoup解析数据至Excel"></a>通过Jsoup解析数据至Excel</h5><p>再将html中数据解析使用POI写入Excel就相对简单了，主要在于规则匹配</p>
+<h6 id="解析数据"><a href="#解析数据" class="headerlink" title="解析数据"></a>解析数据</h6><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">public List&lt;House&gt; parse<span class="constructor">Html(String <span class="params">fileName</span>)</span> &#123;</span><br><span class="line">    List&lt;House&gt; houses = null;</span><br><span class="line">    <span class="comment">//读取本地html的路径</span></span><br><span class="line">    File file = <span class="keyword">new</span> <span class="constructor">File(<span class="params">fileName</span>)</span>;</span><br><span class="line">    <span class="comment">//写个循环读取这些文件的名字</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (file.is<span class="constructor">File()</span>) &#123;</span><br><span class="line">        logger.info(<span class="string">"文件&#123;&#125;开始解析"</span>, fileName);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//下面开始解析本地的html</span></span><br><span class="line">        Document doc = <span class="module-access"><span class="module"><span class="identifier">Jsoup</span>.</span></span>parse(file, <span class="string">"UTF-8"</span>);</span><br><span class="line">        Elements sellListContents = doc.select(<span class="string">"ul.sellListContent"</span>);</span><br><span class="line">        <span class="keyword">if</span> (!<span class="module-access"><span class="module"><span class="identifier">ObjectUtils</span>.</span></span>is<span class="constructor">Empty(<span class="params">sellListContents</span>)</span>) &#123;</span><br><span class="line">          Element sellListContent = sellListContents.first<span class="literal">()</span>;</span><br><span class="line">          Elements sellContents = sellListContent.select(<span class="string">"li.clear"</span>);</span><br><span class="line">          <span class="keyword">if</span> (!<span class="module-access"><span class="module"><span class="identifier">ObjectUtils</span>.</span></span>is<span class="constructor">Empty(<span class="params">sellListContents</span>)</span>) &#123;</span><br><span class="line">            houses = <span class="keyword">new</span> ArrayList&lt;&gt;(sellContents.size<span class="literal">()</span>);</span><br><span class="line">            for (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; sellContents.size<span class="literal">()</span>; i++) &#123;</span><br><span class="line">              Element sellList = sellContents.get(i);</span><br><span class="line">              Elements sellElements = sellList.select(<span class="string">"div.clear"</span>);</span><br><span class="line">              <span class="keyword">if</span> (null != sellElements<span class="operator"> &amp;&amp; </span>sellElements.size<span class="literal">()</span><span class="operator"> == </span><span class="number">1</span>) &#123;</span><br><span class="line">                House house = <span class="keyword">new</span> <span class="constructor">House()</span>;</span><br><span class="line">                Element infoElement = sellElements.first<span class="literal">()</span>;</span><br><span class="line"></span><br><span class="line">                Element titleElement = infoElement.select(<span class="string">"div.title"</span>).first<span class="literal">()</span>.select(<span class="string">"a[href]"</span>).first<span class="literal">()</span>;</span><br><span class="line">                house.set<span class="constructor">Title(<span class="params">titleElement</span>.<span class="params">text</span>()</span>);</span><br><span class="line">                house.set<span class="constructor">Url(<span class="params">titleElement</span>.<span class="params">attr</span>(<span class="string">"href"</span>)</span>);</span><br><span class="line"></span><br><span class="line">                Element houseInfoElement = infoElement.select<span class="constructor">First(<span class="string">"div.houseInfo"</span>)</span>;</span><br><span class="line">                house.set<span class="constructor">Village(<span class="params">houseInfoElement</span>.<span class="params">select</span>(<span class="string">"a"</span>)</span>.first<span class="literal">()</span>.text<span class="literal">()</span>);</span><br><span class="line">                String houseInfo = houseInfoElement.text<span class="literal">()</span>;</span><br><span class="line">                String<span class="literal">[]</span> houseInfos = houseInfo.split(<span class="string">"\\|"</span>);</span><br><span class="line"></span><br><span class="line">                for (<span class="built_in">int</span> j = <span class="number">1</span>; j &lt; houseInfos.length; j++</span><br><span class="line">                    ) &#123;</span><br><span class="line">                  switch (j) &#123;</span><br><span class="line">                    case <span class="number">1</span>:</span><br><span class="line">                      house.set<span class="constructor">Structure(<span class="params">houseInfos</span>[<span class="params">j</span>].<span class="params">trim</span>()</span>);</span><br><span class="line">                      break;</span><br><span class="line">                    case <span class="number">2</span>:</span><br><span class="line">                      house.set<span class="constructor">Acreage(<span class="params">houseInfos</span>[<span class="params">j</span>].<span class="params">replace</span>(<span class="string">"平米"</span>, <span class="string">""</span>)</span>.trim<span class="literal">()</span>);</span><br><span class="line">                      break;</span><br><span class="line">                    case <span class="number">3</span>:</span><br><span class="line">                      house.set<span class="constructor">Orientation(<span class="params">houseInfos</span>[<span class="params">j</span>].<span class="params">trim</span>()</span>);</span><br><span class="line">                      break;</span><br><span class="line">                    case <span class="number">4</span>:</span><br><span class="line">                      house.set<span class="constructor">Decoration(<span class="params">houseInfos</span>[<span class="params">j</span>].<span class="params">trim</span>()</span>);</span><br><span class="line">                      break;</span><br><span class="line">                    case <span class="number">5</span>:</span><br><span class="line">                      house.set<span class="constructor">Elevator(<span class="params">houseInfos</span>[<span class="params">j</span>].<span class="params">trim</span>()</span>);</span><br><span class="line">                      break;</span><br><span class="line">                  &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                Element positionInfoElement = infoElement.select<span class="constructor">First(<span class="string">"div.positionInfo"</span>)</span>;</span><br><span class="line">                house.set<span class="constructor">Region(<span class="params">positionInfoElement</span>.<span class="params">select</span>(<span class="string">"a"</span>)</span>.first<span class="literal">()</span>.text<span class="literal">()</span>);</span><br><span class="line">                String position = positionInfoElement.text<span class="literal">()</span>.split(house.get<span class="constructor">Region()</span>)<span class="literal">[<span class="number">0</span>]</span>.trim<span class="literal">()</span>;</span><br><span class="line"></span><br><span class="line">                house</span><br><span class="line">                    .set<span class="constructor">Position(<span class="params">position</span>.<span class="params">lastIndexOf</span>(<span class="string">"-"</span>)</span><span class="operator"> == </span>position.length<span class="literal">()</span> - <span class="number">1</span> ? position.substring(<span class="number">0</span>, position.length<span class="literal">()</span> - <span class="number">1</span>).trim<span class="literal">()</span> : position);</span><br><span class="line"></span><br><span class="line">                house.set<span class="constructor">Tag(<span class="params">infoElement</span>.<span class="params">selectFirst</span>(<span class="string">"div.tag"</span>)</span>.text<span class="literal">()</span>);</span><br><span class="line"></span><br><span class="line">                Element priceInfoElement = infoElement.select<span class="constructor">First(<span class="string">"div.priceInfo"</span>)</span>;</span><br><span class="line">                house.set<span class="constructor">TotalPrice(<span class="params">priceInfoElement</span>.<span class="params">selectFirst</span>(<span class="string">"div.totalPrice"</span>)</span>.text<span class="literal">()</span>.replace(<span class="string">"万"</span>, <span class="string">""</span>));</span><br><span class="line"></span><br><span class="line">                house.set<span class="constructor">UnitPrice(<span class="params">priceInfoElement</span>.<span class="params">selectFirst</span>(<span class="string">"div.unitPrice"</span>)</span>.text<span class="literal">()</span>.replace(<span class="string">"单价"</span>, <span class="string">""</span>).replace(<span class="string">"元/平米"</span>, <span class="string">""</span>).trim<span class="literal">()</span>);</span><br><span class="line"></span><br><span class="line">                logger.info(<span class="string">"解析第&#123;&#125;个元素，结果为：&#123;&#125;"</span>, i, house.<span class="keyword">to</span><span class="constructor">String()</span>);</span><br><span class="line">                houses.add(house);</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">      logger.error(<span class="string">"文件&#123;&#125;解析错误"</span>, fileName, e);</span><br><span class="line">    &#125;</span><br><span class="line">    return houses;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h6 id="写入Excel"><a href="#写入Excel" class="headerlink" title="写入Excel"></a>写入Excel</h6><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">public String write<span class="constructor">Excel(String <span class="params">fileName</span>, List&lt;House&gt; <span class="params">houses</span>)</span> &#123;</span><br><span class="line">    logger.info(<span class="string">"文件&#123;&#125;开始写入"</span>, fileName);</span><br><span class="line">    <span class="keyword">try</span> (POIFSFileSystem fs = <span class="keyword">new</span> <span class="constructor">POIFSFileSystem(<span class="params">new</span> FileInputStream(<span class="params">fileName</span>)</span>)) &#123;</span><br><span class="line">      Workbook workbook = <span class="keyword">new</span> <span class="constructor">HSSFWorkbook(<span class="params">fs</span>)</span>;</span><br><span class="line">      HSSFSheet sheet = (HSSFSheet) workbook.get<span class="constructor">SheetAt(0)</span>;</span><br><span class="line">      final <span class="built_in">int</span> preLastRowNum = sheet.get<span class="constructor">LastRowNum()</span>;</span><br><span class="line">      logger.info(<span class="string">"文件&#123;&#125;,上次行数为&#123;&#125;"</span>, fileName, preLastRowNum);</span><br><span class="line">      for (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; houses.size<span class="literal">()</span>; i++) &#123;</span><br><span class="line">        Row row = sheet.create<span class="constructor">Row(<span class="params">preLastRowNum</span> + <span class="params">i</span> + 1)</span>;</span><br><span class="line">        House house = houses.get(i);</span><br><span class="line">        row.create<span class="constructor">Cell(0)</span>.set<span class="constructor">CellValue(<span class="params">preLastRowNum</span> + <span class="params">i</span> + 1)</span>;</span><br><span class="line">        row.create<span class="constructor">Cell(1)</span>.set<span class="constructor">CellValue(<span class="params">house</span>.<span class="params">getTitle</span>()</span>);</span><br><span class="line">        row.create<span class="constructor">Cell(2)</span>.set<span class="constructor">CellValue(<span class="params">house</span>.<span class="params">getTotalPrice</span>()</span>);</span><br><span class="line">        row.create<span class="constructor">Cell(3)</span>.set<span class="constructor">CellValue(<span class="params">house</span>.<span class="params">getUnitPrice</span>()</span>);</span><br><span class="line">        row.create<span class="constructor">Cell(4)</span>.set<span class="constructor">CellValue(<span class="params">house</span>.<span class="params">getVillage</span>()</span>);</span><br><span class="line">        row.create<span class="constructor">Cell(5)</span>.set<span class="constructor">CellValue(<span class="params">house</span>.<span class="params">getStructure</span>()</span>);</span><br><span class="line">        row.create<span class="constructor">Cell(6)</span>.set<span class="constructor">CellValue(<span class="params">house</span>.<span class="params">getAcreage</span>()</span>);</span><br><span class="line">        row.create<span class="constructor">Cell(7)</span>.set<span class="constructor">CellValue(<span class="params">house</span>.<span class="params">getOrientation</span>()</span>);</span><br><span class="line">        row.create<span class="constructor">Cell(8)</span>.set<span class="constructor">CellValue(<span class="params">house</span>.<span class="params">getDecoration</span>()</span>);</span><br><span class="line">        row.create<span class="constructor">Cell(9)</span>.set<span class="constructor">CellValue(<span class="params">house</span>.<span class="params">getElevator</span>()</span>);</span><br><span class="line">        row.create<span class="constructor">Cell(10)</span>.set<span class="constructor">CellValue(<span class="params">house</span>.<span class="params">getPosition</span>()</span>);</span><br><span class="line">        row.create<span class="constructor">Cell(11)</span>.set<span class="constructor">CellValue(<span class="params">house</span>.<span class="params">getRegion</span>()</span>);</span><br><span class="line">        row.create<span class="constructor">Cell(12)</span>.set<span class="constructor">CellValue(<span class="params">house</span>.<span class="params">getTag</span>()</span>);</span><br><span class="line">        row.create<span class="constructor">Cell(13)</span>.set<span class="constructor">CellValue(<span class="params">house</span>.<span class="params">getUrl</span>()</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      FileOutputStream fileOut = <span class="keyword">new</span> <span class="constructor">FileOutputStream(<span class="params">fileName</span>)</span>;</span><br><span class="line">      workbook.write(fileOut);</span><br><span class="line">      <span class="module-access"><span class="module"><span class="identifier">IOUtils</span>.</span></span>close<span class="constructor">Quietly(<span class="params">fileOut</span>)</span>;</span><br><span class="line">      logger.info(<span class="string">"文件&#123;&#125;写入完成,&#123;&#125;-&#123;&#125;行"</span>, fileName, preLastRowNum + <span class="number">1</span>, preLastRowNum + houses.size<span class="literal">()</span>);</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">      logger.error(<span class="string">"excel-&#123;&#125;处理出错"</span>, fileName, e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return fileName;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h4><p>写入后核对数据没什么问题，然后需要对数据进行简单处理。  </p>
+<h5 id="删除车位、别墅"><a href="#删除车位、别墅" class="headerlink" title="删除车位、别墅"></a>删除车位、别墅</h5><p>观察发现数据中有车位、别墅存在，不在我们投资范围，需要从类别中筛选出并删除</p>
+<h5 id="重复数据"><a href="#重复数据" class="headerlink" title="重复数据"></a>重复数据</h5><p>小区名称中发现有如棕榈泉一期、棕榈泉二期、棕榈泉三期字样，我们此次的初步分析暂时不需要这样统计，在后期具体决策时再才需要参考某期是否离轻轨、学校更近，车位比更高等。所以也需要通过函数全部替换成“棕榈泉”。</p>
+<h4 id="数据分析展现"><a href="#数据分析展现" class="headerlink" title="数据分析展现"></a>数据分析展现</h4><p>数据分析在多年拉卡拉、中汇支付风控、合规经验的老婆手把手教导下完成，大量运用透视图  </p>
+<h5 id="小区平均单价分析"><a href="#小区平均单价分析" class="headerlink" title="小区平均单价分析"></a>小区平均单价分析</h5><p>初步数据处理后，不会再有总价500w这种不忍直视的内容，此时我们需要来个直观的小区平均单价柱状图冲击一下<br><img src="/css/images/20180127_village_unitprice_histogram.png" alt="小区平均单价柱状图"><br>小区平均单价  </p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>平均单价（元）</th>
+<th>小区</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最高</td>
+<td>20,000</td>
+<td>比毕得豪园</td>
+</tr>
+<tr>
+<td>最低</td>
+<td>6,480</td>
+<td>人和家园</td>
+</tr>
+<tr>
+<td>平均</td>
+<td>14,151.46</td>
+</tr>
+</tbody>
+</table>
+<p>当然这个价格并不准确，其中有房龄、交通、装修、是否带学校指标等其它因素，但是至少可以让我们跨出第一步让自己对市场价格有一定的认知，计算自己可承受的价位</p>
+<h5 id="房源数量分析"><a href="#房源数量分析" class="headerlink" title="房源数量分析"></a>房源数量分析</h5><p>接下来看看房源多的一些小区，经过我们之前处理过后不分几期几期后只取前20，分布如下<br><img src="/css/images/20180127_village_sum_pie_chat.png" alt="房源前20小区饼状图"><br>棕榈泉的楼盘本身大房子数量多，且含有别墅洋房及高层，出售最多，占比27.32%力夺第二的9.02%。想必其中很多都是投资来的，如果分析清水与装修过的比例、持有房子年限等应该是可以分析出来   </p>
+<h5 id="户型占比分析"><a href="#户型占比分析" class="headerlink" title="户型占比分析"></a>户型占比分析</h5><p>作为投资户型极其重要，市场上哪些户型受欢迎，新楼盘也一样会对人群分析，对楼盘人群定位。<br><img src="/css/images/20180127_structure_pie_chart.png" alt="户型饼状图"><br>3室2厅大比分夺得冠军，4室2厅为第二出乎意料，应该具体分析这些房子的出处是否为棕榈泉的洋房。除去4室2厅外，3室2厅和2室2厅都在我们接受的范围，像我们没有多少财力的年轻人很多第一套房会选择2室2厅，够自己和孩子住，但是如果加入父母就不够住了，多半会卖掉换一个3室2厅。<br>由此可以得出结论，如果目标为这些改善型的人群，3室2厅是最佳选择<br>如果财力有限可以可以买2室2厅<br>如果钱更少是否需要买个1室来投资出租，就该考虑地段及租金的关联关系了。  </p>
+<h5 id="全国商品房销售面积分析"><a href="#全国商品房销售面积分析" class="headerlink" title="全国商品房销售面积分析"></a>全国商品房销售面积分析</h5><p>2月3日对全国商品房销售面积抓取，制作简单折线图<br><img src="/css/images/20180127_acreage_china_line_chart.png" alt="全国销售面积"><br><img src="/css/images/20180127_acreage_cq_line_chart.png" alt="重庆销售面积">  </p>
+<h6 id="其实还有很多可分析，想必房子的热门程度和价格是有一定关系，多久可以收回成本等。程序猿总是想太多，一个简单需求整成了一个价格监控、预测系统。所以本文只做简单分析，代码也很简单，2小时左右。"><a href="#其实还有很多可分析，想必房子的热门程度和价格是有一定关系，多久可以收回成本等。程序猿总是想太多，一个简单需求整成了一个价格监控、预测系统。所以本文只做简单分析，代码也很简单，2小时左右。" class="headerlink" title="其实还有很多可分析，想必房子的热门程度和价格是有一定关系，多久可以收回成本等。程序猿总是想太多，一个简单需求整成了一个价格监控、预测系统。所以本文只做简单分析，代码也很简单，2小时左右。"></a>其实还有很多可分析，想必房子的热门程度和价格是有一定关系，多久可以收回成本等。程序猿总是想太多，一个简单需求整成了一个价格监控、预测系统。所以本文只做简单分析，代码也很简单，2小时左右。</h6><h4 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h4><p>Github:<a href="https://github.com/2tu/house" target="_blank" rel="noopener">house</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2018/01/27/data-analysis-house-price/" data-id="cmkffwwj1002dqm2c0qnd6rtq" data-title="使用Java、Excel数据分析如何有效投资房产" class="article-share-link">分享</a>
+      
+      
+        <a href="/2018/01/27/data-analysis-house-price/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2018/01/27/data-analysis-house-price/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Excel/" rel="tag">Excel</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/29/data-decision-go-home-time-in-the-spring-festival/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          基于数据决策春节怎样回家最不堵车
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/18/NODE-ENV-cross/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">NODE_ENV跨平台设置</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+  <section id="comments" class="vcomment">
+
+  </section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data/">Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Other/">Other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Rich/">Rich</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/02-00-00-00-00-00/" rel="tag">02:00:00:00:00:00</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/0kb/" rel="tag">0kb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/301/" rel="tag">301</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/302/" rel="tag">302</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/APKParser/" rel="tag">APKParser</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AXMLPrinter2/" rel="tag">AXMLPrinter2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Activity/" rel="tag">Activity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-TV/" rel="tag">Android TV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AndroidStudio/" rel="tag">AndroidStudio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Aviator/" rel="tag">Aviator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BCM4331/" rel="tag">BCM4331</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bean/" rel="tag">Bean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CJCommunicationsException/" rel="tag">CJCommunicationsException</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compiler/" rel="tag">Compiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DataBinding/" rel="tag">DataBinding</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DataX/" rel="tag">DataX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DateFormat/" rel="tag">DateFormat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DebugNativeLibs/" rel="tag">DebugNativeLibs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Debugger/" rel="tag">Debugger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Deferred-Deep-Link/" rel="tag">Deferred Deep Link</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DownloadManager/" rel="tag">DownloadManager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Links/" rel="tag">Dynamic Links</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EPASV/" rel="tag">EPASV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Excel/" rel="tag">Excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FTP/" rel="tag">FTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FeignClient/" rel="tag">FeignClient</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/" rel="tag">Gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gson/" rel="tag">Gson</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HBase/" rel="tag">HBase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hibernate/" rel="tag">Hibernate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/How-to-Get-Rich/" rel="tag">How to Get Rich</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Http-Status-Code/" rel="tag">Http Status Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HttpClient/" rel="tag">HttpClient</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Interview/" rel="tag">Interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JNI/" rel="tag">JNI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JitPack/" rel="tag">JitPack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kids/" rel="tag">Kids</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MGR/" rel="tag">MGR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/" rel="tag">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Makefile/" rel="tag">Makefile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Manjaro/" rel="tag">Manjaro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mock/" rel="tag">Mock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NDK/" rel="tag">NDK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NODE-ENV/" rel="tag">NODE_ENV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Native/" rel="tag">Native</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Naval/" rel="tag">Naval</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js%E7%89%88%E6%9C%AC/" rel="tag">Node.js版本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSS/" rel="tag">OSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Override/" rel="tag">Override</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Phoenix-Query-Server-6-0-0/" rel="tag">Phoenix Query Server 6.0.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qualifier/" rel="tag">Qualifier</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RestTemplate/" rel="tag">RestTemplate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RestoreInstance/" rel="tag">RestoreInstance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK/" rel="tag">SDK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK%E6%9B%B4%E6%96%B0%E7%BB%99%E5%BC%80%E5%8F%91%E8%80%85/" rel="tag">SDK更新给开发者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SPI/" rel="tag">SPI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ShardingSphere/" rel="tag">ShardingSphere</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SimpleDateFormat/" rel="tag">SimpleDateFormat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Singleton/" rel="tag">Singleton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBatch/" rel="tag">SpringBatch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/StepScope/" rel="tag">StepScope</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadPoolExecutor/" rel="tag">ThreadPoolExecutor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Time-Zone/" rel="tag">Time Zone</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WEBGL-debug-renderer-info/" rel="tag">WEBGL_debug_renderer_info</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WIFI/" rel="tag">WIFI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebGL/" rel="tag">WebGL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/" rel="tag">WebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XML/" rel="tag">XML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/YYYY/" rel="tag">YYYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/In/" rel="tag">_In_</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Out/" rel="tag">_Out_</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/antd/" rel="tag">antd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/brew/" rel="tag">brew</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/" rel="tag">chrome</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cross-env/" rel="tag">cross-env</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dom4j/" rel="tag">dom4j</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/druid/" rel="tag">druid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experimental-webgl/" rel="tag">experimental-webgl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fit/" rel="tag">fit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flavor/" rel="tag">flavor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fullgc/" rel="tag">fullgc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github-api/" rel="tag">github api</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ip/" rel="tag">ip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libjpeg-turbo/" rel="tag">libjpeg-turbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lxml/" rel="tag">lxml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/manifest/" rel="tag">manifest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/manjaro/" rel="tag">manjaro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mockjs/" rel="tag">mockjs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/module/" rel="tag">module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nvm/" rel="tag">nvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/onActivityForResult/" rel="tag">onActivityForResult</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/onPageFinished/" rel="tag">onPageFinished</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scope/" rel="tag">scope</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/so/" rel="tag">so</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spawn/" rel="tag">spawn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/v36/" rel="tag">v36</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/versionCode/" rel="tag">versionCode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E4%BD%8D%E6%95%B0/" rel="tag">中位数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%A8%8B%E6%95%B0/" rel="tag">中程数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E5%8A%A8push/" rel="tag">主动push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E8%84%B8%E6%94%AF%E4%BB%98/" rel="tag">人脸支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BC%97%E6%95%B0/" rel="tag">众数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%BC%E5%AE%B9%E9%97%AE%E9%A2%98/" rel="tag">兼容问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%8F%82%E6%95%B0/" rel="tag">动态参数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8C%E6%AD%A5%E6%94%AF%E4%BB%98/" rel="tag">同步支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/" rel="tag">命名空间</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9D%87%E5%80%BC/" rel="tag">均值</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E5%BD%A2%E5%8F%82/" rel="tag">多形参</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%B4%E6%96%87%E4%BB%B6/" rel="tag">头文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A6%82%E4%BD%95%E4%B8%BB%E5%8A%A8PUSH/" rel="tag">如何主动PUSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%BD%E8%A1%A8/" rel="tag">宽表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E6%94%AF%E4%BB%98/" rel="tag">异步支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%95%E6%B5%81/" rel="tag">引流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%AF%E4%BB%98/" rel="tag">支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%86%B3%E7%AD%96/" rel="tag">数据决策</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%98%A5%E8%BF%90%E4%BA%A4%E9%80%9A%E6%83%85%E5%86%B5/" rel="tag">春运交通情况</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/" rel="tag">智能硬件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%89%E7%BC%BA%E9%99%B7%E7%9A%84OpenSSL%E7%89%88%E6%9C%AC/" rel="tag">有缺陷的OpenSSL版本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%81%E5%B7%AE/" rel="tag">极差</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/" rel="tag">构造函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%AA%E8%A1%A8/" rel="tag">横表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B0%B4%E5%8D%B0/" rel="tag">水印</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C/" rel="tag">用户体验</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AA%84%E8%A1%A8/" rel="tag">窄表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AB%96%E8%A1%A8/" rel="tag">竖表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%B5%E8%A1%A8/" rel="tag">纵表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%93%9D%E7%89%99/" rel="tag">蓝牙</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E8%B4%B9%E5%A5%97%E9%A4%90/" rel="tag">资费套餐</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A6%99%E6%B8%AF%E5%8D%A1/" rel="tag">香港卡</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/02-00-00-00-00-00/" style="font-size: 10px;">02:00:00:00:00:00</a> <a href="/tags/0kb/" style="font-size: 10px;">0kb</a> <a href="/tags/301/" style="font-size: 10px;">301</a> <a href="/tags/302/" style="font-size: 10px;">302</a> <a href="/tags/APKParser/" style="font-size: 10px;">APKParser</a> <a href="/tags/AXMLPrinter2/" style="font-size: 10px;">AXMLPrinter2</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android-TV/" style="font-size: 10px;">Android TV</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Aviator/" style="font-size: 10px;">Aviator</a> <a href="/tags/BCM4331/" style="font-size: 10px;">BCM4331</a> <a href="/tags/Bean/" style="font-size: 10px;">Bean</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/CJCommunicationsException/" style="font-size: 10px;">CJCommunicationsException</a> <a href="/tags/Compiler/" style="font-size: 10px;">Compiler</a> <a href="/tags/DataBinding/" style="font-size: 10px;">DataBinding</a> <a href="/tags/DataX/" style="font-size: 10px;">DataX</a> <a href="/tags/DateFormat/" style="font-size: 10px;">DateFormat</a> <a href="/tags/DebugNativeLibs/" style="font-size: 10px;">DebugNativeLibs</a> <a href="/tags/Debugger/" style="font-size: 10px;">Debugger</a> <a href="/tags/Deferred-Deep-Link/" style="font-size: 10px;">Deferred Deep Link</a> <a href="/tags/DownloadManager/" style="font-size: 10px;">DownloadManager</a> <a href="/tags/Dynamic-Links/" style="font-size: 10px;">Dynamic Links</a> <a href="/tags/EPASV/" style="font-size: 10px;">EPASV</a> <a href="/tags/Excel/" style="font-size: 10px;">Excel</a> <a href="/tags/FTP/" style="font-size: 10px;">FTP</a> <a href="/tags/FeignClient/" style="font-size: 10px;">FeignClient</a> <a href="/tags/Gradle/" style="font-size: 16.67px;">Gradle</a> <a href="/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/tags/HBase/" style="font-size: 10px;">HBase</a> <a href="/tags/Hibernate/" style="font-size: 10px;">Hibernate</a> <a href="/tags/How-to-Get-Rich/" style="font-size: 16.67px;">How to Get Rich</a> <a href="/tags/Http-Status-Code/" style="font-size: 10px;">Http Status Code</a> <a href="/tags/HttpClient/" style="font-size: 10px;">HttpClient</a> <a href="/tags/Interview/" style="font-size: 10px;">Interview</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/JitPack/" style="font-size: 10px;">JitPack</a> <a href="/tags/Kids/" style="font-size: 10px;">Kids</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MGR/" style="font-size: 10px;">MGR</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/Makefile/" style="font-size: 10px;">Makefile</a> <a href="/tags/Manjaro/" style="font-size: 13.33px;">Manjaro</a> <a href="/tags/Mock/" style="font-size: 10px;">Mock</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/NDK/" style="font-size: 10px;">NDK</a> <a href="/tags/NODE-ENV/" style="font-size: 10px;">NODE_ENV</a> <a href="/tags/Native/" style="font-size: 10px;">Native</a> <a href="/tags/Naval/" style="font-size: 16.67px;">Naval</a> <a href="/tags/Node-js%E7%89%88%E6%9C%AC/" style="font-size: 10px;">Node.js版本</a> <a href="/tags/OSS/" style="font-size: 10px;">OSS</a> <a href="/tags/Override/" style="font-size: 10px;">Override</a> <a href="/tags/Phoenix-Query-Server-6-0-0/" style="font-size: 10px;">Phoenix Query Server 6.0.0</a> <a href="/tags/Qualifier/" style="font-size: 10px;">Qualifier</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/RestTemplate/" style="font-size: 10px;">RestTemplate</a> <a href="/tags/RestoreInstance/" style="font-size: 10px;">RestoreInstance</a> <a href="/tags/SDK/" style="font-size: 10px;">SDK</a> <a href="/tags/SDK%E6%9B%B4%E6%96%B0%E7%BB%99%E5%BC%80%E5%8F%91%E8%80%85/" style="font-size: 10px;">SDK更新给开发者</a> <a href="/tags/SPI/" style="font-size: 10px;">SPI</a> <a href="/tags/ShardingSphere/" style="font-size: 10px;">ShardingSphere</a> <a href="/tags/SimpleDateFormat/" style="font-size: 10px;">SimpleDateFormat</a> <a href="/tags/Singleton/" style="font-size: 10px;">Singleton</a> <a href="/tags/Spring/" style="font-size: 13.33px;">Spring</a> <a href="/tags/SpringBatch/" style="font-size: 10px;">SpringBatch</a> <a href="/tags/StepScope/" style="font-size: 10px;">StepScope</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 10px;">ThreadPoolExecutor</a> <a href="/tags/Time-Zone/" style="font-size: 10px;">Time Zone</a> <a href="/tags/WEBGL-debug-renderer-info/" style="font-size: 10px;">WEBGL_debug_renderer_info</a> <a href="/tags/WIFI/" style="font-size: 10px;">WIFI</a> <a href="/tags/WebGL/" style="font-size: 10px;">WebGL</a> <a href="/tags/WebView/" style="font-size: 13.33px;">WebView</a> <a href="/tags/XML/" style="font-size: 10px;">XML</a> <a href="/tags/YYYY/" style="font-size: 10px;">YYYY</a> <a href="/tags/In/" style="font-size: 10px;">_In_</a> <a href="/tags/Out/" style="font-size: 10px;">_Out_</a> <a href="/tags/antd/" style="font-size: 10px;">antd</a> <a href="/tags/brew/" style="font-size: 10px;">brew</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/cross-env/" style="font-size: 10px;">cross-env</a> <a href="/tags/dom4j/" style="font-size: 10px;">dom4j</a> <a href="/tags/druid/" style="font-size: 10px;">druid</a> <a href="/tags/experimental-webgl/" style="font-size: 10px;">experimental-webgl</a> <a href="/tags/fit/" style="font-size: 10px;">fit</a> <a href="/tags/flavor/" style="font-size: 10px;">flavor</a> <a href="/tags/fullgc/" style="font-size: 13.33px;">fullgc</a> <a href="/tags/github-api/" style="font-size: 10px;">github api</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/ip/" style="font-size: 10px;">ip</a> <a href="/tags/libjpeg-turbo/" style="font-size: 10px;">libjpeg-turbo</a> <a href="/tags/lxml/" style="font-size: 10px;">lxml</a> <a href="/tags/manifest/" style="font-size: 10px;">manifest</a> <a href="/tags/manjaro/" style="font-size: 10px;">manjaro</a> <a href="/tags/mockjs/" style="font-size: 10px;">mockjs</a> <a href="/tags/module/" style="font-size: 10px;">module</a> <a href="/tags/nvm/" style="font-size: 10px;">nvm</a> <a href="/tags/onActivityForResult/" style="font-size: 10px;">onActivityForResult</a> <a href="/tags/onPageFinished/" style="font-size: 10px;">onPageFinished</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/scope/" style="font-size: 10px;">scope</a> <a href="/tags/so/" style="font-size: 10px;">so</a> <a href="/tags/spawn/" style="font-size: 10px;">spawn</a> <a href="/tags/v36/" style="font-size: 10px;">v36</a> <a href="/tags/versionCode/" style="font-size: 10px;">versionCode</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/%E4%B8%AD%E4%BD%8D%E6%95%B0/" style="font-size: 10px;">中位数</a> <a href="/tags/%E4%B8%AD%E7%A8%8B%E6%95%B0/" style="font-size: 10px;">中程数</a> <a href="/tags/%E4%B8%BB%E5%8A%A8push/" style="font-size: 10px;">主动push</a> <a href="/tags/%E4%BA%BA%E8%84%B8%E6%94%AF%E4%BB%98/" style="font-size: 16.67px;">人脸支付</a> <a href="/tags/%E4%BC%97%E6%95%B0/" style="font-size: 10px;">众数</a> <a href="/tags/%E5%85%BC%E5%AE%B9%E9%97%AE%E9%A2%98/" style="font-size: 10px;">兼容问题</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8F%82%E6%95%B0/" style="font-size: 10px;">动态参数</a> <a href="/tags/%E5%90%8C%E6%AD%A5%E6%94%AF%E4%BB%98/" style="font-size: 10px;">同步支付</a> <a href="/tags/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/" style="font-size: 10px;">命名空间</a> <a href="/tags/%E5%9D%87%E5%80%BC/" style="font-size: 10px;">均值</a> <a href="/tags/%E5%A4%9A%E5%BD%A2%E5%8F%82/" style="font-size: 10px;">多形参</a> <a href="/tags/%E5%A4%B4%E6%96%87%E4%BB%B6/" style="font-size: 10px;">头文件</a> <a href="/tags/%E5%A6%82%E4%BD%95%E4%B8%BB%E5%8A%A8PUSH/" style="font-size: 10px;">如何主动PUSH</a> <a href="/tags/%E5%AE%BD%E8%A1%A8/" style="font-size: 10px;">宽表</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E6%94%AF%E4%BB%98/" style="font-size: 10px;">异步支付</a> <a href="/tags/%E5%BC%95%E6%B5%81/" style="font-size: 10px;">引流</a> <a href="/tags/%E6%94%AF%E4%BB%98/" style="font-size: 10px;">支付</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%86%B3%E7%AD%96/" style="font-size: 10px;">数据决策</a> <a href="/tags/%E6%98%A5%E8%BF%90%E4%BA%A4%E9%80%9A%E6%83%85%E5%86%B5/" style="font-size: 10px;">春运交通情况</a> <a href="/tags/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/" style="font-size: 10px;">智能硬件</a> <a href="/tags/%E6%9C%89%E7%BC%BA%E9%99%B7%E7%9A%84OpenSSL%E7%89%88%E6%9C%AC/" style="font-size: 10px;">有缺陷的OpenSSL版本</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 10px;">权限</a> <a href="/tags/%E6%9E%81%E5%B7%AE/" style="font-size: 10px;">极差</a> <a href="/tags/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/" style="font-size: 10px;">构造函数</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%A8%AA%E8%A1%A8/" style="font-size: 13.33px;">横表</a> <a href="/tags/%E6%B0%B4%E5%8D%B0/" style="font-size: 10px;">水印</a> <a href="/tags/%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C/" style="font-size: 10px;">用户体验</a> <a href="/tags/%E7%AA%84%E8%A1%A8/" style="font-size: 10px;">窄表</a> <a href="/tags/%E7%AB%96%E8%A1%A8/" style="font-size: 10px;">竖表</a> <a href="/tags/%E7%BA%B5%E8%A1%A8/" style="font-size: 13.33px;">纵表</a> <a href="/tags/%E8%93%9D%E7%89%99/" style="font-size: 10px;">蓝牙</a> <a href="/tags/%E8%B5%84%E8%B4%B9%E5%A5%97%E9%A4%90/" style="font-size: 10px;">资费套餐</a> <a href="/tags/%E9%A6%99%E6%B8%AF%E5%8D%A1/" style="font-size: 10px;">香港卡</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">十二月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">六月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/02/">二月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">四月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/01/15/how-to-search-application-on-manjaro/">Manjaro怎么把安装的程序放到Applications</a>
+          </li>
+        
+          <li>
+            <a href="/2026/01/13/how-to-install-lxml-on-manjaro/">manjaro安装lxml报错解决</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/31/Free-Markets-Are-Intrinsic-to-Humans/">Free Markets Are Intrinsic to Humans(自由市场是人类本性)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/31/install-BCM4331-driver-on-manjaro/">install-BCM4331-driver-on-manjaro</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/30/Make-Abundance-for-the-World/">Make Abundance for the World(为世界创造富足)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 2Tu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+<script>
+    var GUEST_INFO = ['nick','mail','link'];
+    var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+        return GUEST_INFO.indexOf(item) > -1
+    });
+    var notify = 'false' == true;
+    var verify = 'false' == true;
+    new Valine({
+        el: '.vcomment',
+        notify: notify,
+        verify: verify,
+        appId: "QAEjRRlPjwiwbrf8CnJ2KpP7-gzGzoHsz",
+        appKey: "2mDCN9Rgxlu7Jzcfg8HkJmy6",
+        placeholder: "Just go go",
+        pageSize:'10',
+        avatar:'mm',
+        lang:'zh-cn'
+    });
+</script>
+
+  </div>
+</body>
+</html>

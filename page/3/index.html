@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>程序猜想</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="成长就是不断骂过去的自己傻逼,一路认可过去的自己过去的选择">
+<meta property="og:type" content="website">
+<meta property="og:title" content="程序猜想">
+<meta property="og:url" content="https://2tu.github.io/page/3/index.html">
+<meta property="og:site_name" content="程序猜想">
+<meta property="og:description" content="成长就是不断骂过去的自己傻逼,一路认可过去的自己过去的选择">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="2Tu">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/" title="程序猜想">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="程序猜想" type="application/atom+xml">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">程序猜想</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">瞎写的程序员</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://2tu.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-keyspace-notifications" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/10/06/keyspace-notifications/" class="article-date">
+  <time class="dt-published" datetime="2023-10-06T11:44:22.000Z" itemprop="datePublished">2023-10-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Data/">Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/10/06/keyspace-notifications/">什么是Redis keyspace notification</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Redis消息架构两种中的一种keyspace notification、  <a href="https://redis.io/docs/interact/pubsub/" target="_blank" rel="noopener">Pub/Sub</a></p>
+<p>实时监控Rdis 键值改变。</p>
+<p>Keyspace通知允许client订阅Pub/Sub channels，以便接收影响Redis数据的事件。</p>
+<h4 id="功能概览"><a href="#功能概览" class="headerlink" title="功能概览"></a>功能概览</h4><p>键空间通知使得客户端可以通过订阅频道或模式， 来接收那些以某种方式改动了 Redis 数据集的事件。</p>
+<p>以下是一些键空间通知发送的事件的例子：</p>
+<ul>
+<li>所有修改键的命令。</li>
+<li>所有接收到 LPUSH 命令的键。</li>
+<li>0 号数据库中所有已过期的键。</li>
+</ul>
+<p>事件通过 Redis 的订阅与发布功能（pub/sub）来进行分发， 因此所有支持订阅与发布功能的客户端都可以在无须做任何修改的情况下， 直接使用键空间通知功能。</p>
+<p>因为 Redis 目前的订阅与发布功能采取的是发送即忘（fire and forget）策略， 所以如果你的程序需要可靠事件通知（reliable notification of events）， 那么目前的键空间通知可能并不适合你： 当订阅事件的客户端断线时， 它会丢失所有在断线期间分发给它的事件。</p>
+<p>未来将会支持更可靠的事件分发， 这种支持可能会通过让订阅与发布功能本身变得更可靠来实现， 也可能会在 Lua 脚本中对消息（message）的订阅与发布进行监听， 从而实现类似将事件推入到列表这样的操作。</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/10/06/keyspace-notifications/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2023/10/06/keyspace-notifications/" data-id="cmkffwwjp004bqm2camwcdnhz" data-title="什么是Redis keyspace notification" class="article-share-link">分享</a>
+      
+      
+        <a href="/2023/10/06/keyspace-notifications/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2023/10/06/keyspace-notifications/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-what-is-In-Out-on-cpp" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/09/28/what-is-In-Out-on-cpp/" class="article-date">
+  <time class="dt-published" datetime="2023-09-28T13:21:14.000Z" itemprop="datePublished">2023-09-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/C-C/">C/C++</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/09/28/what-is-In-Out-on-cpp/">C/C++参数中的_In_和_Out_代表什么</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近看方法参数中的疑惑</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">sai_status_t</span> <span class="title">sai_api_query</span><span class="params">(_In_ <span class="keyword">sai_api_t</span> sai_api_id, _Out_ <span class="keyword">void</span>** api_method_table)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>_In_和_Out_是用于标记参数的传递方式的注解。它们并不是C\C++语言的关键字，而是一种约定俗成的注释方式，用于提示函数的调用者和阅读者关于参数的特性。</p>
+<p>_In_表示该参数是输入参数，即函数内部会读取参数的值，但不会修改它。通过这个标记，我们可以清楚地知道该参数在函数内部只被用于读取数据。</p>
+<p>_Out_表示该参数是输出参数，即函数内部会修改参数的值，并将修改后的结果返回给调用者。通过这个标记，我们可以清楚地知道该参数在函数内部会被修改，我们在调用函数时需要确认传入的参数具备存储修改后结果的能力。</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/09/28/what-is-In-Out-on-cpp/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2023/09/28/what-is-In-Out-on-cpp/" data-id="cmkffwwke006bqm2c5mv5d8qd" data-title="C/C++参数中的_In_和_Out_代表什么" class="article-share-link">分享</a>
+      
+      
+        <a href="/2023/09/28/what-is-In-Out-on-cpp/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2023/09/28/what-is-In-Out-on-cpp/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/In/" rel="tag">_In_</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Out/" rel="tag">_Out_</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-mysql-storage-requirements" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/09/03/mysql-storage-requirements/" class="article-date">
+  <time class="dt-published" datetime="2023-09-03T03:41:25.000Z" itemprop="datePublished">2023-09-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Data/">Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/09/03/mysql-storage-requirements/">MySQL数据类型字段占用空间</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>经常看到这种建表sql</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`table1`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`status`</span> <span class="built_in">int</span>(<span class="number">2</span>) <span class="keyword">DEFAULT</span> <span class="string">'0'</span>,</span><br><span class="line">  <span class="string">`fileProtocol`</span> <span class="built_in">tinyint</span>(<span class="number">1</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'0'</span> ,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) ;</span><br></pre></td></tr></table></figure>
+<p>sql中为每个字段都加上了长度限制，能限制住吗？存储数据时占用的空间又是多少呢？</p>
+<p>具体见<a href="https://dev.mysql.com/doc/refman/5.7/en/storage-requirements.html" target="_blank" rel="noopener">Data Type Storage Requirements</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2023/09/03/mysql-storage-requirements/" data-id="cmkffwwjo0048qm2c1mq4egos" data-title="MySQL数据类型字段占用空间" class="article-share-link">分享</a>
+      
+      
+        <a href="/2023/09/03/mysql-storage-requirements/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2023/09/03/mysql-storage-requirements/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-why-the-memory-not-full-but-frequently-fullgc" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/09/03/why-the-memory-not-full-but-frequently-fullgc/" class="article-date">
+  <time class="dt-published" datetime="2023-09-03T02:38:35.000Z" itemprop="datePublished">2023-09-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/09/03/why-the-memory-not-full-but-frequently-fullgc/">内存没满但是频繁fullgc，是不是ReservedCodeCacheSize的锅</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="业务中的现象表现"><a href="#业务中的现象表现" class="headerlink" title="业务中的现象表现"></a>业务中的现象表现</h5><p>运行一段时间后，频繁fullgc，2s10几次fullgc，无法对外提供服务</p>
+<h4 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h4><h5 id="gc日志"><a href="#gc日志" class="headerlink" title="gc日志"></a>gc日志</h5><p>内存还有非常多的情况下就开始了fullgc</p>
+<h5 id="dump分析"><a href="#dump分析" class="headerlink" title="dump分析"></a>dump分析</h5><p>只看到class loader的一直重新加载？内存指向java.security.Permission，没有其他大对象？没有搞懂重新改好了也是这样，需要再搞懂</p>
+<h5 id="jvm参数"><a href="#jvm参数" class="headerlink" title="jvm参数"></a>jvm参数</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-Xms128m -Xmx256m -XX:ReservedCodeCacheSize=50m -XX:MetaspaceSize=96m -XX:MaxMetaspaceSize=96m -Xss256k -XX:MaxDirectMemorySize=16m</span><br><span class="line">-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSClassUnloadingEnabled</span><br><span class="line">-XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:GCLogFileSize=10M -XX:NumberOfGCLogFiles=3 -Xloggc:/var/logs/gc1.log</span><br><span class="line">-XX:CMSInitiatingOccupancyFraction=75 -XX:+UseCMSInitiatingOccupancyOnly -XX:NativeMemoryTracking=summary</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError  -XX:HeapDumpPath=/var/logs/dump1-$(date +%Y%m%d%H%M%S).hprof"</span><br></pre></td></tr></table></figure>
+<h5 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h5><p>怀疑是-XX:ReservedCodeCacheSize=50m导致Meta不生效，导致重新加载fullgc?</p>
+<p>修改为jvm参数，后好使了</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-Xms128m -Xmx256m -XX:PermSize=128m -XX:-UseGCOverheadLimit -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=80</span><br><span class="line">-XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:GCLogFileSize=10M -XX:NumberOfGCLogFiles=3 -Xloggc:/var/logs/gc1.log</span><br><span class="line">-XX:CMSInitiatingOccupancyFraction=75 -XX:+UseCMSInitiatingOccupancyOnly -XX:NativeMemoryTracking=summary</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError  -XX:HeapDumpPath=/var/logs/dump1-$(date +%Y%m%d%H%M%S).hprof"</span><br></pre></td></tr></table></figure>
+<p>需要再研究，怎么来指向这个问题。</p>
+<p>另外火焰图必不可少</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2023/09/03/why-the-memory-not-full-but-frequently-fullgc/" data-id="cmkffwwkk006wqm2c9sku83hd" data-title="内存没满但是频繁fullgc，是不是ReservedCodeCacheSize的锅" class="article-share-link">分享</a>
+      
+      
+        <a href="/2023/09/03/why-the-memory-not-full-but-frequently-fullgc/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2023/09/03/why-the-memory-not-full-but-frequently-fullgc/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/fullgc/" rel="tag">fullgc</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-how-to-hbase-to-mysql-on-datax" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/04/how-to-hbase-to-mysql-on-datax/" class="article-date">
+  <time class="dt-published" datetime="2023-08-04T10:03:44.000Z" itemprop="datePublished">2023-08-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Data/">Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/08/04/how-to-hbase-to-mysql-on-datax/">怎样使用DataX将HBase数据导入到MySQL</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>有需求使用DataX将HBase表中数据迁移到MySQL中，有的表在Phoenix中定义，使用hbase20xsqlreader读取。有的没有在Phoenix中定义，数据是动态插入，列是不固定的。</p>
+<ul>
+<li>hbase20xsqlreader，读取Phoenix</li>
+<li>hbase11xreader，读取HBase</li>
+</ul>
+<p>不管读取HBase还是Phoenix都要求填写column，但是可以写sql占位，传进来。</p>
+<p>我这里由于业务原因就没有使用占位符的方式传递。</p>
+<p>现在的业务需求是我HBase横表迁移到MySQL纵表中。</p>
+<p>动态列中的列名有在MySQL表中记录，所以实现流程就是</p>
+<ol>
+<li>shell 脚本调用mysql读取出要在HBase中读取的列</li>
+<li>循环生成hbase11xreader读取-写入txt的DataX json</li>
+<li>调用DataX执行上面的json文件导出txt</li>
+<li>循环txt为每行加入MySQL要插入的列key</li>
+<li>生成读取txt，写入MySQL</li>
+</ol>
+        
+          <p class="article-more-link">
+            <a href="/2023/08/04/how-to-hbase-to-mysql-on-datax/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2023/08/04/how-to-hbase-to-mysql-on-datax/" data-id="cmkffwwjf003kqm2cb5j29qad" data-title="怎样使用DataX将HBase数据导入到MySQL" class="article-share-link">分享</a>
+      
+      
+        <a href="/2023/08/04/how-to-hbase-to-mysql-on-datax/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2023/08/04/how-to-hbase-to-mysql-on-datax/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DataX/" rel="tag">DataX</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HBase/" rel="tag">HBase</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-the-international-standard-country-codes" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/03/the-international-standard-country-codes/" class="article-date">
+  <time class="dt-published" datetime="2023-08-03T23:53:00.000Z" itemprop="datePublished">2023-08-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Other/">Other</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/08/03/the-international-standard-country-codes/">符合国际标准的城市编码</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>fork的项目<a href="https://github.com/yihong0618/running_page" target="_blank" rel="noopener">running_page</a>有一个<a href="https://github.com/yihong0618/running_page/issues/292" target="_blank" rel="noopener">Issue</a>提到国家和地区识别不正确，看了数据样例较为复杂，有的是有国家省市区，有的只有部分，还有国外的。running_page中代码以逗号分隔取国家，然后根据<a href="http://www.stats.gov.cn/sj/tjbz/qhdm/" target="_blank" rel="noopener">统计用区划代码和城乡划分代码</a>对比取出城市。</p>
+<p>问题是，数据是全球的用户是全球的，那全球各个国家和区域的标准应该是什么？中国有省市区，那其他国家有吗？有统一标准吗？</p>
+<h3 id="国际标准-ISO-3166"><a href="#国际标准-ISO-3166" class="headerlink" title="国际标准 ISO 3166"></a>国际标准 ISO 3166</h3><p>全球化那就必然要找国际标准了，看这里<a href="https://en.wikipedia.org/wiki/ISO_3166" target="_blank" rel="noopener">ISO 3166</a>, <strong><em>Codes for the representation of names of countries and their subdivisions</em></strong></p>
+<p>里面又包含了</p>
+<ul>
+<li><strong><a href="https://en.wikipedia.org/wiki/ISO_3166-1" target="_blank" rel="noopener">ISO 3166-1</a></strong> 国家代码</li>
+<li><strong><a href="https://en.wikipedia.org/wiki/ISO_3166-2" target="_blank" rel="noopener">ISO 3166-2</a></strong> 国家分支机构代码</li>
+<li><strong><a href="https://en.wikipedia.org/wiki/ISO_3166-3" target="_blank" rel="noopener">ISO 3166-3</a></strong> 国家曾用名代码</li>
+</ul>
+<h3 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h3><p>我们拿到gps后做需要逆地址解析拿到ISO 3166标准的代码，有哪些方式可以呢，google map？</p>
+<p>我调研了2个方式</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/08/03/the-international-standard-country-codes/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2023/08/03/the-international-standard-country-codes/" data-id="cmkffwwk5005mqm2c534n95ae" data-title="符合国际标准的城市编码" class="article-share-link">分享</a>
+      
+      
+        <a href="/2023/08/03/the-international-standard-country-codes/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2023/08/03/the-international-standard-country-codes/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-how-to-start-phoenix-query-server" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/03/how-to-start-phoenix-query-server/" class="article-date">
+  <time class="dt-published" datetime="2023-08-03T13:57:55.000Z" itemprop="datePublished">2023-08-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Data/">Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/08/03/how-to-start-phoenix-query-server/">如何启动Phoenix Query Server</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>启动Phenix Query Server 6.0.0报错</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2023-08-03 15:20:01.672088 launching /var/jdk/bin/java -cp /etc/hbase/conf:/etc/hadoop/conf::/var/phoenix-queryserver-6.0.0/bin/../phoenix-queryserver-6.0.0.jar: -Dproc_phoenixserver -Dlog4j.configuration=file:/var/phoenix-queryserver-6.0.0/bin/log4j.properties -Dpsql.root.logger=INFO,DRFA -Dpsql.log.dir=/tmp/phoenix -Dpsql.log.file=phoenix-root-queryserver.log org.apache.phoenix.queryserver.server.QueryServer</span><br><span class="line"></span><br><span class="line">错误: 找不到或无法加载主类 org.apache.phoenix.queryserver.server.QueryServer</span><br></pre></td></tr></table></figure>
+<p>HBase 2.4.15</p>
+<p>Phoenix 5.1.3</p>
+<h3 id="前因"><a href="#前因" class="headerlink" title="前因"></a>前因</h3><p>升级HBase 2.4.15后，之前的Phoenix 4.13.1就不能用了。从Phoenix官网看到Phoenix和HBase的版本对应。</p>
+<blockquote>
+<p>Current release 4.16.1 can run on Apache HBase 1.3, 1.4, 1.5 and 1.6.<br>Current release 5.1.3 can run on Apache HBase 2.1, 2.2, 2.3, 2.4 and 2.5.</p>
+</blockquote>
+<p>然后Phoenix 5.1.3中没有带query server，需要单独下载query server并启动，如图</p>
+<p><img src="/2023/08/03/how-to-start-phoenix-query-server/query-server-installation.png" alt="Query Server Installation"></p>
+        
+          <p class="article-more-link">
+            <a href="/2023/08/03/how-to-start-phoenix-query-server/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2023/08/03/how-to-start-phoenix-query-server/" data-id="cmkffwwjm0041qm2cgpft0oxr" data-title="如何启动Phoenix Query Server" class="article-share-link">分享</a>
+      
+      
+        <a href="/2023/08/03/how-to-start-phoenix-query-server/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2023/08/03/how-to-start-phoenix-query-server/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Phoenix-Query-Server-6-0-0/" rel="tag">Phoenix Query Server 6.0.0</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-which-port-is-used-to-data-transmission-by-ftp" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/" class="article-date">
+  <time class="dt-published" datetime="2023-06-30T11:38:35.000Z" itemprop="datePublished">2023-06-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/">FTP传输到底用的哪个端口</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>最近使用Docker搭建FTP后，<strong>客户端可以连接无法列出目录，无法上传</strong>。通常我们认为FTP占用端口21用于传输控制命令，20传输数据。而我的21、20端口都有映射、开放。</p>
+<h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><ul>
+<li><a href="https://www.docker.com/" target="_blank" rel="noopener">Docker</a> (24.0.2, build cb74dfc)</li>
+<li><a href="https://mina.apache.org/ftpserver-project/index.html" target="_blank" rel="noopener">Apache FtpServer</a> (1.0.0)</li>
+</ul>
+<h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p>FileZilla连接效果如下</p>
+<p><img src="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/log-FileZilla-pasv-port-not-open.png" alt></p>
+        
+          <p class="article-more-link">
+            <a href="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/" data-id="cmkffwwkl006zqm2ch47x1884" data-title="FTP传输到底用的哪个端口" class="article-share-link">分享</a>
+      
+      
+        <a href="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2023/06/30/which-port-is-used-to-data-transmission-by-ftp/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EPASV/" rel="tag">EPASV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FTP/" rel="tag">FTP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-what-cause-hibernate-dialect-not-set" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/06/24/what-cause-hibernate-dialect-not-set/" class="article-date">
+  <time class="dt-published" datetime="2023-06-24T08:16:41.000Z" itemprop="datePublished">2023-06-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Data/">Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/06/24/what-cause-hibernate-dialect-not-set/">服务器时间错误导致MySQL证书错误问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="HibernateException-‘hibernate-dialect’-not-set"><a href="#HibernateException-‘hibernate-dialect’-not-set" class="headerlink" title="HibernateException ‘hibernate.dialect’ not set"></a>HibernateException ‘hibernate.dialect’ not set</h3><p><img src="/2023/06/24/what-cause-hibernate-dialect-not-set/hibernate-dialect-not-set.png" alt><br>同一个jar包，在某个环境下启动应用报错，另一个环境可以正常启动。报上面的错误<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">caused by: org.hibernate.HibernateException: Access to DialectResolutionInfo cannot be <span class="keyword">null</span> when <span class="string">'hibernate.dialect'</span> not set</span><br></pre></td></tr></table></figure></p>
+<h3 id="MySQL证书错误"><a href="#MySQL证书错误" class="headerlink" title="MySQL证书错误"></a>MySQL证书错误</h3><p>查看MySQL日志mysql/mysqld.log其中有<br><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2000</span><span class="number">-02</span><span class="number">-05</span>T02:<span class="number">19</span>:<span class="number">10.762462</span>Z <span class="number">0</span> [Note] Found ca.pem, server-cert.pem <span class="keyword">and</span> server-key.pem <span class="keyword">in</span> data directory. Trying to enable SSL support using them.</span><br><span class="line"><span class="number">2000</span><span class="number">-02</span><span class="number">-05</span>T02:<span class="number">19</span>:<span class="number">10.762482</span>Z <span class="number">0</span> [Note] Skipping generation of SSL certificates as certificate files are present <span class="keyword">in</span> data directory.</span><br></pre></td></tr></table></figure><br><img src="/2023/06/24/what-cause-hibernate-dialect-not-set/mysqld-log-cert.png" alt="MySQL cert error"><br></p>
+        
+          <p class="article-more-link">
+            <a href="/2023/06/24/what-cause-hibernate-dialect-not-set/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2023/06/24/what-cause-hibernate-dialect-not-set/" data-id="cmkffwwke0068qm2c1bgb6tdl" data-title="服务器时间错误导致MySQL证书错误问题" class="article-share-link">分享</a>
+      
+      
+        <a href="/2023/06/24/what-cause-hibernate-dialect-not-set/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2023/06/24/what-cause-hibernate-dialect-not-set/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hibernate/" rel="tag">Hibernate</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-row-or-column-table" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/06/01/row-or-column-table/" class="article-date">
+  <time class="dt-published" datetime="2023-06-01T22:03:43.000Z" itemprop="datePublished">2023-06-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Data/">Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/06/01/row-or-column-table/">选择横表还是纵表</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>数据库：MySQL 5.7<br>业务上有<strong>25个维度共2000多个指标</strong>数据需要存储。对于这种可变字段的指标数据，第一想法是采用纵表存储。但是具体该如何选择还是得结合业务看优缺点才行。</p>
+<h4 id="业务场景"><a href="#业务场景" class="headerlink" title="业务场景"></a>业务场景</h4><h5 id="数据量"><a href="#数据量" class="headerlink" title="数据量"></a>数据量</h5><p>1k台设备，每台设备每5分钟一次全量指标数据，存储60天</p>
+<ul>
+<li>纵表：60<em>24</em>60/5<em>1000</em>2000=<strong>345.6亿</strong></li>
+<li>横表：345.6亿/2000=<strong>1728万</strong></li>
+</ul>
+<h5 id="查询场景"><a href="#查询场景" class="headerlink" title="查询场景"></a>查询场景</h5><ul>
+<li>按指标维度+时间范围分页查</li>
+<li><p>按同一时间上报的指标数据（时间+指标名称）</p></li></ul>
+        
+          <p class="article-more-link">
+            <a href="/2023/06/01/row-or-column-table/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://2tu.github.io/2023/06/01/row-or-column-table/" data-id="cmkffwwk00058qm2cesfwbgmj" data-title="选择横表还是纵表" class="article-share-link">分享</a>
+      
+      
+        <a href="/2023/06/01/row-or-column-table/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2023/06/01/row-or-column-table/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%AA%E8%A1%A8/" rel="tag">横表</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BA%B5%E8%A1%A8/" rel="tag">纵表</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/">下一页 &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data/">Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Other/">Other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Rich/">Rich</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/02-00-00-00-00-00/" rel="tag">02:00:00:00:00:00</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/0kb/" rel="tag">0kb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/301/" rel="tag">301</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/302/" rel="tag">302</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/APKParser/" rel="tag">APKParser</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AXMLPrinter2/" rel="tag">AXMLPrinter2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Activity/" rel="tag">Activity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-TV/" rel="tag">Android TV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AndroidStudio/" rel="tag">AndroidStudio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Aviator/" rel="tag">Aviator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BCM4331/" rel="tag">BCM4331</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bean/" rel="tag">Bean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CJCommunicationsException/" rel="tag">CJCommunicationsException</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compiler/" rel="tag">Compiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DataBinding/" rel="tag">DataBinding</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DataX/" rel="tag">DataX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DateFormat/" rel="tag">DateFormat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DebugNativeLibs/" rel="tag">DebugNativeLibs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Debugger/" rel="tag">Debugger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Deferred-Deep-Link/" rel="tag">Deferred Deep Link</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DownloadManager/" rel="tag">DownloadManager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Links/" rel="tag">Dynamic Links</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EPASV/" rel="tag">EPASV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Excel/" rel="tag">Excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FTP/" rel="tag">FTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FeignClient/" rel="tag">FeignClient</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/" rel="tag">Gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gson/" rel="tag">Gson</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HBase/" rel="tag">HBase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hibernate/" rel="tag">Hibernate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/How-to-Get-Rich/" rel="tag">How to Get Rich</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Http-Status-Code/" rel="tag">Http Status Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HttpClient/" rel="tag">HttpClient</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Interview/" rel="tag">Interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JNI/" rel="tag">JNI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JitPack/" rel="tag">JitPack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kids/" rel="tag">Kids</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MGR/" rel="tag">MGR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/" rel="tag">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Makefile/" rel="tag">Makefile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Manjaro/" rel="tag">Manjaro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mock/" rel="tag">Mock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NDK/" rel="tag">NDK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NODE-ENV/" rel="tag">NODE_ENV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Native/" rel="tag">Native</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Naval/" rel="tag">Naval</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js%E7%89%88%E6%9C%AC/" rel="tag">Node.js版本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSS/" rel="tag">OSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Override/" rel="tag">Override</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Phoenix-Query-Server-6-0-0/" rel="tag">Phoenix Query Server 6.0.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qualifier/" rel="tag">Qualifier</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RestTemplate/" rel="tag">RestTemplate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RestoreInstance/" rel="tag">RestoreInstance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK/" rel="tag">SDK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK%E6%9B%B4%E6%96%B0%E7%BB%99%E5%BC%80%E5%8F%91%E8%80%85/" rel="tag">SDK更新给开发者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SPI/" rel="tag">SPI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ShardingSphere/" rel="tag">ShardingSphere</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SimpleDateFormat/" rel="tag">SimpleDateFormat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Singleton/" rel="tag">Singleton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBatch/" rel="tag">SpringBatch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/StepScope/" rel="tag">StepScope</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThreadPoolExecutor/" rel="tag">ThreadPoolExecutor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Time-Zone/" rel="tag">Time Zone</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WEBGL-debug-renderer-info/" rel="tag">WEBGL_debug_renderer_info</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WIFI/" rel="tag">WIFI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebGL/" rel="tag">WebGL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/" rel="tag">WebView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XML/" rel="tag">XML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/YYYY/" rel="tag">YYYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/In/" rel="tag">_In_</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Out/" rel="tag">_Out_</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/antd/" rel="tag">antd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/brew/" rel="tag">brew</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/" rel="tag">chrome</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cross-env/" rel="tag">cross-env</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dom4j/" rel="tag">dom4j</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/druid/" rel="tag">druid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experimental-webgl/" rel="tag">experimental-webgl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fit/" rel="tag">fit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flavor/" rel="tag">flavor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fullgc/" rel="tag">fullgc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github-api/" rel="tag">github api</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ip/" rel="tag">ip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libjpeg-turbo/" rel="tag">libjpeg-turbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lxml/" rel="tag">lxml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/manifest/" rel="tag">manifest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/manjaro/" rel="tag">manjaro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mockjs/" rel="tag">mockjs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/module/" rel="tag">module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nvm/" rel="tag">nvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/onActivityForResult/" rel="tag">onActivityForResult</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/onPageFinished/" rel="tag">onPageFinished</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scope/" rel="tag">scope</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/so/" rel="tag">so</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spawn/" rel="tag">spawn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/v36/" rel="tag">v36</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/versionCode/" rel="tag">versionCode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E4%BD%8D%E6%95%B0/" rel="tag">中位数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%A8%8B%E6%95%B0/" rel="tag">中程数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E5%8A%A8push/" rel="tag">主动push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E8%84%B8%E6%94%AF%E4%BB%98/" rel="tag">人脸支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BC%97%E6%95%B0/" rel="tag">众数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%BC%E5%AE%B9%E9%97%AE%E9%A2%98/" rel="tag">兼容问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%8F%82%E6%95%B0/" rel="tag">动态参数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8C%E6%AD%A5%E6%94%AF%E4%BB%98/" rel="tag">同步支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/" rel="tag">命名空间</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9D%87%E5%80%BC/" rel="tag">均值</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E5%BD%A2%E5%8F%82/" rel="tag">多形参</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%B4%E6%96%87%E4%BB%B6/" rel="tag">头文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A6%82%E4%BD%95%E4%B8%BB%E5%8A%A8PUSH/" rel="tag">如何主动PUSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%BD%E8%A1%A8/" rel="tag">宽表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E6%94%AF%E4%BB%98/" rel="tag">异步支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%95%E6%B5%81/" rel="tag">引流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%AF%E4%BB%98/" rel="tag">支付</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%86%B3%E7%AD%96/" rel="tag">数据决策</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%98%A5%E8%BF%90%E4%BA%A4%E9%80%9A%E6%83%85%E5%86%B5/" rel="tag">春运交通情况</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/" rel="tag">智能硬件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%89%E7%BC%BA%E9%99%B7%E7%9A%84OpenSSL%E7%89%88%E6%9C%AC/" rel="tag">有缺陷的OpenSSL版本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%81%E5%B7%AE/" rel="tag">极差</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/" rel="tag">构造函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%AA%E8%A1%A8/" rel="tag">横表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B0%B4%E5%8D%B0/" rel="tag">水印</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C/" rel="tag">用户体验</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AA%84%E8%A1%A8/" rel="tag">窄表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AB%96%E8%A1%A8/" rel="tag">竖表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%B5%E8%A1%A8/" rel="tag">纵表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%93%9D%E7%89%99/" rel="tag">蓝牙</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E8%B4%B9%E5%A5%97%E9%A4%90/" rel="tag">资费套餐</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A6%99%E6%B8%AF%E5%8D%A1/" rel="tag">香港卡</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/02-00-00-00-00-00/" style="font-size: 10px;">02:00:00:00:00:00</a> <a href="/tags/0kb/" style="font-size: 10px;">0kb</a> <a href="/tags/301/" style="font-size: 10px;">301</a> <a href="/tags/302/" style="font-size: 10px;">302</a> <a href="/tags/APKParser/" style="font-size: 10px;">APKParser</a> <a href="/tags/AXMLPrinter2/" style="font-size: 10px;">AXMLPrinter2</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android-TV/" style="font-size: 10px;">Android TV</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Aviator/" style="font-size: 10px;">Aviator</a> <a href="/tags/BCM4331/" style="font-size: 10px;">BCM4331</a> <a href="/tags/Bean/" style="font-size: 10px;">Bean</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/CJCommunicationsException/" style="font-size: 10px;">CJCommunicationsException</a> <a href="/tags/Compiler/" style="font-size: 10px;">Compiler</a> <a href="/tags/DataBinding/" style="font-size: 10px;">DataBinding</a> <a href="/tags/DataX/" style="font-size: 10px;">DataX</a> <a href="/tags/DateFormat/" style="font-size: 10px;">DateFormat</a> <a href="/tags/DebugNativeLibs/" style="font-size: 10px;">DebugNativeLibs</a> <a href="/tags/Debugger/" style="font-size: 10px;">Debugger</a> <a href="/tags/Deferred-Deep-Link/" style="font-size: 10px;">Deferred Deep Link</a> <a href="/tags/DownloadManager/" style="font-size: 10px;">DownloadManager</a> <a href="/tags/Dynamic-Links/" style="font-size: 10px;">Dynamic Links</a> <a href="/tags/EPASV/" style="font-size: 10px;">EPASV</a> <a href="/tags/Excel/" style="font-size: 10px;">Excel</a> <a href="/tags/FTP/" style="font-size: 10px;">FTP</a> <a href="/tags/FeignClient/" style="font-size: 10px;">FeignClient</a> <a href="/tags/Gradle/" style="font-size: 16.67px;">Gradle</a> <a href="/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/tags/HBase/" style="font-size: 10px;">HBase</a> <a href="/tags/Hibernate/" style="font-size: 10px;">Hibernate</a> <a href="/tags/How-to-Get-Rich/" style="font-size: 16.67px;">How to Get Rich</a> <a href="/tags/Http-Status-Code/" style="font-size: 10px;">Http Status Code</a> <a href="/tags/HttpClient/" style="font-size: 10px;">HttpClient</a> <a href="/tags/Interview/" style="font-size: 10px;">Interview</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/JitPack/" style="font-size: 10px;">JitPack</a> <a href="/tags/Kids/" style="font-size: 10px;">Kids</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MGR/" style="font-size: 10px;">MGR</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/Makefile/" style="font-size: 10px;">Makefile</a> <a href="/tags/Manjaro/" style="font-size: 13.33px;">Manjaro</a> <a href="/tags/Mock/" style="font-size: 10px;">Mock</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/NDK/" style="font-size: 10px;">NDK</a> <a href="/tags/NODE-ENV/" style="font-size: 10px;">NODE_ENV</a> <a href="/tags/Native/" style="font-size: 10px;">Native</a> <a href="/tags/Naval/" style="font-size: 16.67px;">Naval</a> <a href="/tags/Node-js%E7%89%88%E6%9C%AC/" style="font-size: 10px;">Node.js版本</a> <a href="/tags/OSS/" style="font-size: 10px;">OSS</a> <a href="/tags/Override/" style="font-size: 10px;">Override</a> <a href="/tags/Phoenix-Query-Server-6-0-0/" style="font-size: 10px;">Phoenix Query Server 6.0.0</a> <a href="/tags/Qualifier/" style="font-size: 10px;">Qualifier</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/RestTemplate/" style="font-size: 10px;">RestTemplate</a> <a href="/tags/RestoreInstance/" style="font-size: 10px;">RestoreInstance</a> <a href="/tags/SDK/" style="font-size: 10px;">SDK</a> <a href="/tags/SDK%E6%9B%B4%E6%96%B0%E7%BB%99%E5%BC%80%E5%8F%91%E8%80%85/" style="font-size: 10px;">SDK更新给开发者</a> <a href="/tags/SPI/" style="font-size: 10px;">SPI</a> <a href="/tags/ShardingSphere/" style="font-size: 10px;">ShardingSphere</a> <a href="/tags/SimpleDateFormat/" style="font-size: 10px;">SimpleDateFormat</a> <a href="/tags/Singleton/" style="font-size: 10px;">Singleton</a> <a href="/tags/Spring/" style="font-size: 13.33px;">Spring</a> <a href="/tags/SpringBatch/" style="font-size: 10px;">SpringBatch</a> <a href="/tags/StepScope/" style="font-size: 10px;">StepScope</a> <a href="/tags/ThreadPoolExecutor/" style="font-size: 10px;">ThreadPoolExecutor</a> <a href="/tags/Time-Zone/" style="font-size: 10px;">Time Zone</a> <a href="/tags/WEBGL-debug-renderer-info/" style="font-size: 10px;">WEBGL_debug_renderer_info</a> <a href="/tags/WIFI/" style="font-size: 10px;">WIFI</a> <a href="/tags/WebGL/" style="font-size: 10px;">WebGL</a> <a href="/tags/WebView/" style="font-size: 13.33px;">WebView</a> <a href="/tags/XML/" style="font-size: 10px;">XML</a> <a href="/tags/YYYY/" style="font-size: 10px;">YYYY</a> <a href="/tags/In/" style="font-size: 10px;">_In_</a> <a href="/tags/Out/" style="font-size: 10px;">_Out_</a> <a href="/tags/antd/" style="font-size: 10px;">antd</a> <a href="/tags/brew/" style="font-size: 10px;">brew</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/cross-env/" style="font-size: 10px;">cross-env</a> <a href="/tags/dom4j/" style="font-size: 10px;">dom4j</a> <a href="/tags/druid/" style="font-size: 10px;">druid</a> <a href="/tags/experimental-webgl/" style="font-size: 10px;">experimental-webgl</a> <a href="/tags/fit/" style="font-size: 10px;">fit</a> <a href="/tags/flavor/" style="font-size: 10px;">flavor</a> <a href="/tags/fullgc/" style="font-size: 13.33px;">fullgc</a> <a href="/tags/github-api/" style="font-size: 10px;">github api</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/ip/" style="font-size: 10px;">ip</a> <a href="/tags/libjpeg-turbo/" style="font-size: 10px;">libjpeg-turbo</a> <a href="/tags/lxml/" style="font-size: 10px;">lxml</a> <a href="/tags/manifest/" style="font-size: 10px;">manifest</a> <a href="/tags/manjaro/" style="font-size: 10px;">manjaro</a> <a href="/tags/mockjs/" style="font-size: 10px;">mockjs</a> <a href="/tags/module/" style="font-size: 10px;">module</a> <a href="/tags/nvm/" style="font-size: 10px;">nvm</a> <a href="/tags/onActivityForResult/" style="font-size: 10px;">onActivityForResult</a> <a href="/tags/onPageFinished/" style="font-size: 10px;">onPageFinished</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/scope/" style="font-size: 10px;">scope</a> <a href="/tags/so/" style="font-size: 10px;">so</a> <a href="/tags/spawn/" style="font-size: 10px;">spawn</a> <a href="/tags/v36/" style="font-size: 10px;">v36</a> <a href="/tags/versionCode/" style="font-size: 10px;">versionCode</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/%E4%B8%AD%E4%BD%8D%E6%95%B0/" style="font-size: 10px;">中位数</a> <a href="/tags/%E4%B8%AD%E7%A8%8B%E6%95%B0/" style="font-size: 10px;">中程数</a> <a href="/tags/%E4%B8%BB%E5%8A%A8push/" style="font-size: 10px;">主动push</a> <a href="/tags/%E4%BA%BA%E8%84%B8%E6%94%AF%E4%BB%98/" style="font-size: 16.67px;">人脸支付</a> <a href="/tags/%E4%BC%97%E6%95%B0/" style="font-size: 10px;">众数</a> <a href="/tags/%E5%85%BC%E5%AE%B9%E9%97%AE%E9%A2%98/" style="font-size: 10px;">兼容问题</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8F%82%E6%95%B0/" style="font-size: 10px;">动态参数</a> <a href="/tags/%E5%90%8C%E6%AD%A5%E6%94%AF%E4%BB%98/" style="font-size: 10px;">同步支付</a> <a href="/tags/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/" style="font-size: 10px;">命名空间</a> <a href="/tags/%E5%9D%87%E5%80%BC/" style="font-size: 10px;">均值</a> <a href="/tags/%E5%A4%9A%E5%BD%A2%E5%8F%82/" style="font-size: 10px;">多形参</a> <a href="/tags/%E5%A4%B4%E6%96%87%E4%BB%B6/" style="font-size: 10px;">头文件</a> <a href="/tags/%E5%A6%82%E4%BD%95%E4%B8%BB%E5%8A%A8PUSH/" style="font-size: 10px;">如何主动PUSH</a> <a href="/tags/%E5%AE%BD%E8%A1%A8/" style="font-size: 10px;">宽表</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E6%94%AF%E4%BB%98/" style="font-size: 10px;">异步支付</a> <a href="/tags/%E5%BC%95%E6%B5%81/" style="font-size: 10px;">引流</a> <a href="/tags/%E6%94%AF%E4%BB%98/" style="font-size: 10px;">支付</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%86%B3%E7%AD%96/" style="font-size: 10px;">数据决策</a> <a href="/tags/%E6%98%A5%E8%BF%90%E4%BA%A4%E9%80%9A%E6%83%85%E5%86%B5/" style="font-size: 10px;">春运交通情况</a> <a href="/tags/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/" style="font-size: 10px;">智能硬件</a> <a href="/tags/%E6%9C%89%E7%BC%BA%E9%99%B7%E7%9A%84OpenSSL%E7%89%88%E6%9C%AC/" style="font-size: 10px;">有缺陷的OpenSSL版本</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 10px;">权限</a> <a href="/tags/%E6%9E%81%E5%B7%AE/" style="font-size: 10px;">极差</a> <a href="/tags/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/" style="font-size: 10px;">构造函数</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%A8%AA%E8%A1%A8/" style="font-size: 13.33px;">横表</a> <a href="/tags/%E6%B0%B4%E5%8D%B0/" style="font-size: 10px;">水印</a> <a href="/tags/%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C/" style="font-size: 10px;">用户体验</a> <a href="/tags/%E7%AA%84%E8%A1%A8/" style="font-size: 10px;">窄表</a> <a href="/tags/%E7%AB%96%E8%A1%A8/" style="font-size: 10px;">竖表</a> <a href="/tags/%E7%BA%B5%E8%A1%A8/" style="font-size: 13.33px;">纵表</a> <a href="/tags/%E8%93%9D%E7%89%99/" style="font-size: 10px;">蓝牙</a> <a href="/tags/%E8%B5%84%E8%B4%B9%E5%A5%97%E9%A4%90/" style="font-size: 10px;">资费套餐</a> <a href="/tags/%E9%A6%99%E6%B8%AF%E5%8D%A1/" style="font-size: 10px;">香港卡</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">十二月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">六月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/02/">二月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">四月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/01/15/how-to-search-application-on-manjaro/">Manjaro怎么把安装的程序放到Applications</a>
+          </li>
+        
+          <li>
+            <a href="/2026/01/13/how-to-install-lxml-on-manjaro/">manjaro安装lxml报错解决</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/31/Free-Markets-Are-Intrinsic-to-Humans/">Free Markets Are Intrinsic to Humans(自由市场是人类本性)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/31/install-BCM4331-driver-on-manjaro/">install-BCM4331-driver-on-manjaro</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/30/Make-Abundance-for-the-World/">Make Abundance for the World(为世界创造富足)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 2Tu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+<script>
+    var GUEST_INFO = ['nick','mail','link'];
+    var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+        return GUEST_INFO.indexOf(item) > -1
+    });
+    var notify = 'false' == true;
+    var verify = 'false' == true;
+    new Valine({
+        el: '.vcomment',
+        notify: notify,
+        verify: verify,
+        appId: "QAEjRRlPjwiwbrf8CnJ2KpP7-gzGzoHsz",
+        appKey: "2mDCN9Rgxlu7Jzcfg8HkJmy6",
+        placeholder: "Just go go",
+        pageSize:'10',
+        avatar:'mm',
+        lang:'zh-cn'
+    });
+</script>
+
+  </div>
+</body>
+</html>
