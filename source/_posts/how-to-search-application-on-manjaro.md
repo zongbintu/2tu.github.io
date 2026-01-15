@@ -30,5 +30,8 @@ Exec: 程序启动文件的绝对路径。 %U 支持一次性打开多个文件�
 Icon: 图标文件的路径（通常在 /opt 目录下可以找到 .png 或 .svg 文件）。
 Terminal: 如果程序需要打开终端运行，设为 true；普通图形界面程序设为 false。
 
-
+3. 设置可执行
+```shell
+chmod +x ~/.local/share/applications/软件名.desktop
+```
 
