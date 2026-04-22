@@ -7,6 +7,7 @@ OS: Manjaro xfc
 Python: 3.13.11
 lxml: 4.9.7
 通过requirements.txt文件安装报错
+<!-- more -->
 ```shell
 [output] Collecting lxml==4.9.4
 [output]   Using cached lxml-4.9.4.tar.gz (3.6 MB)
